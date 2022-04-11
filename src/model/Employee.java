@@ -7,7 +7,7 @@ public class Employee extends Person {
     private final String CPR;
     private Department department;
 
-    private enum EmployeeType {
+    public enum EmployeeType {
         ADMIN,
         CEO,
         EMPLOYEE
