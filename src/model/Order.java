@@ -9,16 +9,29 @@ public class Order {
     private Customer customer;
     private Set<OrderLine> orderLines;
 
+    /**
+     * Constructor for the class Order
+     * @param employee
+     * @param customer
+     */
     public Order(Employee employee, Customer customer) {
         this.employee = employee;
         this.customer = customer;
         this.orderLines = new HashSet<>();
     }
 
+    /**
+     * Add the OrderLine to the Order Set
+     * @param orderLine - OrderLine to be added
+     */
     public void addOrderLine(OrderLine orderLine) {
         orderLines.add(orderLine);
     }
 
+    /**
+     * Remove the OrderLine from the Order Set
+     * @param orderLine - OrderLine to be remoed
+     */
     public void removeOrderLine(OrderLine orderLine) {
         orderLines.remove(orderLine);
     }

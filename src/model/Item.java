@@ -4,6 +4,10 @@ public class Item {
     
     private Product product;
 
+    /**
+     * Constructor for the class Item
+     * @param product
+     */
     public Item(Product product) {
         this.product = product;
     }
