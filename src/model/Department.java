@@ -1,6 +1,7 @@
 package model;
 
 public class Department {
+    private int id;
     private String name;
     private City zipCode;
     private String address;
@@ -15,6 +16,14 @@ public class Department {
         this.name = name;
         this.zipCode = zipCode;
         this.address = address;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
