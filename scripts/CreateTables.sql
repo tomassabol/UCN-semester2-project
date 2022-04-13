@@ -19,6 +19,7 @@ drop table if exists ProductTypes;
 drop table if exists City;
 
 create table City(
+    Id int identity(1,1) unique not null,
     ZIP varchar(10) primary key,
     Name varchar(100)
 );
