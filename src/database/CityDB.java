@@ -71,7 +71,7 @@ public class CityDB implements CityDBIF {
     public City findByZip(String zip) throws SQLException {
         City city = null;
         ResultSet rs;
-        findById.setString(1, zip);
+        findByZip.setString(1, zip);
         rs = findByZip.executeQuery();
         while (rs.next()) {
             city = buildObject(rs);
