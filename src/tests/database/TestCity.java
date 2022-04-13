@@ -17,16 +17,13 @@ public class TestCity {
     private CityDBIF cityDBIF;
     private City city;
     City city1;
+    City city2;
     private City createCity;
     private City returnCity = null;
     
     @BeforeEach
     public void setUp() throws SQLException, NotFoundException {
         cityDBIF = new CityDB();
-        city = null;
-        city1 = null;
-        createCity = null;
-        returnCity = null;
     }
 
     public void findById4() throws SQLException, NotFoundException {
@@ -47,6 +44,16 @@ public class TestCity {
     public void testGetCityById4() throws SQLException, NotFoundException {
         // Assert
         assertThrows(NotFoundException.class, () -> findById4());
+    }
+
+    @Test
+    public void testFindByZip() throws SQLException {
+        // Arrange
+        String zip = "DK-9000";
+        // Act
+        city2 = cityDBIF.findByZip(zip);
+        // Assert
+        assertEquals("Aalborg", cityDBIF.findByZip(zip).getName());
     }
 
     @Test

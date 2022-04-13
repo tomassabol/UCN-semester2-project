@@ -13,12 +13,14 @@ public class CityDB implements CityDBIF {
     // PreparedStatements for CityDB class
     private static final String FIND_ALL = "select * FROM City";
     private static final String FIND_BY_ID = "select * FROM City where Id = ?";
+    private static final String FIND_BY_ZIP = "select * FROM City where ZIP = ?";
     private static final String CREATE_CITY = "insert into City values(?, ?)";
     private static final String UPDATE_CITY = "update City set Name = ? from City where Id = ?";
     private static final String DELETE_CITY = "delete from City where Id = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement findById;
+    private PreparedStatement findByZip;
     private PreparedStatement createCity;
     private PreparedStatement updateCity;
     private PreparedStatement deleteCity;
@@ -30,6 +32,7 @@ public class CityDB implements CityDBIF {
     public CityDB() throws SQLException {
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
         findById = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
+        findByZip = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ZIP);
         createCity = DBConnection.getInstance().getConnection().prepareStatement(CREATE_CITY, Statement.RETURN_GENERATED_KEYS);
         updateCity = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_CITY);
         deleteCity = DBConnection.getInstance().getConnection().prepareStatement(DELETE_CITY);
@@ -61,6 +64,18 @@ public class CityDB implements CityDBIF {
         }
 
         if (city == null) { throw new NotFoundException("City", id); }
+
+        return city;
+    }
+
+    public City findByZip(String zip) throws SQLException {
+        City city = null;
+        ResultSet rs;
+        findById.setString(1, zip);
+        rs = findByZip.executeQuery();
+        while (rs.next()) {
+            city = buildObject(rs);
+        }
 
         return city;
     }
