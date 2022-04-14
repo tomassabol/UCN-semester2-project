@@ -16,6 +16,7 @@ public class Product {
         ACCESSORIES,
         ELECTRONICS,
         PARTS,
+        TOOLS,
         CLOTHING,
         SHOES,
         NUTRITION

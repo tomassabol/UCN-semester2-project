@@ -7,9 +7,9 @@ INSERT INTO Suppliers VALUES('Supplier1','Supplier1@emal.com','111111','DK-9000'
 INSERT INTO Suppliers VALUES('Supplier2','Supplier2@emal.com','222222','SK-4212','Street 2')
 INSERT INTO Suppliers VALUES('Supplier3','Supplier3@emal.com','333333','CZ-60200','Street 3')
 
-INSERT INTO ProductTypes VALUES('Bike')
-INSERT INTO ProductTypes VALUES('E-Bike')
-INSERT INTO ProductTypes VALUES('Tools')
+INSERT INTO ProductTypes VALUES('BIKE')
+INSERT INTO ProductTypes VALUES('EBIKE')
+INSERT INTO ProductTypes VALUES('TOOLS')
 
 INSERT INTO Products VALUES('Product1','Description one',1,'1000',0,1)
 INSERT INTO Products VALUES('Product2','Description two',2,'2000',10,1)
