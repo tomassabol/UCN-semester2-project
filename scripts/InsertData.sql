@@ -37,9 +37,9 @@ INSERT INTO Departments VALUES('Department1','DK-9000','Street11')
 INSERT INTO Departments VALUES('Department2','SK-4212','Street22')
 INSERT INTO Departments VALUES('Department3','CZ-60200','Street33')
 
-INSERT INTO CustomerTypes VALUES('CustomerType1')
-INSERT INTO CustomerTypes VALUES('CustomerType2')
-INSERT INTO CustomerTypes VALUES('CustomerType3')
+INSERT INTO CustomerTypes VALUES('PRIVATE')
+INSERT INTO CustomerTypes VALUES('BUSINESS')
+INSERT INTO CustomerTypes VALUES('STUDENT')
 
 INSERT INTO Customers VALUES('Customer1','custome1r@email.com','111','DK-9000','Street 111',1)
 INSERT INTO Customers VALUES('Customer2','customer2@email.com','222','SK-4212','Street 222',2)

@@ -7,7 +7,17 @@ public class Customer extends Person {
     public enum CustomerType {
         PRIVATE,
         BUSINESS,
-        STUDENT
+        STUDENT;
+
+        private int id;
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return this.id;
+        }
     }
 
     /**
