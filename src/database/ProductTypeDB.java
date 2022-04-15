@@ -50,6 +50,7 @@ public class ProductTypeDB implements ProductTypeDBIF {
 
     private ProductType buildObject(ResultSet rs) throws SQLException {
         ProductType productType = ProductType.valueOf(rs.getString("Name"));
+        productType.setId(rs.getInt("Id"));
         return productType;
     }
 

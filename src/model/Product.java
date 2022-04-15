@@ -3,6 +3,7 @@ package model;
 import java.math.BigDecimal;
 
 public class Product {
+    private int id;
     private String name;
     private String description;
     private ProductType productType;
@@ -11,15 +12,25 @@ public class Product {
     private boolean active;
 
     public enum ProductType {
-        BIKE,
-        EBIKE,
-        ACCESSORIES,
-        ELECTRONICS,
-        PARTS,
-        TOOLS,
-        CLOTHING,
-        SHOES,
-        NUTRITION
+        BIKE(),
+        EBIKE(),
+        ACCESSORIES(),
+        ELECTRONICS(),
+        PARTS(),
+        TOOLS(),
+        CLOTHING(),
+        SHOES(),
+        NUTRITION();
+
+        private int id;
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return this.id;
+        }
     }
 
     /**
@@ -58,6 +69,14 @@ public class Product {
     }
 
     // getters & setters
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 
     public String getName() {
         return this.name;
