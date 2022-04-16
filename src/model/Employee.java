@@ -2,6 +2,7 @@ package model;
 
 public class Employee extends Person {
 
+    private int id;
     private EmployeeType employeeType;
     private String password;
     private final String CPR;
@@ -10,7 +11,17 @@ public class Employee extends Person {
     public enum EmployeeType {
         ADMIN,
         CEO,
-        EMPLOYEE
+        EMPLOYEE;
+
+        private int id;
+
+        public int getId() {
+            return this.id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
     }
     
     /**
@@ -33,6 +44,14 @@ public class Employee extends Person {
         this.department = department;
     }
 
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public EmployeeType getEmployeeType() {
         return this.employeeType;
     }

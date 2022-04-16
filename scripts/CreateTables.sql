@@ -118,10 +118,12 @@ create table Employees(
     ZIP varchar(10),
     foreign key (ZIP) references City(ZIP),
     Address varchar(100),
-    DepartmentId int,
-    foreign key (DepartmentId) references Departments(Id),
     EmployeeTypeId int,
-    foreign key (EmployeeTypeId) references EmployeeTypes(Id)
+    foreign key (EmployeeTypeId) references EmployeeTypes(Id),
+    Password varchar(20),
+    CPR varchar(10) unique,
+    DepartmentId int,
+    foreign key (DepartmentId) references Departments(Id)
 );
 
 create table Orders(

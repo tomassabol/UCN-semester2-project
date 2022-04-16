@@ -45,13 +45,13 @@ INSERT INTO Customers VALUES('Customer1','custome1r@email.com','111','DK-9000','
 INSERT INTO Customers VALUES('Customer2','customer2@email.com','222','SK-4212','Street 222',2)
 INSERT INTO Customers VALUES('Customer3','customer3@email.com','333','CZ-60200','Street 333',3)
 
-INSERT INTO EmployeeTypes VALUES('EmployeeType1')
-INSERT INTO EmployeeTypes VALUES('EmployeeType2')
-INSERT INTO EmployeeTypes VALUES('EmployeeType3')
+INSERT INTO EmployeeTypes VALUES('ADMIN')
+INSERT INTO EmployeeTypes VALUES('CEO')
+INSERT INTO EmployeeTypes VALUES('EMPLOYEE')
 
-INSERT INTO Employees VALUES('Employee1','employee1@email.com','111111','DK-9000','Street 1111',1,1)
-INSERT INTO Employees VALUES('Employee2','employee2@email.com','222222','SK-4212','Street 2222',2,2)
-INSERT INTO Employees VALUES('Employee3','employee3@email.com','333333','CZ-60200','Street 3333',3,3)
+INSERT INTO Employees VALUES('Employee1','employee1@email.com','111111','DK-9000','Street 1111',1, 'password1', 0101010101, 1)
+INSERT INTO Employees VALUES('Employee2','employee2@email.com','222222','SK-4212','Street 2222',2,'password1', 0202020202, 2)
+INSERT INTO Employees VALUES('Employee3','employee3@email.com','333333','CZ-60200','Street 3333',3,'password1', 0303030303, 3)
 
 INSERT INTO Orders VALUES(1,1)
 INSERT INTO Orders VALUES(2,2)

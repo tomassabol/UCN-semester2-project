@@ -18,7 +18,7 @@ public class CustomerDB implements CustomerDBIF {
     private static final String FIND_ALL = "select * from Customers";
     private static final String FIND_BY_ID = "select * from Customers where Id = ?";
     private static final String CREATE_CUSTOMER = "insert into Customers values(?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_CUSTOMER = "update Customers set Name = ?, Email = ?, Phone = ?, Zip = ?, Address = ?, CustomerTypeId = ? from Customers where Id = ?";
+    private static final String UPDATE_CUSTOMER = "update Customers set Name = ?, Email = ?, Phone = ?, ZIP = ?, Address = ?, CustomerTypeId = ? from Customers where Id = ?";
     private static final String DELETE_CUSTOMER = "delete from Customers where Id = ?";
 
     private PreparedStatement findAll;
