@@ -2,6 +2,7 @@ package model;
 
 public class Item {
     
+    private int id;
     private Product product;
 
     /**
@@ -10,6 +11,14 @@ public class Item {
      */
     public Item(Product product) {
         this.product = product;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Product getProduct() {
