@@ -31,13 +31,13 @@ public class OrderLineDB implements OrderLineDBIF{
      */
      ProductDBIF productDBIF = new ProductDB();
 
-     public OrderLineDB() throws SQLException{
+    public OrderLineDB() throws SQLException{
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
         findById = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
         createOrderLine = DBConnection.getInstance().getConnection().prepareStatement(CREATE_ORDER_LINE, Statement.RETURN_GENERATED_KEYS);
         updateOrderLine = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_ORDER_LINE);
         deleteOrderLine = DBConnection.getInstance().getConnection().prepareStatement(DELETE_ORDER_LINE);
-     }
+    }
     
     @Override
     public List<OrderLine> findAll() throws SQLException,NotFoundException{
