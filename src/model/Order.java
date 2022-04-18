@@ -5,6 +5,7 @@ import java.util.Set;
 
 public class Order {
     
+    private int id;
     private Employee employee;
     private Customer customer;
     private Set<OrderLine> orderLines;
@@ -38,6 +39,14 @@ public class Order {
 
     // getters and setters
 
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public Employee getEmployee() {
         return this.employee;
     }

@@ -5,6 +5,7 @@ import java.util.Set;
 
 public class OrderLine {
     
+    private int id;
     private Product product;
     private int quantity;
     private Set<Item> items;
@@ -40,6 +41,14 @@ public class OrderLine {
 
     // getters and setters
 
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public Product getProduct() {
         return this.product;
     }

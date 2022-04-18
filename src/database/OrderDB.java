@@ -5,6 +5,7 @@ import exceptions.NotFoundException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,23 +29,18 @@ public class OrderDB implements OrderDBIF {
     private PreparedStatement createOrder;
     private PreparedStatement deleteOrder;
 
-/*    
-    private Employee employee;
-    private Customer customer;
-    private Set<OrderLine> orderLines;
-*/
     EmployeeDBIF employeeDBIF = new EmployeeDB();
     CustomerDBIF customerDBIF = new CustomerDB();
   
-    OrderDB()throws SQLException{
+    public OrderDB()throws SQLException{
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
         findById= DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
-        createOrder= DBConnection.getInstance().getConnection().prepareStatement(CREATE_ORDER);
+        createOrder= DBConnection.getInstance().getConnection().prepareStatement(CREATE_ORDER, Statement.RETURN_GENERATED_KEYS);
         deleteOrder = DBConnection.getInstance().getConnection().prepareStatement(DELETE_ORDER);
     }
 
     @Override
-    public List<Order> findAll()throws SQLException,NotFoundException{
+    public List<Order> findAll() throws SQLException,NotFoundException{
         ResultSet rs;
         rs = findAll.executeQuery();
         List<Order> orders = buildObjects(rs);
@@ -52,7 +48,7 @@ public class OrderDB implements OrderDBIF {
     }
 
     @Override    
-    public Order findByID(int id)throws SQLException, NotFoundException{
+    public Order findById(int id) throws SQLException, NotFoundException{
         Order order = null;
         ResultSet rs;
         findById.setInt(1, id);
@@ -66,22 +62,23 @@ public class OrderDB implements OrderDBIF {
     }
 
     @Override
-    public void createOrder(Order order)throws SQLException{
+    public void createOrder(Order order) throws SQLException{
         createOrder.setInt(1, order.getCustomer().getId());
         createOrder.setInt(2, order.getEmployee().getId());
         order.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createOrder));
     }
 
     @Override
-    public void deleteOrder(Order order)throws SQLException{
+    public void deleteOrder(Order order) throws SQLException{
         deleteOrder.setInt(1, order.getId());
         deleteOrder.executeUpdate();
     }
 
     private Order buildObject(ResultSet rs)throws SQLException,NotFoundException{
-        Employee employee = employeeDBIF.findById(rs.getInt("Id"));
-        Customer customer = customerDBIF.findById(rs.getInt("Id"));
-         Order order = new Order(employee, customer);
+        Employee employee = employeeDBIF.findById(rs.getInt("EmployeeId"));
+        Customer customer = customerDBIF.findById(rs.getInt("CustomerId"));
+        Order order = new Order(employee, customer);
+        order.setId(rs.getInt("Id"));
         return order;
     }
 
