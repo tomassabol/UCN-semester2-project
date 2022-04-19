@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import database.interfaces.CityDBIF;
+import controller.CityController;
 import database.interfaces.CustomerDBIF;
 import database.interfaces.CustomerTypeDBIF;
 import exceptions.NotFoundException;
@@ -28,7 +28,7 @@ public class CustomerDB implements CustomerDBIF {
     private PreparedStatement deleteCustomer;
 
     CustomerTypeDBIF customerTypeDBIF = new CustomerTypeDB();
-    CityDBIF cityDBIF = new CityDB();
+    CityController cityCtrl = new CityController();
 
     /**
      * Constructor for the CustomerDB class
@@ -97,8 +97,8 @@ public class CustomerDB implements CustomerDBIF {
     // local methods
 
     private Customer buildObject(ResultSet rs) throws SQLException, NotFoundException {
-        // TODO: change this to call CityController and CustomerTypeController
-        City zipCode = cityDBIF.findByZip(rs.getString("ZIP"));
+        // TODO: change this to call CustomerTypeController
+        City zipCode = cityCtrl.findByZip(rs.getString("ZIP"));
         CustomerType customerType = customerTypeDBIF.findById(rs.getInt("CustomerTypeId"));
         Customer customer = new Customer(rs.getString("Name"), rs.getString("Email"), rs.getString("Phone"), zipCode, rs.getString("Address"), customerType);
         customer.setId(rs.getInt("Id"));

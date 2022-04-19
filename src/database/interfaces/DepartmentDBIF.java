@@ -7,7 +7,7 @@ import exceptions.NotFoundException;
 import model.Department;
 
 public interface DepartmentDBIF {
-    public List<Department> findAll() throws SQLException;
+    public List<Department> findAll() throws SQLException, NotFoundException;
     public Department findById(int id) throws SQLException, NotFoundException;
     public void createDepartment(Department department) throws SQLException;
     public void updateDepartment(Department department) throws SQLException;

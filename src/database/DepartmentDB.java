@@ -3,7 +3,7 @@ package database;
 import java.sql.*;
 import java.util.*;
 
-import database.interfaces.CityDBIF;
+import controller.CityController;
 import database.interfaces.DepartmentDBIF;
 import exceptions.NotFoundException;
 import model.*;
@@ -22,7 +22,7 @@ public class DepartmentDB implements DepartmentDBIF {
     private PreparedStatement updateDepartment;
     private PreparedStatement deleteDepartment;
 
-    CityDBIF cityDBIF = new CityDB();
+    CityController cityCtrl = new CityController();
 
     /**
      * Constructor for the DepartmentDB class
@@ -37,7 +37,7 @@ public class DepartmentDB implements DepartmentDBIF {
     }
 
     @Override
-    public List<Department> findAll() throws SQLException {
+    public List<Department> findAll() throws SQLException, NotFoundException {
         ResultSet rs;
         rs = findAll.executeQuery();
         List<Department> departments = buildObjects(rs);
@@ -82,14 +82,14 @@ public class DepartmentDB implements DepartmentDBIF {
         deleteDepartment.execute();
     }
 
-    private Department buildObject(ResultSet rs) throws SQLException {
-        City zipCode = cityDBIF.findByZip(rs.getString("ZIP"));
+    private Department buildObject(ResultSet rs) throws SQLException, NotFoundException {
+        City zipCode = cityCtrl.findByZip(rs.getString("ZIP"));
         Department department = new Department(rs.getString("Name"), zipCode, rs.getString("Address"));
         department.setId(rs.getInt("Id"));
         return department;
     }
 
-    private List<Department> buildObjects(ResultSet rs) throws SQLException {
+    private List<Department> buildObjects(ResultSet rs) throws SQLException, NotFoundException {
         List<Department> departments = new ArrayList<>();
         while (rs.next()) {
             departments.add(buildObject(rs));
