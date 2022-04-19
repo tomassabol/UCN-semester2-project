@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.CityController;
-import controller.DepartmentController;
+import database.interfaces.DepartmentDBIF;
 import database.interfaces.EmployeeDBIF;
 import database.interfaces.EmployeeTypeDBIF;
 import exceptions.NotFoundException;
@@ -33,7 +33,7 @@ public class EmployeeDB implements EmployeeDBIF {
 
     CityController cityCtrl = new CityController();
     EmployeeTypeDBIF employeeTypeDBIF = new EmployeeTypeDB();
-    DepartmentController departmentCtrl = new DepartmentController();
+    DepartmentDBIF departmentDBIF = new DepartmentDB();
 
     /**
      * Constructor for the EmployeeDB class
@@ -155,7 +155,7 @@ public class EmployeeDB implements EmployeeDBIF {
         // TODO: Change this to call Controllers
         City zipCode = cityCtrl.findByZip(rs.getString("ZIP"));
         EmployeeType employeeType = employeeTypeDBIF.findById(rs.getInt("EmployeeTypeId"));
-        Department department = departmentCtrl.findById(rs.getInt("DepartmentId"));
+        Department department = departmentDBIF.findById(rs.getInt("DepartmentId"));
         Employee employee = new Employee(rs.getString("Name"), rs.getString("Email"), rs.getString("Phone"), zipCode, rs.getString("Address"), employeeType, rs.getString("Password"), rs.getString("CPR"), department);
         employee.setId(rs.getInt("Id"));
         return employee;
