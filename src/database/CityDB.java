@@ -68,7 +68,7 @@ public class CityDB implements CityDBIF {
         return city;
     }
 
-    public City findByZip(String zip) throws SQLException {
+    public City findByZip(String zip) throws SQLException, NotFoundException {
         City city = null;
         ResultSet rs;
         findByZip.setString(1, zip);
@@ -76,6 +76,8 @@ public class CityDB implements CityDBIF {
         while (rs.next()) {
             city = buildObject(rs);
         }
+
+        if(city == null) { throw new NotFoundException("City", zip); }
 
         return city;
     }
