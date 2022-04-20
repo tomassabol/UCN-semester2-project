@@ -17,8 +17,7 @@ public class OrderController {
 	/**
 	 * Constructor for the OrderController class
 	 * @throws SQLException
-	 */
-	
+	 */	
 	public OrderController() throws SQLException {
 		orderDBIF = new OrderDB();
 		
@@ -66,8 +65,5 @@ public class OrderController {
 	public void  deleteOrder(Order order) throws SQLException {
 		orderDBIF.deleteOrder(order);
 	}
-	
-	
-	
 	
 }
