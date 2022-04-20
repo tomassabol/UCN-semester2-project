@@ -4,48 +4,66 @@ import java.sql.SQLException;
 import java.util.List;
 
 import database.OrderDB;
-import database.OrderLineDB;
-import database.OrderDetailsDB;
 import database.interfaces.OrderDBIF;
-import database.interfaces.OrderLineDBIF;
-import database.interfaces.OrderDetailsDBIF;
 import exceptions.NotFoundException;
 import model.Order;
-import model.OrderLine;
 import model.Employee;
 import model.Customer;
 
 public class OrderController {
 	
 	private OrderDBIF orderDBIF;
-	private OrderLineDBIF orderLineDBIF;
-	private CustomerController customerCtrl;
-	private EmployeeController employeeCtrl;
+	
+	/**
+	 * Constructor for the OrderController class
+	 * @throws SQLException
+	 */
 	
 	public OrderController() throws SQLException {
 		orderDBIF = new OrderDB();
-		orderLineDBIF = new OrderLineDB();
-		customerCtrl = new CustomerController();
-		employeeCtrl = new EmployeeController();
 		
 	}
-	
+	/**
+	 * Finds all orders
+	 * @return a list of all Orders
+	 * @throws SQLException
+	 * @throws NotFoundException
+	 */
 	public List<Order> findAll() throws SQLException, NotFoundException {
 		List<Order> orders = orderDBIF.findAll();
 				return orders;
 	}
+	/**
+	 * Finds the Orders by ID
+	 * @param id - with the required ID
+	 * @return the order with the required ID
+	 * @throws SQLException
+	 * @throws NotFoundException
+	 */
 	
 	public Order findById(int id) throws SQLException, NotFoundException {
 		Order order = orderDBIF.findById(id);
 		return order;
 	}
+	/**
+	 * Creates a new Order
+	 * @param employee - the employee that assigns the order
+	 * @param customer - the customer that made the order
+	 * @throws SQLException
+	 * @throws NotFoundException
+	 */
 	
-	public Order createOrder(Employee employee,Customer customer) throws SQLException, NotFoundException {
+	public void createOrder(Employee employee,Customer customer) throws SQLException, NotFoundException {
 		Order order = new Order(employee,customer);
 		orderDBIF.createOrder(order);
 	}
+	/**
+	 * Deletes an Order
+	 * @param order - the order that is requested to be deleted
+	 * @throws SQLException
+	 */
 	
-	public Order deleteOrder(Order order) throws SQLException {
+	public void  deleteOrder(Order order) throws SQLException {
 		orderDBIF.deleteOrder(order);
 	}
 	
