@@ -3,13 +3,21 @@ package view;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.AuthenticationController;
+import exceptions.NotFoundException;
+
 import javax.swing.JTextField;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 import java.awt.Font;
 import javax.swing.JPasswordField;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
 
 public class Login extends JFrame {
@@ -96,7 +104,47 @@ public class Login extends JFrame {
 	 * *******************************************************
 	 */
 	public void addEventHandlers() {
-		
+		// Define login action
+		Action loginAction = new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String email = txtEmail.getText().trim();
+			    String password = String.valueOf(passwordField.getPassword());
+
+				if (email.isEmpty() || password.isEmpty()) {
+		            Messages.error(Login.this, "Email or password fields cannot be empty");
+		            return;
+			    }
+
+				// log in
+				try {
+					AuthenticationController auth = new AuthenticationController();
+					if (auth.logIn(email, password)) {
+						// Dashboard frame = new Dashboard(auth);
+						//frame.setVisible(true);
+						// free up memory by destroying the current login form
+						Login.this.dispose();
+					} else {
+						Messages.error(Login.this, "The e-mail and/or password is incorrect.");
+					}
+				} catch (SQLException e1) {
+					Messages.error(Login.this, "The e-mail and/or password is incorrect.");
+				} catch (NotFoundException e1) {
+					Messages.error(Login.this, "The e-mail and/or password is incorrect.");
+				}
+
+			}
+			
+		};
+
+		// add login to login button
+		btnLogin.addActionListener(loginAction);
+		// add login to enter key press in password field
+		passwordField.addActionListener(loginAction);
+		// add login to enter key press in email field
+		txtEmail.addActionListener(loginAction);
 	}
 	
 
