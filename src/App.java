@@ -1,5 +1,4 @@
 import view.Login;
-import java.awt.EventQueue;
 
 public class App {
 
