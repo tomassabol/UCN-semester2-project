@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -18,8 +17,6 @@ import javax.swing.border.EmptyBorder;
 
 
 import controller.AuthenticationController;
-import controller.OrderController;
-import model.Authentication;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -45,7 +42,7 @@ public class Dashboard extends JFrame {
 	 * Create the frame.
 	 * @throws SQLException 
 	 */
-	public Dashboard(Authentication authentication) throws SQLException {
+	public Dashboard(AuthenticationController authentication) throws SQLException {
 		 authCtrl = new AuthenticationController();
 		// Window
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
