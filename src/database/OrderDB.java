@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.CustomerController;
+import controller.EmployeeController;
 import database.interfaces.CustomerDBIF;
 import database.interfaces.EmployeeDBIF;
 import database.interfaces.OrderDBIF;
@@ -29,8 +31,8 @@ public class OrderDB implements OrderDBIF {
     private PreparedStatement createOrder;
     private PreparedStatement deleteOrder;
 
-    EmployeeDBIF employeeDBIF = new EmployeeDB();
-    CustomerDBIF customerDBIF = new CustomerDB();
+    EmployeeController employeeCtrl = new EmployeeController();
+    CustomerController customerCtrl = new CustomerController();
   
     public OrderDB()throws SQLException{
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
@@ -75,8 +77,8 @@ public class OrderDB implements OrderDBIF {
     }
 
     private Order buildObject(ResultSet rs)throws SQLException,NotFoundException{
-        Employee employee = employeeDBIF.findById(rs.getInt("EmployeeId"));
-        Customer customer = customerDBIF.findById(rs.getInt("CustomerId"));
+        Employee employee = employeeCtrl.findById(rs.getInt("EmployeeId"));
+        Customer customer = customerCtrl.findById(rs.getInt("CustomerId"));
         Order order = new Order(employee, customer);
         order.setId(rs.getInt("Id"));
         return order;
