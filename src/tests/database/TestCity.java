@@ -47,7 +47,7 @@ public class TestCity {
     }
 
     @Test
-    public void testFindByZip() throws SQLException {
+    public void testFindByZip() throws SQLException, NotFoundException {
         // Arrange
         String zip = "DK-9000";
         // Act

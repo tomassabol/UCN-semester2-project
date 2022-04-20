@@ -39,7 +39,7 @@ public class TestDepartmentDB {
     }
     
     @Test
-    public void testFindAll() throws SQLException {
+    public void testFindAll() throws SQLException, NotFoundException {
         // Arrange
         int size = 3;
         List<Department> departments = new ArrayList<>();
