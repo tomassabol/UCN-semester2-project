@@ -47,4 +47,8 @@ public class EmployeeController {
         employeeDBIF.createEmployee(employee);
     }
 
+    public void updateEmployee() throws SQLException {
+        employeeDBIF.updateEmployee(employee);
+    }
+
 }
