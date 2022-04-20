@@ -1,15 +1,10 @@
-/**
- * 
- */
 package controller;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import database.CustomerDB;
-import database.CustomerTypeDB;
 import database.interfaces.CustomerDBIF;
-import database.interfaces.CustomerTypeDBIF;
 import exceptions.NotFoundException;
 import model.City;
 import model.Customer;
@@ -23,16 +18,12 @@ public class CustomerController {
 	
 	// Fields for class CustomerController
 	private CustomerDBIF customerDBIF;
-	private CustomerTypeDBIF customerTypeDBIF;
-	private CityController cityCtrl;
 	
 	/*
 	 * Constructor for class CustomerController
 	 */
 	public CustomerController() throws SQLException {
 		customerDBIF = new CustomerDB();
-		customerTypeDBIF = new CustomerTypeDB();
-		cityCtrl = new CityController();
 	}
 	
 	/**
