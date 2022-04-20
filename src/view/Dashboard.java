@@ -1,72 +1,50 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.List;
+import java.sql.SQLException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
-import org.knowm.xchart.XChartPanel;
-import org.knowm.xchart.XYChart;
-
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLightLaf;
 
 import controller.AuthenticationController;
 import controller.OrderController;
-import gui.Dashboard;
-import gui.JLink;
-import gui.Login;
-import gui.Messages;
-import gui.statistics.charts.OrdersChart;
-import gui.windows.ChooseCustomer;
-import gui.windows.ManageContractors;
-import gui.windows.ManageCustomerTypes;
-import gui.windows.ManageCustomers;
-import gui.windows.ManageEmployees;
-import gui.windows.ManageLoans;
-import gui.windows.ManageOrders;
-import gui.windows.ManageProducts;
-import gui.windows.ManageQuotes;
-import gui.windows.ManageShelves;
-import gui.windows.ManageShoppingCarts;
-import gui.windows.ManageStorageLocations;
-import gui.windows.ManageSupplyOffers;
-import gui.windows.ManageSupplyOrders;
-import models.Customer;
-import models.Order;
-import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 
 public class Dashboard extends JFrame {
 
+	// Fields for gui
 	private JPanel contentPane;
 	private JTabbedPane tabsPane;
-	private Component btnLogout;
 	private Component lblGreeting;
 	private JLabel lblCreateOrder;
 	private JButton btnCreateOrder;
 	private JLabel lblOrders;
 	private JButton btnShowOrders;
+	private JButton btnLogOut;
 
+	// Fields for classes created by us
+	private AuthenticationController authCtrl;
+	
+	
 	/**
 	 * Create the frame.
+	 * @throws SQLException 
 	 */
-	public Dashboard() {
+	public Dashboard() throws SQLException {
+		 authCtrl = new AuthenticationController();
 		// Window
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 550);
@@ -83,34 +61,38 @@ public class Dashboard extends JFrame {
 			// ***** TOP PANEL *****
 			GridBagLayout gbl_topPanel = new GridBagLayout();
 			gbl_topPanel.columnWidths = new int[]{0, 0, 0, 0, 0};
-			gbl_topPanel.rowHeights = new int[]{0, 0, 0};
+			gbl_topPanel.rowHeights = new int[]{0, 0};
 			gbl_topPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-			gbl_topPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+			gbl_topPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 			topPanel.setLayout(gbl_topPanel);
 				
-				// // ***** Greeting label *****
-				lblGreeting = new JLabel("Hi,");
+				// ***** Greeting label *****
+				lblGreeting = new JLabel("Hi, " + authCtrl.getLoggedInUser());
 				GridBagConstraints gbc_lblGreeting = new GridBagConstraints();
-				gbc_lblGreeting.insets = new Insets(0, 0, 5, 5);
+				gbc_lblGreeting.insets = new Insets(0, 0, 0, 5);
 				gbc_lblGreeting.gridx = 0;
 				gbc_lblGreeting.gridy = 0;
 				topPanel.add(lblGreeting, gbc_lblGreeting);
-		
-				// // ***** Log out button *****
-				//btnLogout = new JLink("Log out");
-				//GridBagConstraints gbc_lblLogout = new GridBagConstraints();
-				//gbc_lblLogout.insets = new Insets(0, 0, 5, 0);
-				//gbc_lblLogout.gridx = 3;
-				//gbc_lblLogout.gridy = 0;
-				//topPanel.add(btnLogout, gbc_lblLogout);
+				
+				btnLogOut = new JButton("Log out");
+				btnLogOut.setFont(new Font("Open Sans", Font.PLAIN, 10));
+				GridBagConstraints gbc_btnLogOut = new GridBagConstraints();
+				gbc_btnLogOut.gridx = 3;
+				gbc_btnLogOut.gridy = 0;
+				topPanel.add(btnLogOut, gbc_btnLogOut);
 		
 			// ***** Tabs pane *****
 			tabsPane = new JTabbedPane(JTabbedPane.TOP);
 			contentPane.add(tabsPane, BorderLayout.CENTER);
 			
+			//// Order tab /////
 			initOrderTab();
 			
+			////
 			
+			
+			//Adding the event handlers to the code
+			addEventHandlers();
 	}
 	
 	///////////////////////////////////////////
@@ -160,7 +142,14 @@ public class Dashboard extends JFrame {
 		orderPanel.add(btnShowOrders, gbc_btnShowOrders);
 	}
 	
-	
+	public void addEventHandlers() {
+		btnLogOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//TODO: Ask for confirmation
+				authCtrl.logout();
+			}
+		});
+	}
 
 }
 
