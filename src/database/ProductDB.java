@@ -17,7 +17,7 @@ public class ProductDB implements ProductDBIF {
     private static final String FIND_BY_ID = "select * from Products where Id = ?";
     private static final String CREATE_PRODUCT = "insert into Products values(?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_PRODUCTS = "update Products set Name = ?, Description = ?, ProductTypeId = ?, Price = ?, Discount = ?, Active = ? from Products where Id = ?";
-    private static final String DELETE_PRODUCTS = "delete from Products where Id = ?";
+    private static final String DELETE_PRODUCTS = "update Products set Active = ? from Products where Id = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement findAllActive;
@@ -114,7 +114,7 @@ public class ProductDB implements ProductDBIF {
         updateProduct.setString(3, String.valueOf(product.getProductType().getId()));
         updateProduct.setBigDecimal(4, product.getPrice());
         updateProduct.setInt(5, product.getDiscount());
-        updateProduct.setBoolean(6, product.getActive());
+        updateProduct.setBoolean(6, product.getActive()); // Maybe remove later
         updateProduct.setInt(7, product.getId());
         updateProduct.executeUpdate();
     }
@@ -125,7 +125,8 @@ public class ProductDB implements ProductDBIF {
      */
     @Override
     public void deleteProduct(Product product) throws SQLException {
-        deleteProduct.setInt(1, product.getId());
+        deleteProduct.setInt(2, product.getId());
+        deleteProduct.setBoolean(1,  product.getActive());
         deleteProduct.executeUpdate();
     }
 
