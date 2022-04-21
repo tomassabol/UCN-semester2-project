@@ -35,16 +35,15 @@ public class Dashboard extends JFrame {
 	private JButton btnLogOut;
 
 	// Fields for classes created by us
-	private AuthenticationController authCtrl;
-	
+	private AuthenticationController auth;
 	
 	/**
 	 * Create the frame.
 	 * @throws SQLException 
 	 */
 	public Dashboard(AuthenticationController authentication) throws SQLException {
-		 authCtrl = new AuthenticationController();
-		// Window
+		auth = authentication;
+		//Window
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 550);
 		// *Content pane
@@ -65,20 +64,20 @@ public class Dashboard extends JFrame {
 			gbl_topPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 			topPanel.setLayout(gbl_topPanel);
 				
-				// ***** Greeting label *****
-				lblGreeting = new JLabel("Hi, " + authCtrl.getLoggedInUser());
-				GridBagConstraints gbc_lblGreeting = new GridBagConstraints();
-				gbc_lblGreeting.insets = new Insets(0, 0, 0, 5);
-				gbc_lblGreeting.gridx = 0;
-				gbc_lblGreeting.gridy = 0;
-				topPanel.add(lblGreeting, gbc_lblGreeting);
+			// ***** Greeting label *****
+			lblGreeting = new JLabel("Hi, " + auth.getLoggedInUser().getName());
+			GridBagConstraints gbc_lblGreeting = new GridBagConstraints();
+			gbc_lblGreeting.insets = new Insets(0, 0, 0, 5);
+			gbc_lblGreeting.gridx = 0;
+			gbc_lblGreeting.gridy = 0;
+			topPanel.add(lblGreeting, gbc_lblGreeting);
 				
-				btnLogOut = new JButton("Log out");
-				btnLogOut.setFont(new Font("Open Sans", Font.PLAIN, 10));
-				GridBagConstraints gbc_btnLogOut = new GridBagConstraints();
-				gbc_btnLogOut.gridx = 3;
-				gbc_btnLogOut.gridy = 0;
-				topPanel.add(btnLogOut, gbc_btnLogOut);
+			btnLogOut = new JButton("Log out");
+			btnLogOut.setFont(new Font("Open Sans", Font.PLAIN, 10));
+			GridBagConstraints gbc_btnLogOut = new GridBagConstraints();
+			gbc_btnLogOut.gridx = 3;
+			gbc_btnLogOut.gridy = 0;
+			topPanel.add(btnLogOut, gbc_btnLogOut);
 		
 			// ***** Tabs pane *****
 			tabsPane = new JTabbedPane(JTabbedPane.TOP);
@@ -103,9 +102,9 @@ public class Dashboard extends JFrame {
 		orderPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
 		tabsPane.addTab("Orders", null, orderPanel, null);
 		GridBagLayout gbl_orderPanel = new GridBagLayout();
-		gbl_orderPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_orderPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_orderPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_orderPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_orderPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_orderPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		orderPanel.setLayout(gbl_orderPanel);
 		///////////////////////////////////////////////////////////////////////
@@ -114,38 +113,49 @@ public class Dashboard extends JFrame {
 		lblCreateOrder.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblCreateOrder = new GridBagConstraints();
 		gbc_lblCreateOrder.insets = new Insets(0, 0, 5, 5);
-		gbc_lblCreateOrder.gridx = 4;
-		gbc_lblCreateOrder.gridy = 9;
+		gbc_lblCreateOrder.gridx = 1;
+		gbc_lblCreateOrder.gridy = 1;
 		orderPanel.add(lblCreateOrder, gbc_lblCreateOrder);
 		
 		lblOrders = new JLabel("Show Orders");
 		lblOrders.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblOrders = new GridBagConstraints();
-		gbc_lblOrders.insets = new Insets(0, 0, 5, 0);
-		gbc_lblOrders.gridx = 15;
-		gbc_lblOrders.gridy = 9;
+		gbc_lblOrders.insets = new Insets(0, 0, 5, 5);
+		gbc_lblOrders.gridx = 3;
+		gbc_lblOrders.gridy = 1;
 		orderPanel.add(lblOrders, gbc_lblOrders);
 		
 		btnCreateOrder = new JButton("Create Order");
 		btnCreateOrder.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_btnCreateOrder = new GridBagConstraints();
-		gbc_btnCreateOrder.insets = new Insets(0, 0, 0, 5);
-		gbc_btnCreateOrder.gridx = 4;
-		gbc_btnCreateOrder.gridy = 10;
+		gbc_btnCreateOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_btnCreateOrder.gridx = 1;
+		gbc_btnCreateOrder.gridy = 2;
 		orderPanel.add(btnCreateOrder, gbc_btnCreateOrder);
 		
 		btnShowOrders = new JButton("Show Orders");
 		GridBagConstraints gbc_btnShowOrders = new GridBagConstraints();
-		gbc_btnShowOrders.gridx = 15;
-		gbc_btnShowOrders.gridy = 10;
+		gbc_btnShowOrders.insets = new Insets(0, 0, 5, 5);
+		gbc_btnShowOrders.gridx = 3;
+		gbc_btnShowOrders.gridy = 2;
 		orderPanel.add(btnShowOrders, gbc_btnShowOrders);
 	}
 	
+	/**
+	 * All of the event handlers for this class are in this method
+	 */
 	public void addEventHandlers() {
+		
+		//Log out button
 		btnLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO: Ask for confirmation
-				authCtrl.logout();
+				if(Messages.confirm(contentPane, "Are you sure you want to log out?", "Log out")) { // Not working for some reason
+					auth.logout();
+					Login frame = new Login();
+					frame.setVisible(true);
+			    	// free up memory by destroying the current dashboard
+			    	Dashboard.this.dispose();
+				}
 			}
 		});
 	}
