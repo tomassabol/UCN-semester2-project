@@ -75,19 +75,19 @@ public class ProductController {
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
-	public void disableProduct(int id) throws SQLException, NotFoundException {
-		Product product = productDBIF.findById(id);
+	public void disableProduct(Product product) throws SQLException, NotFoundException {
+		product.setActive(false);
 		productDBIF.deleteProduct(product);
 	}
 	
 	/**
-	 * Enable the product55
+	 * Enable the product
 	 * @param id
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
-	public void enableProduct(int id) throws SQLException, NotFoundException {
-		Product product = productDBIF.findById(id);
-		productDBIF.updateProduct(product);
+	public void enableProduct(Product product) throws SQLException, NotFoundException {
+		product.setActive(true);
+		productDBIF.deleteProduct(product);
 	}
 }
