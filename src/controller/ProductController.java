@@ -5,9 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import database.ProductDB;
-import database.ProductTypeDB;
 import database.interfaces.ProductDBIF;
-import database.interfaces.ProductTypeDBIF;
 import exceptions.NotFoundException;
 import model.Product;
 import model.Product.ProductType;
@@ -15,7 +13,6 @@ import model.Product.ProductType;
 public class ProductController {
 
 	private ProductDBIF productDBIF;
-	private ProductTypeDBIF productTypeDBIF;
 	
 	/**
 	 * Constructor for the ProductController class
@@ -23,7 +20,6 @@ public class ProductController {
 	 */
 	public ProductController() throws SQLException {
 		productDBIF = new ProductDB();
-		productTypeDBIF = new ProductTypeDB();
 	}
 	
 	/**
