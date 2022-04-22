@@ -20,6 +20,7 @@ import controller.AuthenticationController;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
 
 public class Dashboard extends JFrame {
@@ -36,6 +37,8 @@ public class Dashboard extends JFrame {
 
 	// Fields for classes created by us
 	private AuthenticationController auth;
+	private JButton btnNewButton;
+	private JTextField txtCustomerEmail;
 	
 	/**
 	 * Create the frame.
@@ -58,9 +61,9 @@ public class Dashboard extends JFrame {
 			
 			// ***** TOP PANEL *****
 			GridBagLayout gbl_topPanel = new GridBagLayout();
-			gbl_topPanel.columnWidths = new int[]{0, 0, 0, 0, 0};
+			gbl_topPanel.columnWidths = new int[]{143, 0, 0, 0};
 			gbl_topPanel.rowHeights = new int[]{0, 0};
-			gbl_topPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+			gbl_topPanel.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 			gbl_topPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 			topPanel.setLayout(gbl_topPanel);
 				
@@ -75,7 +78,7 @@ public class Dashboard extends JFrame {
 			btnLogOut = new JButton("Log out");
 			btnLogOut.setFont(new Font("Open Sans", Font.PLAIN, 10));
 			GridBagConstraints gbc_btnLogOut = new GridBagConstraints();
-			gbc_btnLogOut.gridx = 3;
+			gbc_btnLogOut.gridx = 2;
 			gbc_btnLogOut.gridy = 0;
 			topPanel.add(btnLogOut, gbc_btnLogOut);
 		
@@ -83,18 +86,20 @@ public class Dashboard extends JFrame {
 			tabsPane = new JTabbedPane(JTabbedPane.TOP);
 			contentPane.add(tabsPane, BorderLayout.CENTER);
 			
-			//// Order tab /////
+			// ***** Order tab *****
 			initOrderTab();
 			
-			////
 			
 			
-			//Adding the event handlers to the code
+			//Attach event handlers
 			addEventHandlers();
 	}
 	
-	///////////////////////////////////////////
-	//// Methods ////
+	/*
+	 * -------------------------------------------------------
+	 * ----------------------  Order tab ---------------------
+	 * -------------------------------------------------------
+	 */
 	
 	public void initOrderTab() {
 		////////////// Copy this to create a new Tab (delete this comment after all the tabs are done) /////////////////////////
@@ -103,10 +108,30 @@ public class Dashboard extends JFrame {
 		tabsPane.addTab("Orders", null, orderPanel, null);
 		GridBagLayout gbl_orderPanel = new GridBagLayout();
 		gbl_orderPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
-		gbl_orderPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_orderPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_orderPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_orderPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_orderPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		orderPanel.setLayout(gbl_orderPanel);
+		
+		btnNewButton = new JButton("Choose customer");
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.gridwidth = 3;
+		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
+		gbc_btnNewButton.gridx = 1;
+		gbc_btnNewButton.gridy = 1;
+		orderPanel.add(btnNewButton, gbc_btnNewButton);
+		
+		txtCustomerEmail = new JTextField();
+		txtCustomerEmail.setText("Customer email");
+		GridBagConstraints gbc_txtCustomerEmail = new GridBagConstraints();
+		gbc_txtCustomerEmail.gridwidth = 3;
+		gbc_txtCustomerEmail.insets = new Insets(0, 0, 5, 5);
+		gbc_txtCustomerEmail.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtCustomerEmail.gridx = 1;
+		gbc_txtCustomerEmail.gridy = 2;
+		orderPanel.add(txtCustomerEmail, gbc_txtCustomerEmail);
+		txtCustomerEmail.setColumns(10);
 		///////////////////////////////////////////////////////////////////////
 		
 		lblCreateOrder = new JLabel("Create Order");
@@ -114,7 +139,7 @@ public class Dashboard extends JFrame {
 		GridBagConstraints gbc_lblCreateOrder = new GridBagConstraints();
 		gbc_lblCreateOrder.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCreateOrder.gridx = 1;
-		gbc_lblCreateOrder.gridy = 1;
+		gbc_lblCreateOrder.gridy = 4;
 		orderPanel.add(lblCreateOrder, gbc_lblCreateOrder);
 		
 		lblOrders = new JLabel("Show Orders");
@@ -122,7 +147,7 @@ public class Dashboard extends JFrame {
 		GridBagConstraints gbc_lblOrders = new GridBagConstraints();
 		gbc_lblOrders.insets = new Insets(0, 0, 5, 5);
 		gbc_lblOrders.gridx = 3;
-		gbc_lblOrders.gridy = 1;
+		gbc_lblOrders.gridy = 4;
 		orderPanel.add(lblOrders, gbc_lblOrders);
 		
 		btnCreateOrder = new JButton("Create Order");
@@ -130,26 +155,36 @@ public class Dashboard extends JFrame {
 		GridBagConstraints gbc_btnCreateOrder = new GridBagConstraints();
 		gbc_btnCreateOrder.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCreateOrder.gridx = 1;
-		gbc_btnCreateOrder.gridy = 2;
+		gbc_btnCreateOrder.gridy = 5;
 		orderPanel.add(btnCreateOrder, gbc_btnCreateOrder);
 		
 		btnShowOrders = new JButton("Show Orders");
 		GridBagConstraints gbc_btnShowOrders = new GridBagConstraints();
 		gbc_btnShowOrders.insets = new Insets(0, 0, 5, 5);
 		gbc_btnShowOrders.gridx = 3;
-		gbc_btnShowOrders.gridy = 2;
+		gbc_btnShowOrders.gridy = 5;
 		orderPanel.add(btnShowOrders, gbc_btnShowOrders);
 	}
 	
-	/**
-	 * All of the event handlers for this class are in this method
+	/*
+	 * *******************************************************
+	 * *******************  COMMON METHODS *******************
+	 * *******************************************************
 	 */
+	
+	
+	/*
+	 * *******************************************************
+	 * *******************  EVENT HANDLERS *******************
+	 * *******************************************************
+	 */
+	
 	public void addEventHandlers() {
 		
 		//Log out button
 		btnLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(Messages.confirm(contentPane, "Are you sure you want to log out?", "Log out")) { // Not working for some reason
+				if(Messages.confirm(contentPane, "Are you sure you want to log out?", "Log out")) {
 					auth.logout();
 					Login frame = new Login();
 					frame.setVisible(true);
