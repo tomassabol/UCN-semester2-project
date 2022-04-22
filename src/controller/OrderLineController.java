@@ -61,10 +61,11 @@ public class OrderLineController {
 	 * @param id
 	 * @throws SQLException
 	 */
-	public void createOrderLine(Product product, int id) throws SQLException {
-		OrderLine orderLine = new OrderLine(product, id);
+	public OrderLine createOrderLine(Product product, int quantity) throws SQLException {
+		OrderLine orderLine = new OrderLine(product, quantity);
 		orderLineDBIF.createOrderLine(orderLine);
 		//orderLineDetailDBIF.createOrderLineDetails(orderLine, randomly selected item);
+		return orderLine;
 	}
 	
 	/**

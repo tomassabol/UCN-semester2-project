@@ -1,18 +1,24 @@
 package controller;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import database.OrderDB;
 import database.interfaces.OrderDBIF;
+import exceptions.NotEnoughInStockException;
 import exceptions.NotFoundException;
 import model.Order;
+import model.OrderLine;
+import model.Product;
 import model.Employee;
 import model.Customer;
 
 public class OrderController {
 	
 	private OrderDBIF orderDBIF;
+	private ItemController itemCtrl;
+	private OrderLineController orderLineCtrl;
 	
 	/**
 	 * Constructor for the OrderController class
@@ -20,7 +26,8 @@ public class OrderController {
 	 */	
 	public OrderController() throws SQLException {
 		orderDBIF = new OrderDB();
-		
+		itemCtrl = new ItemController();
+		orderLineCtrl = new OrderLineController();
 	}
 	/**
 	 * Finds all orders
@@ -45,16 +52,16 @@ public class OrderController {
 		return order;
 	}
 	/**
-	 * Creates a new Order
+	 * Creates a new object of the Order class
 	 * @param employee - the employee that assigns the order
 	 * @param customer - the customer that made the order
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
 	
-	public void createOrder(Employee employee,Customer customer) throws SQLException, NotFoundException {
+	public Order createOrder(Employee employee,Customer customer) throws SQLException, NotFoundException {
 		Order order = new Order(employee,customer);
-		orderDBIF.createOrder(order);
+		return order;
 	}
 	/**
 	 * Deletes an Order
@@ -62,8 +69,57 @@ public class OrderController {
 	 * @throws SQLException
 	 */
 	
-	public void  deleteOrder(Order order) throws SQLException {
+	public void deleteOrder(Order order) throws SQLException {
 		orderDBIF.deleteOrder(order);
+	}
+
+	/**
+	 * Adds the desired product and its quantity to the order
+	 * Creates new orderline object and adds it to the order if everything is fine
+	 * @param order - current order
+	 * @param product - product to be added
+	 * @param quantity
+	 * @return true if all is good
+	 * @throws SQLException
+	 * @throws NotFoundException
+	 * @throws NotEnoughInStockException
+	 */
+	public boolean addProduct(Order order, Product product, int quantity) throws SQLException, NotFoundException, NotEnoughInStockException {
+		boolean returnValue = false;
+		if(order.isProductPresent(product)) {
+			quantity += order.getOrderLinebyProduct(product).getQuantity();
+			// basic stock check 
+			// TODO: update once the stock UC is implemented
+			if(itemCtrl.findAllPerProduct(product).size() < quantity) {
+				int currentStock = itemCtrl.findAllPerProduct(product).size();
+				throw new NotEnoughInStockException(quantity, currentStock);
+			}
+		}
+
+		OrderLine orderLine = new OrderLine(product, quantity);
+		order.addOrderLine(orderLine);
+		returnValue = true;
+
+		return returnValue;
+	}
+
+	/**
+	 * 
+	 * @param order
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean finishOrder(Order order) throws SQLException {
+		boolean returnValue = false;
+		// sets the date to the order
+		order.setOrderDate(LocalDate.now());
+		for(OrderLine orderLine : order.getOrderLines()) {
+			orderLineCtrl.createOrderLine(orderLine.getProduct(), orderLine.getQuantity());
+		}
+		// insert order into DB
+		orderDBIF.createOrder(order);
+		returnValue = true;
+		return returnValue;
 	}
 	
 }
