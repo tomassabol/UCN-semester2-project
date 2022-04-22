@@ -69,6 +69,7 @@ public class Dashboard extends JFrame {
 				
 			// ***** Greeting label *****
 			lblGreeting = new JLabel("Hi, " + auth.getLoggedInUser().getName());
+			lblGreeting.setFont(new Font("Open Sans", Font.PLAIN, 10));
 			GridBagConstraints gbc_lblGreeting = new GridBagConstraints();
 			gbc_lblGreeting.insets = new Insets(0, 0, 0, 5);
 			gbc_lblGreeting.gridx = 0;
@@ -114,6 +115,7 @@ public class Dashboard extends JFrame {
 		orderPanel.setLayout(gbl_orderPanel);
 		
 		btnNewButton = new JButton("Choose customer");
+		btnNewButton.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.gridwidth = 3;
 		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
@@ -123,6 +125,7 @@ public class Dashboard extends JFrame {
 		orderPanel.add(btnNewButton, gbc_btnNewButton);
 		
 		txtCustomerEmail = new JTextField();
+		txtCustomerEmail.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		txtCustomerEmail.setText("Customer email");
 		GridBagConstraints gbc_txtCustomerEmail = new GridBagConstraints();
 		gbc_txtCustomerEmail.gridwidth = 3;
@@ -159,6 +162,7 @@ public class Dashboard extends JFrame {
 		orderPanel.add(btnCreateOrder, gbc_btnCreateOrder);
 		
 		btnShowOrders = new JButton("Show Orders");
+		btnShowOrders.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_btnShowOrders = new GridBagConstraints();
 		gbc_btnShowOrders.insets = new Insets(0, 0, 5, 5);
 		gbc_btnShowOrders.gridx = 3;
