@@ -9,10 +9,16 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import controller.AuthenticationController;
 import controller.OrderController;
+import controller.OrderDetailsController;
 import controller.OrderLineController;
+import exceptions.NotEnoughInStockException;
+import exceptions.NotFoundException;
+import model.Customer;
+import model.Order;
 import model.OrderLine;
-import models.ShoppingItemLine;
+import model.Product;
 
 /**
  * @author ttomy
@@ -25,23 +31,25 @@ public class CreateOrderTableModel extends AbstractTableModel{
 	private List<OrderLine> orderLines;
 	private OrderController orderCtrl;
 	private OrderLineController orderLineCtrl;
-	private OrderDetailsCtrl orderDetailsCtrl;
+	private AuthenticationController auth;
+	private Order order;
+	private OrderDetailsController orderDetailsCtrl;
 	
-	public CreateOrderTableModel(int id) throws SQLException {
+	public CreateOrderTableModel(AuthenticationController authentication, Customer customer, Order order) throws SQLException, NotFoundException {
 		orderCtrl = new OrderController();
+		auth = authentication;
+		this.order = order;
 		orderLineCtrl = new OrderLineController();
-		orderLines = orderDetailsCtrl.findByOrderId(id);
+		orderLines = orderDetailsCtrl.findByOrderId(order.getId());
 	}
 	
 	@Override
 	public int getRowCount() {
-		// TODO Auto-generated method stub
 		return orderLines.size();
 	}
 
 	@Override
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
 		return columnNames.length;
 	}
 
@@ -86,8 +94,9 @@ public class CreateOrderTableModel extends AbstractTableModel{
      * Removes a row from the table model and the database
      *
      * @param row the row
+     * @throws SQLException 
      */
-    public void remove(int row) {
+    public void remove(int row) throws SQLException {
     	OrderLine orderLine = orderLines.get(row);
     	if (orderLine != null) {
         	// update this model's itemLine copies
@@ -100,11 +109,13 @@ public class CreateOrderTableModel extends AbstractTableModel{
     
     /**
      * Adds the orderLine to the table
-     *
      * @param itemLine the orderLine
+     * @throws NotEnoughInStockException 
+     * @throws NotFoundException 
+     * @throws SQLException 
      */
-    public void add(OrderLine orderLine) {
-    	orderLines.add(orderLine);
+    public void add(Product product, int quantity) throws SQLException, NotFoundException, NotEnoughInStockException {
+    	orderCtrl.addProduct(order, product, quantity);
     	this.fireTableRowsInserted(this.getRowCount() - 1, this.getRowCount() - 1);
     }
     
