@@ -17,6 +17,7 @@ import javax.swing.border.EmptyBorder;
 
 
 import controller.AuthenticationController;
+import model.Customer;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -34,11 +35,12 @@ public class Dashboard extends JFrame {
 	private JLabel lblOrders;
 	private JButton btnShowOrders;
 	private JButton btnLogOut;
+	private JButton btnNewButton;
+	private JTextField txtCustomerEmail;
 
 	// Fields for classes created by us
 	private AuthenticationController auth;
-	private JButton btnNewButton;
-	private JTextField txtCustomerEmail;
+	private Customer customer;
 	
 	/**
 	 * Create the frame.
@@ -55,45 +57,46 @@ public class Dashboard extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-			// **Top panel (greeting & log out)
-			JPanel topPanel = new JPanel();
-			contentPane.add(topPanel, BorderLayout.NORTH);
+		// **Top panel (greeting & log out)
+		JPanel topPanel = new JPanel();
+		contentPane.add(topPanel, BorderLayout.NORTH);
 			
-			// ***** TOP PANEL *****
-			GridBagLayout gbl_topPanel = new GridBagLayout();
-			gbl_topPanel.columnWidths = new int[]{143, 0, 0, 0};
-			gbl_topPanel.rowHeights = new int[]{0, 0};
-			gbl_topPanel.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-			gbl_topPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-			topPanel.setLayout(gbl_topPanel);
+		// ***** TOP PANEL *****
+		GridBagLayout gbl_topPanel = new GridBagLayout();
+		gbl_topPanel.columnWidths = new int[]{143, 0, 0, 0};
+		gbl_topPanel.rowHeights = new int[]{0, 0};
+		gbl_topPanel.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_topPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		topPanel.setLayout(gbl_topPanel);
 				
-			// ***** Greeting label *****
-			lblGreeting = new JLabel("Hi, " + auth.getLoggedInUser().getName());
-			lblGreeting.setFont(new Font("Open Sans", Font.PLAIN, 10));
-			GridBagConstraints gbc_lblGreeting = new GridBagConstraints();
-			gbc_lblGreeting.insets = new Insets(0, 0, 0, 5);
-			gbc_lblGreeting.gridx = 0;
-			gbc_lblGreeting.gridy = 0;
-			topPanel.add(lblGreeting, gbc_lblGreeting);
-				
-			btnLogOut = new JButton("Log out");
-			btnLogOut.setFont(new Font("Open Sans", Font.PLAIN, 10));
-			GridBagConstraints gbc_btnLogOut = new GridBagConstraints();
-			gbc_btnLogOut.gridx = 2;
-			gbc_btnLogOut.gridy = 0;
-			topPanel.add(btnLogOut, gbc_btnLogOut);
+		// ***** Greeting label *****
+		lblGreeting = new JLabel("Hi, " + auth.getLoggedInUser().getName());
+		lblGreeting.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_lblGreeting = new GridBagConstraints();
+		gbc_lblGreeting.insets = new Insets(0, 0, 0, 5);
+		gbc_lblGreeting.gridx = 0;
+		gbc_lblGreeting.gridy = 0;
+		topPanel.add(lblGreeting, gbc_lblGreeting);
 		
-			// ***** Tabs pane *****
-			tabsPane = new JTabbedPane(JTabbedPane.TOP);
-			contentPane.add(tabsPane, BorderLayout.CENTER);
+		btnLogOut = new JButton("Log out");
+		btnLogOut.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_btnLogOut = new GridBagConstraints();
+		gbc_btnLogOut.gridx = 2;
+		gbc_btnLogOut.gridy = 0;
+		topPanel.add(btnLogOut, gbc_btnLogOut);
 			
-			// ***** Order tab *****
-			initOrderTab();
+		// ***** Tabs pane *****
+		tabsPane = new JTabbedPane(JTabbedPane.TOP);
+		contentPane.add(tabsPane, BorderLayout.CENTER);
+		
+		// ***** Order tab *****
+		initOrderTab();
 			
 			
-			
-			//Attach event handlers
-			addEventHandlers();
+		
+		
+		//Attach event handlers
+		addEventHandlers();
 	}
 	
 	/*
@@ -195,6 +198,15 @@ public class Dashboard extends JFrame {
 			    	// free up memory by destroying the current dashboard
 			    	Dashboard.this.dispose();
 				}
+			}
+		});
+		
+		//Create order button
+		btnCreateOrder.addActionListener(new ActionListener() {
+			//TODO: Implement choose customer
+			public void actionPerformed(ActionEvent e) {
+				CreateOrder frame = new CreateOrder(auth, customer, null);
+				frame.setVisible(true);
 			}
 		});
 	}
