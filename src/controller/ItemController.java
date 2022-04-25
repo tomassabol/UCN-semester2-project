@@ -55,10 +55,23 @@ public class ItemController {
         itemDBIF.createItem(item);
     }
 
+    /**
+     * deletes specific item from DB
+     * @param item
+     * @throws SQLException
+     */
     public void deleteItem(Item item) throws SQLException {
         itemDBIF.deleteItem(item);
     }
 
+    /**
+     * Selects specific amount of items per product that were not yet sold
+     * @param amount - amount of items to be selected
+     * @param product - product to get items for
+     * @return list of the items
+     * @throws SQLException
+     * @throws NotFoundException
+     */
     public List<Item> selectItems(int amount, Product product) throws SQLException, NotFoundException {
         List<Item> items = itemDBIF.selectItems(amount, product);
         return items;

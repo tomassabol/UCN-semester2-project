@@ -106,9 +106,9 @@ public class OrderController {
 	}
 
 	/**
-	 * 
-	 * @param order
-	 * @return
+	 * Finishes the order, inserts everything into database
+	 * @param order - order to be finished
+	 * @return true if all good
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */

@@ -53,10 +53,21 @@ public class OrderLineDetailsController {
 		orderLineDetailsDBIF.createOrderLineDetails(orderLine, item);
 	}
 
+	/**
+	 * deletes specific order line details
+	 * @param orderLine - orderline
+	 * @param item - item
+	 * @throws SQLException
+	 */
 	public void deleteOrderLineDetails(OrderLine orderLine, Item item) throws SQLException {
 		orderLineDetailsDBIF.deleteOrderLineDetails(orderLine, item);
 	}
 
+	/**
+	 * delete all Order Line Details per OrderLine
+	 * @param orderLine - orderline 
+	 * @throws SQLException
+	 */
 	public void deleteAllOrderLineDetails(OrderLine orderLine) throws SQLException {
 		orderLineDetailsDBIF.deleteAllOrderLineDetails(orderLine);
 	}

@@ -53,10 +53,10 @@ public class TestItemDB {
     public void testFindAll() throws SQLException, NotFoundException {
         // Arrange
         int size = 1;
-        int productId = 1;
+        Product product = productDBIF.findById(1);
         List<Item> items = new ArrayList<>();
         // Act
-        items = itemDBIF.findAllPerProduct(productId);
+        items = itemDBIF.findAllPerProduct(product);
         // Assert
         assertEquals(size, items.size());
     }
@@ -78,12 +78,12 @@ public class TestItemDB {
     public void testDeleteItem() throws SQLException, NotFoundException {
         // Arrange
         List<Item> items = null;
-        int productId;
+        Product product;
         // Act
         item = itemDBIF.findById(5);
         itemDBIF.deleteItem(item);
-        productId = item.getProduct().getId();
-        items = itemDBIF.findAllPerProduct(productId);
+        product = item.getProduct();
+        items = itemDBIF.findAllPerProduct(product);
         // Assert
         assertEquals(1, items.size());
     }

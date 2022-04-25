@@ -10,9 +10,10 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import controller.OrderController;
+import controller.OrderDetailsController;
 import controller.OrderLineController;
+import exceptions.NotFoundException;
 import model.OrderLine;
-import models.ShoppingItemLine;
 
 /**
  * @author ttomy
@@ -25,9 +26,9 @@ public class CreateOrderTableModel extends AbstractTableModel{
 	private List<OrderLine> orderLines;
 	private OrderController orderCtrl;
 	private OrderLineController orderLineCtrl;
-	private OrderDetailsCtrl orderDetailsCtrl;
+	private OrderDetailsController orderDetailsCtrl;
 	
-	public CreateOrderTableModel(int id) throws SQLException {
+	public CreateOrderTableModel(int id) throws SQLException, NotFoundException {
 		orderCtrl = new OrderController();
 		orderLineCtrl = new OrderLineController();
 		orderLines = orderDetailsCtrl.findByOrderId(id);
@@ -86,8 +87,9 @@ public class CreateOrderTableModel extends AbstractTableModel{
      * Removes a row from the table model and the database
      *
      * @param row the row
+     * @throws SQLException 
      */
-    public void remove(int row) {
+    public void remove(int row) throws SQLException {
     	OrderLine orderLine = orderLines.get(row);
     	if (orderLine != null) {
         	// update this model's itemLine copies
