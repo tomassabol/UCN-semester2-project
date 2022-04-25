@@ -63,7 +63,8 @@ create table SupplyOrders(
 create table Items(
     Id int identity(1,1) primary key,
     ProductId int,
-    foreign key (ProductId) references Products(Id)
+    foreign key (ProductId) references Products(Id),
+    Sold bit
 );
 
 create table OrderLines(
@@ -132,6 +133,7 @@ create table Orders(
     foreign key (CustomerId) references Customers(Id),
     EmployeeId int,
     foreign key (EmployeeId) references Employees(Id),
+    [Date] date
 );
 
 create table OrderDetails(

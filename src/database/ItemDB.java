@@ -4,8 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ProductController;
 import database.interfaces.ItemDBIF;
-import database.interfaces.ProductDBIF;
 import exceptions.NotFoundException;
 import model.Item;
 import model.Product;
@@ -15,15 +15,17 @@ public class ItemDB implements ItemDBIF {
     // PreparedStatements for the ItemDB class
     private static final String FIND_ALL = "select * from Items where ProductId = ?";
     private static final String FIND_BY_ID = "select * from Items where Id = ?";
-    private static final String CREATE_ITEM = "insert into Items values(?)";
+    private static final String CREATE_ITEM = "insert into Items values(?, ?)";
     private static final String DELETE_ITEM = "delete from Items where Id = ?";
+    private static final String SELECT_ITEMS = "select top ? * from Items where ProductId = ? and Sold = 0";
 
     private PreparedStatement findAll;
     private PreparedStatement findById;
     private PreparedStatement createItem;
     private PreparedStatement deleteItem;
+    private PreparedStatement selectItems;
 
-    private ProductDBIF productDBIF = new ProductDB();
+    private ProductController productController = new ProductController();
 
     /**
      * Constructor for the ItemDB class
@@ -34,6 +36,7 @@ public class ItemDB implements ItemDBIF {
         findById = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
         createItem = DBConnection.getInstance().getConnection().prepareStatement(CREATE_ITEM, Statement.RETURN_GENERATED_KEYS);
         deleteItem = DBConnection.getInstance().getConnection().prepareStatement(DELETE_ITEM);
+        selectItems = DBConnection.getInstance().getConnection().prepareStatement(SELECT_ITEMS);
     }
 
     /**
@@ -42,14 +45,14 @@ public class ItemDB implements ItemDBIF {
      * @throws NotFoundException
      */
     @Override
-    public List<Item> findAllPerProduct(int productId) throws SQLException, NotFoundException {
+    public List<Item> findAllPerProduct(Product product) throws SQLException, NotFoundException {
         ResultSet rs;
-        findAll.setInt(1, productId);
+        findAll.setInt(1, product.getId());
         rs = findAll.executeQuery();
         List<Item> items = buildObjects(rs);
 
         if(items.size() == 0) {
-            throw new NotFoundException("Items for a product", productId);
+            throw new NotFoundException("Items for a product", product.getId());
         }
         return items;
     }
@@ -82,6 +85,7 @@ public class ItemDB implements ItemDBIF {
     @Override
     public void createItem(Item item) throws SQLException {
         createItem.setInt(1, item.getProduct().getId());
+        createItem.setBoolean(2, item.isSold());
         item.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createItem));
     }
 
@@ -95,6 +99,20 @@ public class ItemDB implements ItemDBIF {
         deleteItem.executeUpdate();
     }
 
+    @Override
+    public List<Item> selectItems(int amount, Product product) throws SQLException, NotFoundException {
+        ResultSet rs;
+        selectItems.setInt(1, amount);
+        selectItems.setInt(2, product.getId());
+        rs = selectItems.executeQuery();
+        List<Item> items = buildObjects(rs);
+        if(items.size() == 0) {
+            throw new NotFoundException("Items for a product", product.getId());
+        }
+
+        return items;
+    }
+
     // local methods
 
     /**
@@ -105,8 +123,7 @@ public class ItemDB implements ItemDBIF {
      * @throws NotFoundException
      */
     private Item buildObject(ResultSet rs) throws SQLException, NotFoundException {
-        // TODO: change this to request ProductController
-        Product product = productDBIF.findById(rs.getInt("ProductId"));
+        Product product = productController.findById(rs.getInt("ProductId"));
         Item item = new Item(product);
         item.setId(rs.getInt("Id"));
         return item;
@@ -126,5 +143,5 @@ public class ItemDB implements ItemDBIF {
         }
         return items;
     }
-    
+
 }

@@ -29,8 +29,7 @@ public class ItemController {
      * @throws NotFoundException
      */
     public List<Item> findAllPerProduct(Product product) throws SQLException, NotFoundException {
-        int productId = product.getId();
-        List<Item> items = itemDBIF.findAllPerProduct(productId);
+        List<Item> items = itemDBIF.findAllPerProduct(product);
         return items;
     }
 
@@ -58,6 +57,11 @@ public class ItemController {
 
     public void deleteItem(Item item) throws SQLException {
         itemDBIF.deleteItem(item);
+    }
+
+    public List<Item> selectItems(int amount, Product product) throws SQLException, NotFoundException {
+        List<Item> items = itemDBIF.selectItems(amount, product);
+        return items;
     }
 
 }
