@@ -4,6 +4,7 @@ public class Item {
     
     private int id;
     private Product product;
+    private boolean sold;
 
     /**
      * Constructor for the class Item
@@ -11,6 +12,7 @@ public class Item {
      */
     public Item(Product product) {
         this.product = product;
+        this.sold = false;
     }
 
     public int getId() {
@@ -27,6 +29,14 @@ public class Item {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public boolean isSold() {
+        return this.sold;
+    }
+
+    public void setSold(boolean sold) {
+        this.sold = sold;
     }
 
 }
