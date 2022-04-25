@@ -131,7 +131,7 @@ public class Login extends JFrame {
 						Messages.error(Login.this, "The e-mail and/or password is incorrect.");
 					}
 				} catch (SQLException e1) {
-					Messages.error(Login.this, "The e-mail and/or password is incorrect.");
+					Messages.error(Login.this, "Something went wrong. Please check your connection and try again later.");
 				} catch (NotFoundException e1) {
 					Messages.error(Login.this, "The e-mail and/or password is incorrect.");
 				}
