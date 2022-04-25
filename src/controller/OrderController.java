@@ -19,6 +19,7 @@ public class OrderController {
 	private OrderDBIF orderDBIF;
 	private ItemController itemCtrl;
 	private OrderLineController orderLineCtrl;
+	private OrderDetailsController orderDetailsCtrl;
 	
 	/**
 	 * Constructor for the OrderController class
@@ -28,6 +29,7 @@ public class OrderController {
 		orderDBIF = new OrderDB();
 		itemCtrl = new ItemController();
 		orderLineCtrl = new OrderLineController();
+		orderDetailsCtrl = new OrderDetailsController();
 	}
 	/**
 	 * Finds all orders
@@ -108,16 +110,25 @@ public class OrderController {
 	 * @param order
 	 * @return
 	 * @throws SQLException
+	 * @throws NotFoundException
 	 */
-	public boolean finishOrder(Order order) throws SQLException {
+	public boolean finishOrder(Order order) throws SQLException, NotFoundException {
 		boolean returnValue = false;
 		// sets the date to the order
 		order.setOrderDate(LocalDate.now());
+		// inserts all orderlines in the order into DB
 		for(OrderLine orderLine : order.getOrderLines()) {
 			orderLineCtrl.createOrderLine(orderLine.getProduct(), orderLine.getQuantity());
 		}
 		// insert order into DB
 		orderDBIF.createOrder(order);
+
+		// create order details to know what orderLines are in the order
+		// TODO: test if it is possible to move this to previous foreach loop, if order was inserted into DB before the loop
+		// We need OrderId to create OrderDetails. OrderId is assigned when order is inserted
+		for(OrderLine orderLine : order.getOrderLines()) {
+			orderDetailsCtrl.createOrderDetails(order, orderLine);
+		}
 		returnValue = true;
 		return returnValue;
 	}

@@ -23,6 +23,8 @@ public class OrderLineController {
 	 * Fields for class OrderLineController
 	 */
 	private OrderLineDBIF orderLineDBIF;
+	private OrderLineDetailsController orderLineDetailsCtrl;
+	private ItemController itemCtrl;
 	
 	/**
 	 * Constructor for class OrderLineController
@@ -30,6 +32,8 @@ public class OrderLineController {
 	 */
 	public OrderLineController() throws SQLException {
 		orderLineDBIF = new OrderLineDB();
+		orderLineDetailsCtrl = new OrderLineDetailsController();
+		itemCtrl = new ItemController();
 	}
 	
 	/**
@@ -60,11 +64,21 @@ public class OrderLineController {
 	 * @param product
 	 * @param id
 	 * @throws SQLException
+	 * @throws NotFoundException
 	 */
-	public OrderLine createOrderLine(Product product, int quantity) throws SQLException {
+	public OrderLine createOrderLine(Product product, int quantity) throws SQLException, NotFoundException {
+		// create new OrderLine object
 		OrderLine orderLine = new OrderLine(product, quantity);
+		// insert OrderLine into DB
 		orderLineDBIF.createOrderLine(orderLine);
-		//orderLineDetailDBIF.createOrderLineDetails(orderLine, randomly selected item);
+		// select
+		List<Item> items = itemCtrl.selectItems(quantity, product);
+		// create order line details
+		for(int i = 0; i < quantity; i++) {
+			Item item = items.get(i);
+			orderLineDetailsCtrl.createOrderLineDetails(orderLine, item);
+			item.setSold(true);
+		}
 		return orderLine;
 	}
 	
@@ -83,6 +97,7 @@ public class OrderLineController {
 	 * @throws SQLException
 	 */
 	public void deleteOrderLine(OrderLine orderLine) throws SQLException {
+		orderLineDetailsCtrl.deleteAllOrderLineDetails(orderLine);
 		orderLineDBIF.deleteOrderLine(orderLine);
 	}
 	

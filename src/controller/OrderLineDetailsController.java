@@ -52,4 +52,13 @@ public class OrderLineDetailsController {
 	public void createOrderLineDetails(OrderLine orderLine, Item item) throws SQLException {
 		orderLineDetailsDBIF.createOrderLineDetails(orderLine, item);
 	}
+
+	public void deleteOrderLineDetails(OrderLine orderLine, Item item) throws SQLException {
+		orderLineDetailsDBIF.deleteOrderLineDetails(orderLine, item);
+	}
+
+	public void deleteAllOrderLineDetails(OrderLine orderLine) throws SQLException {
+		orderLineDetailsDBIF.deleteAllOrderLineDetails(orderLine);
+	}
+
 }
