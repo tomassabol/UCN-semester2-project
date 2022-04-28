@@ -38,9 +38,10 @@ public class TestOrderLineDetails {
         List<Item> items;
         // Act
         orderLine = orderLineDBIF.findById(id);
-        items = orderLineDetailsCtrl.findByOrderLine(orderLine);
+        items = orderLineDetailsCtrl.findByOrderLine(orderLine.getId());
 
         // Assert
+        System.out.print(items.size());
         assertNotNull(items);
     }
 
@@ -63,7 +64,7 @@ public class TestOrderLineDetails {
         List<Item> items;
         // Act
         orderLineDetailsCtrl.createOrderLineDetails(orderLine, item);
-        items = orderLineDetailsCtrl.findByOrderLine(orderLine);
+        items = orderLineDetailsCtrl.findByOrderLine(orderLine.getId());
         // Assert
         assertNotNull(items);
         assertEquals(2, items.size());
@@ -77,7 +78,7 @@ public class TestOrderLineDetails {
         // Act
         orderLine = orderLineDBIF.findById(1);
         orderLineDetailsCtrl.deleteAllOrderLineDetails(orderLine);
-        items = orderLineDetailsCtrl.findByOrderLine(orderLine);
+        items = orderLineDetailsCtrl.findByOrderLine(orderLine.getId());
         // Assert
         assertEquals(0, items.size());
     }

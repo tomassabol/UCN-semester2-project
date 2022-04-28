@@ -101,12 +101,4 @@ public class OrderLineController {
 		orderLineDBIF.deleteOrderLine(orderLine);
 	}
 	
-	/**
-	 * Selects an item randomly (remove later)
-	 * @param product
-	 * @return
-	 */
-	public Item selectItem(Product product) {
-		return null;
-	}
 }

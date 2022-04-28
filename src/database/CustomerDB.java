@@ -7,7 +7,6 @@ import java.util.List;
 import controller.CityController;
 import controller.CustomerTypeController;
 import database.interfaces.CustomerDBIF;
-import database.interfaces.CustomerTypeDBIF;
 import exceptions.NotFoundException;
 import model.City;
 import model.Customer;
@@ -98,7 +97,6 @@ public class CustomerDB implements CustomerDBIF {
     // local methods
 
     private Customer buildObject(ResultSet rs) throws SQLException, NotFoundException {
-        // TODO: change this to call CustomerTypeController
         City zipCode = cityCtrl.findByZip(rs.getString("ZIP"));
         CustomerType customerType = customerTypeCtrl.findById(rs.getInt("CustomerTypeId"));
         Customer customer = new Customer(rs.getString("Name"), rs.getString("Email"), rs.getString("Phone"), zipCode, rs.getString("Address"), customerType);

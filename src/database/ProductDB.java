@@ -4,8 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ProductTypeController;
 import database.interfaces.ProductDBIF;
-import database.interfaces.ProductTypeDBIF;
 import exceptions.NotFoundException;
 import model.Product;
 import model.Product.ProductType;
@@ -26,7 +26,7 @@ public class ProductDB implements ProductDBIF {
     private PreparedStatement updateProduct;
     private PreparedStatement deleteProduct;
 
-    ProductTypeDBIF productTypeDBIF = new ProductTypeDB();
+    ProductTypeController productTypeCtrl = new ProductTypeController();
 
     /**
      * Constructor for the ProductDB class
@@ -142,7 +142,7 @@ public class ProductDB implements ProductDBIF {
     private Product buildObject(ResultSet rs) throws SQLException, NotFoundException {
         // TODO: change this to request ProductTypeController
         int id = rs.getInt("ProductTypeId");
-        ProductType productType = productTypeDBIF.findById(id);
+        ProductType productType = productTypeCtrl.findById(id);
         Product product = new Product(rs.getString("Name"), rs.getString("Description"), productType, rs.getBigDecimal("Price"), rs.getInt("Discount"), rs.getBoolean("Active"));
         product.setId(rs.getInt("Id"));
         return product;

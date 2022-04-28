@@ -4,8 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ProductController;
 import database.interfaces.OrderLineDBIF;
-import database.interfaces.ProductDBIF;
 import exceptions.NotFoundException;
 import model.OrderLine;
 import model.Product;
@@ -29,7 +29,7 @@ public class OrderLineDB implements OrderLineDBIF{
      * Consturctor for the orderLineDB class
      * @throws sqlException
      */
-     ProductDBIF productDBIF = new ProductDB();
+    ProductController productCtrl = new ProductController();
 
     public OrderLineDB() throws SQLException{
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
@@ -81,7 +81,7 @@ public class OrderLineDB implements OrderLineDBIF{
     }
 
     private OrderLine buildObject(ResultSet rs)throws SQLException, NotFoundException {
-        Product product = productDBIF.findById(rs.getInt("ProductId")); 
+        Product product = productCtrl.findById(rs.getInt("ProductId")); 
         OrderLine orderLine = new OrderLine(product, rs.getInt("Quantity"));
         orderLine.setId(rs.getInt("Id"));
         return orderLine;

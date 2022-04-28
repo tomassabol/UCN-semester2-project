@@ -4,15 +4,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.OrderLineController;
 import database.interfaces.OrderDetailsDBIF;
-import database.interfaces.OrderLineDBIF;
 import exceptions.NotFoundException;
 import model.Order;
 import model.OrderLine;
 
 public class OrderDetailsDB implements OrderDetailsDBIF {
 
-    //Prepared statments
+    //Prepared statements
     private static final String FIND_ALL = "select * from OrderDetails where OrderId = ?";
     private static final String CREATE_ORDER_DETAILS = "insert into OrderDetails values (?, ?)";
     private static final String DELETE_ORDER_DETAILS = "delete from OrderDetails where OrderId = ?, OrderLineId = ?";
@@ -23,7 +23,7 @@ public class OrderDetailsDB implements OrderDetailsDBIF {
     private PreparedStatement deleteOrderDetails;
     private PreparedStatement deleteAllOrderDetails;
 
-    private OrderLineDBIF orderLineDBIF = new OrderLineDB();
+    OrderLineController orderLineCtrl = new OrderLineController();
 
     public OrderDetailsDB() throws SQLException {
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
@@ -65,7 +65,7 @@ public class OrderDetailsDB implements OrderDetailsDBIF {
     // local methods
 
     private OrderLine buildObject(ResultSet rs) throws SQLException, NotFoundException {
-        OrderLine orderLine = orderLineDBIF.findById(rs.getInt("OrderLineId"));
+        OrderLine orderLine = orderLineCtrl.findById(rs.getInt("OrderLineId"));
         return orderLine;
     }
 

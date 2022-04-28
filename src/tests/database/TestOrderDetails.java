@@ -30,12 +30,15 @@ public class TestOrderDetails {
     @Test
     public void testFindByOrderId1() throws SQLException, NotFoundException {
         // Arrange
-        int id = 4;
+        int id = 1;
         List<OrderLine> orderLines;
+        Order order;
         // Act
-        orderLines = orderDetailsCtrl.findByOrderId(id);
+        order = orderCtrl.findById(id);
+        orderLines = orderDetailsCtrl.findByOrderId(order.getId());
 
         // Assert
+        System.out.println(orderLines.size());
         assertNotNull(orderLines);
     }
 
@@ -47,7 +50,7 @@ public class TestOrderDetails {
         List<OrderLine> orderLines;
         // Act
         orderDetailsCtrl.createOrderDetails(order, orderLine);
-        orderLines = orderDetailsCtrl.findByOrderId(order.getId());
+        orderLines = orderDetailsCtrl.findByOrderId(4);
         // Assert
         assertNotNull(orderLines);
         assertEquals(2, orderLines.size());

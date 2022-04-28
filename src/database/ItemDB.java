@@ -17,7 +17,7 @@ public class ItemDB implements ItemDBIF {
     private static final String FIND_BY_ID = "select * from Items where Id = ?";
     private static final String CREATE_ITEM = "insert into Items values(?, ?)";
     private static final String DELETE_ITEM = "delete from Items where Id = ?";
-    private static final String SELECT_ITEMS = "select top ? * from Items where ProductId = ? and Sold = 0";
+    private static final String SELECT_ITEMS = "select top (?) * from Items where ProductId = ? and Sold = 0";
 
     private PreparedStatement findAll;
     private PreparedStatement findById;

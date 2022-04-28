@@ -38,8 +38,8 @@ public class OrderLineDetailsController {
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
-	public List<Item> findByOrderLine(OrderLine orderLine) throws SQLException, NotFoundException {
-		List<Item> items = orderLineDetailsDBIF.findByOrderLine(orderLine.getId());
+	public List<Item> findByOrderLine(int id) throws SQLException, NotFoundException {
+		List<Item> items = orderLineDetailsDBIF.findByOrderLine(id);
 		return items;
 	}
 	
