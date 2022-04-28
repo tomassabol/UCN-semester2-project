@@ -16,10 +16,12 @@ public class OrderDetailsDB implements OrderDetailsDBIF {
     private static final String FIND_ALL = "select * from OrderDetails where OrderId = ?";
     private static final String CREATE_ORDER_DETAILS = "insert into OrderDetails values (?, ?)";
     private static final String DELETE_ORDER_DETAILS = "delete from OrderDetails where OrderId = ?, OrderLineId = ?";
+    private static final String DELETE_ALL_ORDER_DETAILS = "delete from OrderDetails where OrderId = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement createOrderDetails;
     private PreparedStatement deleteOrderDetails;
+    private PreparedStatement deleteAllOrderDetails;
 
     private OrderLineDBIF orderLineDBIF = new OrderLineDB();
 
@@ -27,6 +29,7 @@ public class OrderDetailsDB implements OrderDetailsDBIF {
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
         createOrderDetails = DBConnection.getInstance().getConnection().prepareStatement(CREATE_ORDER_DETAILS, Statement.RETURN_GENERATED_KEYS);
         deleteOrderDetails = DBConnection.getInstance().getConnection().prepareStatement(DELETE_ORDER_DETAILS);
+        deleteAllOrderDetails = DBConnection.getInstance().getConnection().prepareStatement(DELETE_ALL_ORDER_DETAILS);
     }
       
 
@@ -51,6 +54,12 @@ public class OrderDetailsDB implements OrderDetailsDBIF {
         deleteOrderDetails.setInt(1, order.getId());
         deleteOrderDetails.setInt(2, orderLine.getId());
         deleteOrderDetails.executeUpdate();
+    }
+
+    @Override
+    public void deleteAllOrderDetails(Order order) throws SQLException {
+        deleteAllOrderDetails.setInt(1, order.getId());
+        deleteAllOrderDetails.executeUpdate();
     }
 
     // local methods

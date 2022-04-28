@@ -11,4 +11,5 @@ public interface OrderDetailsDBIF {
     public List<OrderLine> findByOrderId(int id) throws SQLException, NotFoundException;
     public void createOrderDetails(Order order, OrderLine orderLine) throws SQLException;
     public void deleteOrderDetails(Order order, OrderLine orderLine) throws SQLException;
+    public void deleteAllOrderDetails(Order order) throws SQLException;
 }

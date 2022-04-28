@@ -48,7 +48,6 @@ public class OrderController {
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
-	
 	public Order findById(int id) throws SQLException, NotFoundException {
 		Order order = orderDBIF.findById(id);
 		return order;
@@ -60,7 +59,6 @@ public class OrderController {
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
-	
 	public Order createOrder(Employee employee,Customer customer) throws SQLException, NotFoundException {
 		Order order = new Order(employee,customer);
 		return order;
@@ -70,8 +68,8 @@ public class OrderController {
 	 * @param order - the order that is requested to be deleted
 	 * @throws SQLException
 	 */
-	
 	public void deleteOrder(Order order) throws SQLException {
+		orderDetailsCtrl.deleteAllOrderDetails(order);
 		orderDBIF.deleteOrder(order);
 	}
 
