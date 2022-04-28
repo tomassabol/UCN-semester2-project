@@ -11,19 +11,26 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import controller.AuthenticationController;
+import controller.ItemController;
 import controller.OrderController;
+import controller.OrderLineController;
 import exceptions.NotFoundException;
 import model.Customer;
 import model.Order;
+import model.OrderLine;
+import model.Product;
 import view.tableModel.CreateOrderTableModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -40,13 +47,15 @@ public class CreateOrder extends JFrame {
 	private JLabel lblTotalValue;
 	private JComponent lblDiscountValue;
 	private JLabel lblSubtotalValue;
-	private CreateOrderTableModel tableModel;
+	private JButton btnCreateOrder;
 	
+	private CreateOrderTableModel tableModel;
 	private AuthenticationController auth;
 	private Customer customer;
 	private Order order;
 	private OrderController orderCtrl;
-
+	private ItemController itemCtrl;
+	private OrderLineController orderLineCtrl;
 
 	/**
 	 * Create the frame.
@@ -54,19 +63,33 @@ public class CreateOrder extends JFrame {
 	public CreateOrder(AuthenticationController auth, Customer customer, Order order) {
 		this.auth = auth;
 		this.customer = customer;
+		
+		try {
+			itemCtrl = new ItemController();
+		} catch (SQLException e2) {
+			Messages.error(contentPane, "There was an error connecting to the database");
+		}
+		
 		try {
 			orderCtrl = new OrderController();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			Messages.error(contentPane, "There was an error connecting to the database");
 		}
+		
+		try {
+			orderLineCtrl = new OrderLineController();
+		} catch (SQLException e1) {
+			Messages.error(contentPane, "There was an error connecting to the database");
+		}
+		
 		if(order == null) {	
 			try {
-				this.order = orderCtrl.createOrder(auth.getLoggedInUser(), customer);
-			} catch (SQLException | NotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
+				this.order = orderCtrl.createOrder(this.auth.getLoggedInUser(), this.customer);
+			} catch (SQLException e1) {
+				Messages.error(contentPane, "There was an error connecting to the database");
+			} catch (NotFoundException e1) {
+				Messages.error(contentPane, "The order was not found in the database");
+			}
 		}else {
 			this.order = order;
 		}
@@ -125,13 +148,12 @@ public class CreateOrder extends JFrame {
 				
 		// ***** Table *****
 		try {
-			tableModel = new CreateOrderTableModel(auth, customer, order);
+			tableModel = new CreateOrderTableModel(this.auth, this.customer, order);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Messages.error(contentPane, "There was an error connecting to the database");
 		} catch (NotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Messages.error(contentPane, "The given order was not found in the database");
 		}
 		tableMain = new JTable();
 		tableMain.setModel(tableModel);
@@ -236,13 +258,13 @@ public class CreateOrder extends JFrame {
 		gbc_lblTotalValue.gridy = 2;
 		priceAndSubmitPanel.add(lblTotalValue, gbc_lblTotalValue);
 		
-		// ***** Create quote button *****
-		btnCreateQuote = new JButton("Create order");
-		GridBagConstraints gbc_btnCreateQuote = new GridBagConstraints();
-		gbc_btnCreateQuote.anchor = GridBagConstraints.EAST;
-		gbc_btnCreateQuote.gridx = 3;
-		gbc_btnCreateQuote.gridy = 3;
-		priceAndSubmitPanel.add(btnCreateQuote, gbc_btnCreateQuote);
+		// ***** Create order button *****
+		btnCreateOrder = new JButton("Create order");
+		GridBagConstraints gbc_btnCreateOrder = new GridBagConstraints();
+		gbc_btnCreateOrder.anchor = GridBagConstraints.EAST;
+		gbc_btnCreateOrder.gridx = 3;
+		gbc_btnCreateOrder.gridy = 3;
+		priceAndSubmitPanel.add(btnCreateOrder, gbc_btnCreateOrder);
 		
 		//Attach event handlers
 		addEventHandlers();
@@ -301,6 +323,115 @@ public class CreateOrder extends JFrame {
 		btnAddItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addProduct();
+			}
+		});
+		
+		// Action for clear button
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(Messages.confirm(contentPane, "Are you sure you want to clear the order?")); {
+					tableModel.clear();
+				}
+			}
+		});
+		
+		// Action for createQuote button
+		btnCreateQuote.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(Messages.confirm(contentPane, "Do you want to finalize the order?")) {
+					try {
+						orderCtrl.finishOrder(order);
+					} catch (SQLException e1) {
+						Messages.error(contentPane, "There was an error connecting to the database");
+					} catch (NotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		
+		/**
+		 * TODO: Try to simplify it later (it should work as it is, but it looks way too complicated)
+		 * Action for editQuantity button
+		 */
+		btnEditQuantity.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//Get the selected row
+				int row = tableMain.getSelectedRow();
+				
+				//Get the orderLine from the selected row
+				OrderLine orderLine = null;
+				try {
+					orderLine = orderLineCtrl.findById((int) tableMain.getValueAt(row, 0));
+				} catch (SQLException e2) {
+					Messages.error(contentPane, "There was an error connecting to the database");
+				} catch (NotFoundException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} 
+				
+				//Get the product from the orderLine
+				Product product = orderLine.getProduct();
+				
+				//Get the available quantity from the product
+				int availableQuantity = 0;
+				try {
+					availableQuantity = itemCtrl.findAllPerProduct(product).size();
+				} catch (SQLException e1) {
+					Messages.error(contentPane, "There was an error connecting to the database");
+				} catch (NotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				//Get the original quantity of the orderLine
+				int quantity = orderLine.getQuantity();
+				
+				//Create the spinner which makes the edit quantity look better
+				SpinnerNumberModel spinnerModel = new SpinnerNumberModel(quantity, 1, availableQuantity, 1);
+				JSpinner spinner = new JSpinner(spinnerModel);
+				
+				//Create the window where you can edit the quantity
+				int option = JOptionPane.showInternalConfirmDialog(contentPane, spinner, "Edit quantity", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				if(option == JOptionPane.OK_OPTION) {
+					//Get the new quantity for the product from the spinner
+					int newQuantity = 0;
+					try {
+						newQuantity = Integer.parseInt(String.valueOf(spinner.getValue()));
+					} catch (NumberFormatException e1){
+						Messages.error(contentPane, "The given value is not a number");
+					}
+					
+					//Set the new quantity for the product
+					orderLine.setQuantity(newQuantity);
+					try {
+						orderLineCtrl.updateOrderLine(orderLine);
+					} catch (SQLException e1) {
+						Messages.error(contentPane, "There was an error connecting to the database");
+					}
+				}
+				
+			}
+		});
+		
+		//Action for remove button
+		btnRemove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = tableMain.getSelectedRow();
+				try {
+					tableModel.remove(row);
+				} catch (SQLException e1) {
+					Messages.error(contentPane, "There was an error connecting to the database");
+				}
+			}
+		});
+		
+		//Action for clear button
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tableModel.clear();
 			}
 		});
 	}

@@ -81,6 +81,14 @@ public class CreateOrderTableModel extends AbstractTableModel{
      */
     public void clear() {
     	// update this model's orderLine copies
+    	for(OrderLine orderLine : orderLines) {
+    		try {
+				orderLineCtrl.deleteOrderLine(orderLine);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}    		
+    	}
     	orderLines.clear();
     	// Update the rendered table
     	this.fireTableDataChanged();
