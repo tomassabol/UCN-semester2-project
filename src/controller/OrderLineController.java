@@ -60,7 +60,7 @@ public class OrderLineController {
 	}
 	
 	/**
-	 * 
+	 * Creates an order line
 	 * @param product
 	 * @param id
 	 * @throws SQLException
