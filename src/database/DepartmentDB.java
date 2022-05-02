@@ -12,12 +12,14 @@ public class DepartmentDB implements DepartmentDBIF {
     // PreparedStatements for DepartmentDB class
     private static final String FIND_ALL = "select * from Departments";
     private static final String FIND_BY_ID = "select * from Departments where Id = ?";
+    private static final String FIND_BY_NAME = "select * from Departments where Name = ?";
     private static final String CREATE_DEPARTMENT = "insert into Departments values(?, ?, ?)";
     private static final String UPDATE_DEPARTMENT = "update Departments set Name = ?, ZIP = ?, Address = ? from Departments where Id = ?";
     private static final String DELETE_DEPARTMENT = "delete from Departments where Id = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement findById;
+    private PreparedStatement findByName;
     private PreparedStatement createDepartment;
     private PreparedStatement updateDepartment;
     private PreparedStatement deleteDepartment;
@@ -31,6 +33,7 @@ public class DepartmentDB implements DepartmentDBIF {
     public DepartmentDB() throws SQLException {
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
         findById = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
+        findByName = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_NAME);
         createDepartment = DBConnection.getInstance().getConnection().prepareStatement(CREATE_DEPARTMENT, Statement.RETURN_GENERATED_KEYS);
         updateDepartment = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_DEPARTMENT);
         deleteDepartment = DBConnection.getInstance().getConnection().prepareStatement(DELETE_DEPARTMENT);
@@ -43,7 +46,7 @@ public class DepartmentDB implements DepartmentDBIF {
         List<Department> departments = buildObjects(rs);
         return departments;
     }
-
+    
     @Override
     public Department findById(int id) throws SQLException, NotFoundException {
         Department department = null;
@@ -57,6 +60,21 @@ public class DepartmentDB implements DepartmentDBIF {
         if (department == null) { throw new NotFoundException("Department", id); }
 
         return department;
+    }
+    
+    @Override
+    public Department findByName(String name) throws SQLException, NotFoundException {
+    	Department department = null;
+    	ResultSet rs;
+    	findByName.setString(1, name);
+    	rs = findByName.executeQuery();
+    	while (rs.next()) {
+    		department = buildObject(rs);
+    	}
+    	
+    	if (department == null) { throw new NotFoundException("Department", name); }
+    	
+    	return department;
     }
 
     @Override

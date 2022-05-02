@@ -21,6 +21,7 @@ public class EmployeeDB implements EmployeeDBIF {
     private static final String FIND_ALL = "select * from Employees";
     private static final String FIND_BY_ID = "select * from Employees where Id = ?";
     private static final String FIND_BY_EMAIL = "select * from Employees where Email = ? and Password = ?";
+    private static final String FIND_ONLY_BY_EMAIL = "select * from Employees where Email = ?";
     private static final String CREATE_EMPLOYEE = "insert into Employees values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_EMPLOYEE = "update Employees set Name = ?, Email = ?, Phone = ?, ZIP = ?, Address = ?, EmployeeTypeId = ?, Password = ?, CPR = ?, DepartmentId = ? from Employees where Id = ?";
     private static final String DELETE_EMPLOYEE = "delete from Employees where Id = ?";
@@ -28,6 +29,7 @@ public class EmployeeDB implements EmployeeDBIF {
     private PreparedStatement findAll;
     private PreparedStatement findById;
     private PreparedStatement findByEmail;
+    private PreparedStatement findOnlyByEmail;
     private PreparedStatement createEmployee;
     private PreparedStatement updateEmployee;
     private PreparedStatement deleteEmployee;
@@ -44,6 +46,7 @@ public class EmployeeDB implements EmployeeDBIF {
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
         findById = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
         findByEmail = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_EMAIL);
+        findOnlyByEmail = DBConnection.getInstance().getConnection().prepareStatement(FIND_ONLY_BY_EMAIL);
         createEmployee = DBConnection.getInstance().getConnection().prepareStatement(CREATE_EMPLOYEE, Statement.RETURN_GENERATED_KEYS);
         updateEmployee = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_EMPLOYEE);
         deleteEmployee = DBConnection.getInstance().getConnection().prepareStatement(DELETE_EMPLOYEE);
@@ -101,6 +104,26 @@ public class EmployeeDB implements EmployeeDBIF {
         if (employee == null) { throw new NotFoundException("Employee", email); }
 
         return employee;
+    }
+    
+    /**
+     * @return object of the Employee class with the provided email
+     * @throws SQLException
+     * @throws NotFoundException if provided email is incorrect
+     */
+    @Override
+    public Employee findOnlyByEmail(String email) throws SQLException, NotFoundException {
+    	Employee employee = null;
+    	ResultSet rs;
+    	findOnlyByEmail.setString(1, email);
+    	rs = findOnlyByEmail.executeQuery();
+    	while(rs.next()) {
+    		employee = buildObject(rs);
+    	}
+    	
+    	if(employee == null) { throw new NotFoundException("Employee", email); }
+    	
+    	return employee;
     }
 
     /**
