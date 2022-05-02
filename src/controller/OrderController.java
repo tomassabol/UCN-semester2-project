@@ -48,7 +48,6 @@ public class OrderController {
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
-	
 	public Order findById(int id) throws SQLException, NotFoundException {
 		Order order = orderDBIF.findById(id);
 		return order;
@@ -60,7 +59,6 @@ public class OrderController {
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
-	
 	public Order createOrder(Employee employee,Customer customer) throws SQLException, NotFoundException {
 		Order order = new Order(employee,customer);
 		return order;
@@ -70,8 +68,8 @@ public class OrderController {
 	 * @param order - the order that is requested to be deleted
 	 * @throws SQLException
 	 */
-	
 	public void deleteOrder(Order order) throws SQLException {
+		orderDetailsCtrl.deleteAllOrderDetails(order);
 		orderDBIF.deleteOrder(order);
 	}
 
@@ -113,24 +111,19 @@ public class OrderController {
 	 * @throws NotFoundException
 	 */
 	public boolean finishOrder(Order order) throws SQLException, NotFoundException {
-		boolean returnValue = false;
 		// sets the date to the order
 		order.setOrderDate(LocalDate.now());
-		// inserts all orderlines in the order into DB
-		for(OrderLine orderLine : order.getOrderLines()) {
-			orderLineCtrl.createOrderLine(orderLine.getProduct(), orderLine.getQuantity());
-		}
 		// insert order into DB
 		orderDBIF.createOrder(order);
 
 		// create order details to know what orderLines are in the order
-		// TODO: test if it is possible to move this to previous foreach loop, if order was inserted into DB before the loop
-		// We need OrderId to create OrderDetails. OrderId is assigned when order is inserted
+		// inserts all orderlines in the order into DB
 		for(OrderLine orderLine : order.getOrderLines()) {
-			orderDetailsCtrl.createOrderDetails(order, orderLine);
+			OrderLine oLine = orderLineCtrl.createOrderLine(orderLine.getProduct(), orderLine.getQuantity());
+			orderDetailsCtrl.createOrderDetails(order, oLine);
 		}
-		returnValue = true;
-		return returnValue;
+
+		return true;
 	}
 	
 }

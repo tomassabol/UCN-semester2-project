@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import database.interfaces.ItemDBIF;
+import controller.ItemController;
 import database.interfaces.OrderLineDetailsDBIF;
 import exceptions.NotFoundException;
 import model.Item;
@@ -23,7 +23,7 @@ public class OrderLineDetailsDB implements OrderLineDetailsDBIF {
     private PreparedStatement deleteOrderLineDetails;
     private PreparedStatement deleteAllOrderLineDetails;
 
-    private ItemDBIF itemDBIF = new ItemDB();
+    ItemController itemCtrl = new ItemController();
 
     public OrderLineDetailsDB() throws SQLException {
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
@@ -63,7 +63,7 @@ public class OrderLineDetailsDB implements OrderLineDetailsDBIF {
     // local methods
 
     private Item buildObject(ResultSet rs) throws SQLException, NotFoundException {
-        Item item = itemDBIF.findById(rs.getInt("ItemId"));
+        Item item = itemCtrl.findById(rs.getInt("ItemId"));
         return item;
     }
 

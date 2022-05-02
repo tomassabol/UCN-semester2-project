@@ -4,29 +4,32 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.OrderLineController;
 import database.interfaces.OrderDetailsDBIF;
-import database.interfaces.OrderLineDBIF;
 import exceptions.NotFoundException;
 import model.Order;
 import model.OrderLine;
 
 public class OrderDetailsDB implements OrderDetailsDBIF {
 
-    //Prepared statments
+    //Prepared statements
     private static final String FIND_ALL = "select * from OrderDetails where OrderId = ?";
     private static final String CREATE_ORDER_DETAILS = "insert into OrderDetails values (?, ?)";
     private static final String DELETE_ORDER_DETAILS = "delete from OrderDetails where OrderId = ?, OrderLineId = ?";
+    private static final String DELETE_ALL_ORDER_DETAILS = "delete from OrderDetails where OrderId = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement createOrderDetails;
     private PreparedStatement deleteOrderDetails;
+    private PreparedStatement deleteAllOrderDetails;
 
-    private OrderLineDBIF orderLineDBIF = new OrderLineDB();
+    OrderLineController orderLineCtrl = new OrderLineController();
 
     public OrderDetailsDB() throws SQLException {
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
         createOrderDetails = DBConnection.getInstance().getConnection().prepareStatement(CREATE_ORDER_DETAILS, Statement.RETURN_GENERATED_KEYS);
         deleteOrderDetails = DBConnection.getInstance().getConnection().prepareStatement(DELETE_ORDER_DETAILS);
+        deleteAllOrderDetails = DBConnection.getInstance().getConnection().prepareStatement(DELETE_ALL_ORDER_DETAILS);
     }
       
 
@@ -53,10 +56,16 @@ public class OrderDetailsDB implements OrderDetailsDBIF {
         deleteOrderDetails.executeUpdate();
     }
 
+    @Override
+    public void deleteAllOrderDetails(Order order) throws SQLException {
+        deleteAllOrderDetails.setInt(1, order.getId());
+        deleteAllOrderDetails.executeUpdate();
+    }
+
     // local methods
 
     private OrderLine buildObject(ResultSet rs) throws SQLException, NotFoundException {
-        OrderLine orderLine = orderLineDBIF.findById(rs.getInt("OrderLineId"));
+        OrderLine orderLine = orderLineCtrl.findById(rs.getInt("OrderLineId"));
         return orderLine;
     }
 

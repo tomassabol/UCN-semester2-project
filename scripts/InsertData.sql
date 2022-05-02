@@ -52,6 +52,7 @@ INSERT INTO EmployeeTypes VALUES('EMPLOYEE')
 INSERT INTO Employees VALUES('Employee1','employee1@email.com','111111','DK-9000','Street 1111',1, 'password1', 0101010101, 1)
 INSERT INTO Employees VALUES('Employee2','employee2@email.com','222222','SK-4212','Street 2222',2,'password1', 0202020202, 2)
 INSERT INTO Employees VALUES('Employee3','employee3@email.com','333333','CZ-60200','Street 3333',3,'password1', 0303030303, 3)
+INSERT INTO Employees VALUES('admin','admin','333333','CZ-60200','Street 3333',3,'admin', 0303030303, 3)
 
 INSERT INTO Orders VALUES(1,1, '2022-05-01')
 INSERT INTO Orders VALUES(2,2, '2022-05-01')

@@ -1,6 +1,2 @@
-/controller/
 /view/
-/database/
-/exceptions/
-/model/
-/tests/
+/controller/

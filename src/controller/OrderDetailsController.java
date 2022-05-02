@@ -52,5 +52,14 @@ public class OrderDetailsController {
     public void deleteOrderDetails(Order order, OrderLine orderLine) throws SQLException {
         orderDetailsDBIF.deleteOrderDetails(order, orderLine);
     }
+
+    /**
+     * deletes all order details per order
+     * @param order - order to delete order details
+     * @throws SQLException
+     */
+    public void deleteAllOrderDetails(Order order) throws SQLException {
+        orderDetailsDBIF.deleteAllOrderDetails(order);
+    }
     
 }

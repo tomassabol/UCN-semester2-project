@@ -14,10 +14,12 @@ import javax.swing.JLabel;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
+import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JPasswordField;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class Login extends JFrame {
@@ -39,10 +41,19 @@ public class Login extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 187, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{75, 40, 0, 0, 0, 0, 0, 0, 0, 75, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
+		
+		JLabel lblIcon = new JLabel();
+		ImageIcon icon = new ImageIcon("images/login.png");
+		lblIcon.setIcon(icon);
+		GridBagConstraints gbc_lblIcon = new GridBagConstraints();
+		gbc_lblIcon.insets = new Insets(0, 0, 5, 5);
+		gbc_lblIcon.gridx = 1;
+		gbc_lblIcon.gridy = 1;
+		contentPane.add(lblIcon, gbc_lblIcon);
 		
 		JLabel lblEmail = new JLabel("Email");
 		lblEmail.setFont(new Font("Open Sans", Font.BOLD, 15));
@@ -50,7 +61,7 @@ public class Login extends JFrame {
 		gbc_lblEmail.anchor = GridBagConstraints.WEST;
 		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEmail.gridx = 1;
-		gbc_lblEmail.gridy = 1;
+		gbc_lblEmail.gridy = 2;
 		contentPane.add(lblEmail, gbc_lblEmail);
 		
 		txtEmail = new JTextField();
@@ -59,7 +70,7 @@ public class Login extends JFrame {
 		gbc_txtEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_txtEmail.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtEmail.gridx = 1;
-		gbc_txtEmail.gridy = 2;
+		gbc_txtEmail.gridy = 3;
 		contentPane.add(txtEmail, gbc_txtEmail);
 		txtEmail.setColumns(10);
 		
@@ -69,7 +80,7 @@ public class Login extends JFrame {
 		gbc_lblPassword.anchor = GridBagConstraints.WEST;
 		gbc_lblPassword.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPassword.gridx = 1;
-		gbc_lblPassword.gridy = 3;
+		gbc_lblPassword.gridy = 4;
 		contentPane.add(lblPassword, gbc_lblPassword);
 		
 		passwordField = new JPasswordField();
@@ -78,16 +89,22 @@ public class Login extends JFrame {
 		gbc_passwordField.insets = new Insets(0, 0, 5, 5);
 		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_passwordField.gridx = 1;
-		gbc_passwordField.gridy = 4;
+		gbc_passwordField.gridy = 5;
 		contentPane.add(passwordField, gbc_passwordField);
 		
 		btnLogin = new JButton("Log in");
 		btnLogin.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		btnLogin.setForeground(Color.white);
+		btnLogin.setBackground( new Color(183,26,134,255));
 		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
+		gbc_btnLogin.fill = GridBagConstraints.BOTH;
 		gbc_btnLogin.insets = new Insets(0, 0, 5, 5);
 		gbc_btnLogin.gridx = 1;
-		gbc_btnLogin.gridy = 6;
+		gbc_btnLogin.gridy = 7;
 		contentPane.add(btnLogin, gbc_btnLogin);
+		
+		txtEmail.setText("admin");
+		passwordField.setText("admin");
 		
 		//Add the event handlers
 		addEventHandlers();
