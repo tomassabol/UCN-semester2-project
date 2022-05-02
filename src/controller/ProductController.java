@@ -65,7 +65,13 @@ public class ProductController {
 	 * @param product
 	 * @throws SQLException
 	 */
-	public void updateProduct(Product product) throws SQLException {
+	public void updateProduct(Product product, String name, String description, ProductType productType, BigDecimal price, int discount, boolean active) throws SQLException {
+		product.setName(name);
+		product.setDescription(description);
+		product.setProductType(productType);
+		product.setPrice(price);
+		product.setDiscount(discount);
+		product.setActive(active);
 		productDBIF.updateProduct(product);
 	}
 	
