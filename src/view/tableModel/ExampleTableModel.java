@@ -1,4 +1,5 @@
 // by Andrej
+/*
 package view.tableModel;
 
 import java.awt.BorderLayout;
@@ -25,9 +26,6 @@ public class ExampleTableModel extends JPanel {
 	private Box verticalBox;
 	private Component verticalStrut;
 
-	/**
-	 * Create the panel.
-	 */
 	public ExampleTableModel(String[] columns) {
 		this.columns = columns;
 		
@@ -143,4 +141,4 @@ public class ExampleTableModel extends JPanel {
 	public void setActionRemove() {
 	}
 
-}
+} */
