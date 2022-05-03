@@ -39,6 +39,7 @@ public class Dashboard extends JFrame {
 	private JLabel lblReadEmployee; // employee
 	private JLabel lblDeleteEmployee;
 	private JLabel lblDepartment; // department
+	private JLabel lblCities; // cities
 	private JLabel lblProduct; // product
 	private JButton btnCreateOrder;
 	private JButton btnCreateEmployee; //employee
@@ -46,6 +47,7 @@ public class Dashboard extends JFrame {
 	private JButton btnReadEmployee; // employee
 	private JButton btnDeleteEmployee;
 	private JButton btnDepartment; // department
+	private JButton btnCities; // cities
 	private JButton btnProduct; // product
 	private JLabel lblOrders;
 	private JButton btnShowOrders;
@@ -298,12 +300,20 @@ public class Dashboard extends JFrame {
 		locationPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
 		tabsPane.addTab("Locations", null, locationPanel, null);
 		GridBagLayout gbl_locationPanel = new GridBagLayout();
-		gbl_locationPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_locationPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_locationPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_locationPanel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_locationPanel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_locationPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		locationPanel.setLayout(gbl_locationPanel);
-		
+
+		btnDepartment = new JButton("Departments");
+		btnDepartment.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_btnDepartment = new GridBagConstraints();
+		gbc_btnDepartment.insets = new Insets(0, 0, 5, 5);
+		gbc_btnDepartment.gridx = 1;
+		gbc_btnDepartment.gridy = 5;
+		locationPanel.add(btnDepartment, gbc_btnDepartment);
+				
 		lblDepartment = new JLabel("Departments");
 		lblDepartment.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblDepartment = new GridBagConstraints();
@@ -312,13 +322,21 @@ public class Dashboard extends JFrame {
 		gbc_lblDepartment.gridy = 4;
 		locationPanel.add(lblDepartment, gbc_lblDepartment);
 		
-		btnDepartment = new JButton("Departments");
-		btnDepartment.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_btnDepartment = new GridBagConstraints();
-		gbc_btnDepartment.insets = new Insets(0, 0, 5, 5);
-		gbc_btnDepartment.gridx = 1;
-		gbc_btnDepartment.gridy = 5;
-		locationPanel.add(btnDepartment, gbc_btnDepartment);
+		lblCities = new JLabel("Cities");
+		lblCities.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_lblCities = new GridBagConstraints();
+		gbc_lblCities.insets = new Insets(0, 1, 5, 5);
+		gbc_lblCities.gridx = 3;
+		gbc_lblCities.gridy = 4;
+		locationPanel.add(lblCities, gbc_lblCities);
+		
+		btnCities = new JButton("Cities");
+		btnCities.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_btnCities = new GridBagConstraints();
+		gbc_btnCities.insets = new Insets(0, 1, 5, 5);
+		gbc_btnCities.gridx = 3;
+		gbc_btnCities.gridy = 5;
+		locationPanel.add(btnCities, gbc_btnCities);
 	}
 
 	// storage
@@ -451,6 +469,11 @@ public class Dashboard extends JFrame {
 			} catch (SQLException | NotFoundException e1) {
 				e1.printStackTrace();
 			}
+		});
+
+		btnCities.addActionListener(e -> {
+			// TODO: update once implemented
+			Messages.info(null, "Not implemented yet");
 		});
 	}
 
