@@ -17,14 +17,10 @@ import javax.swing.border.EmptyBorder;
 
 
 import controller.AuthenticationController;
-import controller.DepartmentController;
 import controller.EmployeeController;
 import exceptions.NotFoundException;
-import model.City;
 import model.Customer;
-import model.Department;
 import model.Employee;
-import model.Employee.EmployeeType;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -41,12 +37,16 @@ public class Dashboard extends JFrame {
 	private JLabel lblCreateEmployee; // employee
 	private JLabel lblUpdateEmployee; // employee
 	private JLabel lblReadEmployee; // employee
-	private JLabel lblDeleteEmployee; // employee
+	private JLabel lblDeleteEmployee;
+	private JLabel lblDepartment; // department
+	private JLabel lblProduct; // product
 	private JButton btnCreateOrder;
 	private JButton btnCreateEmployee; //employee
 	private JButton btnUpdateEmployee; // employee
 	private JButton btnReadEmployee; // employee
-	private JButton btnDeleteEmployee; // employee
+	private JButton btnDeleteEmployee;
+	private JButton btnDepartment; // department
+	private JButton btnProduct; // product
 	private JLabel lblOrders;
 	private JButton btnShowOrders;
 	private JButton btnLogOut;
@@ -58,7 +58,6 @@ public class Dashboard extends JFrame {
 	private AuthenticationController auth;
 	private EmployeeController employeeCtrl;
 	private Customer customer;
-	private Employee employee;
 	
 	/**
 	 * Create the frame.
@@ -110,6 +109,8 @@ public class Dashboard extends JFrame {
 		// ***** Order tab *****
 		initOrderTab();
 		initEmployeeTab(); // employee
+		initLocationTab(); // locations
+		initStorageTab(); // storage
 			
 			
 		
@@ -198,9 +199,9 @@ public class Dashboard extends JFrame {
 		employeePanel.setBorder(new EmptyBorder(10, 0, 0, 0));
 		tabsPane.addTab("Employees", null, employeePanel, null);
 		GridBagLayout gbl_employeePanel = new GridBagLayout();
-		gbl_employeePanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_employeePanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_employeePanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_employeePanel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_employeePanel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_employeePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		employeePanel.setLayout(gbl_employeePanel);
 		
@@ -290,6 +291,64 @@ public class Dashboard extends JFrame {
 		gbc_btnDeleteEmployee.gridy = 5;
 		employeePanel.add(btnDeleteEmployee, gbc_btnDeleteEmployee);
 	}
+
+	// locations
+	public void initLocationTab() {
+		JPanel locationPanel = new JPanel();
+		locationPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
+		tabsPane.addTab("Locations", null, locationPanel, null);
+		GridBagLayout gbl_locationPanel = new GridBagLayout();
+		gbl_locationPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_locationPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_locationPanel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_locationPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		locationPanel.setLayout(gbl_locationPanel);
+		
+		lblDepartment = new JLabel("Departments");
+		lblDepartment.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_lblDepartment = new GridBagConstraints();
+		gbc_lblDepartment.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDepartment.gridx = 1;
+		gbc_lblDepartment.gridy = 4;
+		locationPanel.add(lblDepartment, gbc_lblDepartment);
+		
+		btnDepartment = new JButton("Departments");
+		btnDepartment.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_btnDepartment = new GridBagConstraints();
+		gbc_btnDepartment.insets = new Insets(0, 0, 5, 5);
+		gbc_btnDepartment.gridx = 1;
+		gbc_btnDepartment.gridy = 5;
+		locationPanel.add(btnDepartment, gbc_btnDepartment);
+	}
+
+	// storage
+	public void initStorageTab() {
+		JPanel storagePanel = new JPanel();
+		storagePanel.setBorder(new EmptyBorder(10, 0, 0, 0));
+		tabsPane.addTab("Storage", null, storagePanel, null);
+		GridBagLayout gbl_storagePanel = new GridBagLayout();
+		gbl_storagePanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_storagePanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_storagePanel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_storagePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		storagePanel.setLayout(gbl_storagePanel);
+		
+		lblProduct = new JLabel("Products");
+		lblProduct.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_lblProduct = new GridBagConstraints();
+		gbc_lblProduct.insets = new Insets(0, 0, 5, 5);
+		gbc_lblProduct.gridx = 1;
+		gbc_lblProduct.gridy = 4;
+		storagePanel.add(lblProduct, gbc_lblProduct);
+		
+		btnProduct = new JButton("Products");
+		btnProduct.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_btnProduct = new GridBagConstraints();
+		gbc_btnProduct.insets = new Insets(0, 0, 5, 5);
+		gbc_btnProduct.gridx = 1;
+		gbc_btnProduct.gridy = 5;
+		storagePanel.add(btnProduct, gbc_btnProduct);
+	}
 	
 	/*
 	 * *******************************************************
@@ -371,6 +430,26 @@ public class Dashboard extends JFrame {
 				} catch (NotFoundException e1) {
 					e1.printStackTrace();
 				}	
+			}
+		});
+
+		btnDepartment.addActionListener(e -> {
+			ManageDepartments frame;
+			try {
+				frame = new ManageDepartments(auth);
+				frame.setVisible(true);
+			} catch (SQLException | NotFoundException e1) {
+				e1.printStackTrace();
+			}
+		});
+
+		btnProduct.addActionListener(e -> {
+			ManageProducts frame;
+			try {
+				frame = new ManageProducts(auth);
+				frame.setVisible(true);
+			} catch (SQLException | NotFoundException e1) {
+				e1.printStackTrace();
 			}
 		});
 	}
