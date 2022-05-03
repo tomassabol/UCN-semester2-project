@@ -11,11 +11,12 @@ import java.awt.GridBagLayout;
 import java.sql.SQLException;
 import java.awt.GridBagConstraints;
 
-public class ManageProducts extends JDialog {
+public class ManageDepartments extends JDialog {
+
 
 	private static final long serialVersionUID = 2968937622159813565L;
 	private final JPanel contentPane;
-	private CRUDProducts CRUDPanel;
+	private CRUDDepartments CRUDPanel;
 	
 	AuthenticationController auth;
 
@@ -25,9 +26,9 @@ public class ManageProducts extends JDialog {
 	 * @throws NotFoundException
 	 * @throws SQLException
 	 */
-	public ManageProducts(AuthenticationController auth) throws SQLException, NotFoundException {
+	public ManageDepartments(AuthenticationController auth) throws SQLException, NotFoundException {
 		this.auth = auth;
-		this.setTitle("Manage products");
+		this.setTitle("Manage Departments");
 		setModal(true);
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 450);
@@ -41,7 +42,7 @@ public class ManageProducts extends JDialog {
 		gbl_contentPane.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		CRUDPanel = new CRUDProducts(auth);
+		CRUDPanel = new CRUDDepartments(auth);
 		GridBagConstraints gbc_CRUDPanel = new GridBagConstraints();
 		gbc_CRUDPanel.fill = GridBagConstraints.BOTH;
 		gbc_CRUDPanel.gridx = 0;
@@ -66,5 +67,4 @@ public class ManageProducts extends JDialog {
 	}
 	
 }
-
 

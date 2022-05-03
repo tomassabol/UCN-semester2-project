@@ -57,17 +57,6 @@ public class ChooseProduct extends JDialog {
 		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		switch (mode) {
-			case BUYABLE:
-				CRUDPanel = new CRUDProducts(auth, CRUDProducts.Mode.BUYABLE);
-				break;
-			case LOANABLE:
-				CRUDPanel = new CRUDProducts(auth, CRUDProducts.Mode.LOANABLE);
-				break;
-			default:
-				CRUDPanel = new CRUDProducts(auth, CRUDProducts.Mode.ALL);
-		}
-		
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.insets = new Insets(0, 0, 5, 0);
@@ -117,7 +106,7 @@ public class ChooseProduct extends JDialog {
 				
 				// get product
 				int row = table.convertRowIndexToModel(table.getSelectedRow());
-				Product product = CRUDPanel.getTableModel().getObj(row);
+				CRUDPanel.getTableModel().getObj(row);
 			}
 			
 		});

@@ -304,21 +304,26 @@ public class ProductUI extends JDialog {
 	// Makes the text fields uneditable
 	private void disableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JRadioButton) {
 				      c.setEnabled(false);
 				   }
 			}
+		txtId.setEnabled(false);
+		rdbtnNo.setEnabled(false);
+		rdbtnYes.setEnabled(false);
 	}
 	
 	
 	// Makes the text fields editable except ID field
 	private void enableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JRadioButton) {
 			      c.setEnabled(true);
 			   }
 			}
 		txtId.setEnabled(false);
+		rdbtnNo.setEnabled(true);
+		rdbtnYes.setEnabled(true);
 	}
 	
 	// FIll in the fields
