@@ -41,6 +41,8 @@ public class Dashboard extends JFrame {
 	private JLabel lblDepartment; // department
 	private JLabel lblCities; // cities
 	private JLabel lblProduct; // product
+	private JLabel lblCustomer; // customer
+	private JLabel lblEmployee; // employee
 	private JButton btnCreateOrder;
 	private JButton btnCreateEmployee; //employee
 	private JButton btnUpdateEmployee; // employee
@@ -49,6 +51,8 @@ public class Dashboard extends JFrame {
 	private JButton btnDepartment; // department
 	private JButton btnCities; // cities
 	private JButton btnProduct; // product
+	private JButton btnCustomer; // customer
+	private JButton btnEmployee; // employee
 	private JLabel lblOrders;
 	private JButton btnShowOrders;
 	private JButton btnLogOut;
@@ -113,6 +117,7 @@ public class Dashboard extends JFrame {
 		initEmployeeTab(); // employee
 		initLocationTab(); // locations
 		initStorageTab(); // storage
+		initPeopleTab(); // people
 			
 			
 		
@@ -201,9 +206,9 @@ public class Dashboard extends JFrame {
 		employeePanel.setBorder(new EmptyBorder(10, 0, 0, 0));
 		tabsPane.addTab("Employees", null, employeePanel, null);
 		GridBagLayout gbl_employeePanel = new GridBagLayout();
-		gbl_employeePanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_employeePanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_employeePanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_employeePanel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_employeePanel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_employeePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		employeePanel.setLayout(gbl_employeePanel);
 		
@@ -367,6 +372,51 @@ public class Dashboard extends JFrame {
 		gbc_btnProduct.gridy = 5;
 		storagePanel.add(btnProduct, gbc_btnProduct);
 	}
+
+	// people
+	public void initPeopleTab() {
+		JPanel peoplePanel = new JPanel();
+		peoplePanel.setBorder(new EmptyBorder(10, 0, 0, 0));
+		tabsPane.addTab("People", null, peoplePanel, null);
+		GridBagLayout gbl_peoplePanel = new GridBagLayout();
+		gbl_peoplePanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_peoplePanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_peoplePanel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_peoplePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		peoplePanel.setLayout(gbl_peoplePanel);
+
+		lblCustomer = new JLabel("Customers");
+		lblCustomer.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_lblCustomert = new GridBagConstraints();
+		gbc_lblCustomert.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCustomert.gridx = 1;
+		gbc_lblCustomert.gridy = 4;
+		peoplePanel.add(lblCustomer, gbc_lblCustomert);
+
+		btnCustomer = new JButton("Customers");
+		btnCustomer.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_btnCustomer = new GridBagConstraints();
+		gbc_btnCustomer.insets = new Insets(0, 0, 5, 5);
+		gbc_btnCustomer.gridx = 1;
+		gbc_btnCustomer.gridy = 5;
+		peoplePanel.add(btnCustomer, gbc_btnCustomer);
+		
+		lblEmployee = new JLabel("Employees");
+		lblEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_lblEmployee = new GridBagConstraints();
+		gbc_lblEmployee.insets = new Insets(0, 1, 5, 5);
+		gbc_lblEmployee.gridx = 3;
+		gbc_lblEmployee.gridy = 4;
+		peoplePanel.add(lblEmployee, gbc_lblEmployee);
+		
+		btnEmployee = new JButton("Employees");
+		btnEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_btnEmployee = new GridBagConstraints();
+		gbc_btnEmployee.insets = new Insets(0, 1, 5, 5);
+		gbc_btnEmployee.gridx = 3;
+		gbc_btnEmployee.gridy = 5;
+		peoplePanel.add(btnEmployee, gbc_btnEmployee);
+	}
 	
 	/*
 	 * *******************************************************
@@ -475,7 +525,16 @@ public class Dashboard extends JFrame {
 			// TODO: update once implemented
 			Messages.info(null, "Not implemented yet");
 		});
+
+		btnCustomer.addActionListener(e -> {
+			// TODO: update once implemented
+			Messages.info(null, "Not implemented yet");
+		});
+
+		btnEmployee.addActionListener(e -> {
+			// TODO: update once implemented
+			Messages.info(null, "Not implemented yet");
+		});
 	}
 
 }
-
