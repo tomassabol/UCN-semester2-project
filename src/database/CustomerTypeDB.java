@@ -12,9 +12,11 @@ public class CustomerTypeDB implements CustomerTypeDBIF {
     // PreparedStatements for the CustomerTypeDB class
     private static final String FIND_ALL = "select * from CustomerTypes";
     private static final String FIND_BY_ID = "select * from CustomerTypes where Id = ?";
+    private static final String FIND_BY_NAME = "select * from CustomerTypes where Name = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement findById;
+    private PreparedStatement findByName;
 
     /**
      * Constructor for the CustomerTypeDB class
@@ -23,6 +25,7 @@ public class CustomerTypeDB implements CustomerTypeDBIF {
     public CustomerTypeDB() throws SQLException {
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
         findById = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
+        findByName = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_NAME);
     }
 
     /**
@@ -55,6 +58,20 @@ public class CustomerTypeDB implements CustomerTypeDBIF {
 
         return customerType;
     }
+
+    @Override
+    public CustomerType findByName(String name)throws SQLException,NotFoundException{
+        CustomerType customerType = null;
+        ResultSet rs;
+        findByName.setString(1, name);
+        rs = findByName.executeQuery();
+        while(rs.next()){
+            customerType = buildObject(rs);
+        }
+        if(customerType==null){throw new NotFoundException("Department", name);}
+        return customerType;
+    }
+    
 
     // local methods
 

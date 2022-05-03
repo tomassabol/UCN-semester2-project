@@ -82,6 +82,10 @@ public class ReadEmployee extends JFrame {
 		// ***** Middle panel *****
 		JPanel middlePanel = new JPanel(new GridLayout(5, 2));
 		getContentPane().add(middlePanel);
+
+		// bottom panel
+		JPanel bottomPanel = new JPanel();
+		getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 		
 		// ***** Employee name *****
 		lblEmployeeNameText = new JLabel("Name");
