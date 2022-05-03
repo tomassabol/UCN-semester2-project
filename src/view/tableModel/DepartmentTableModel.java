@@ -40,10 +40,10 @@ import model.Department;
      private List<Column> columns;
 
      /**
-      * Instantiates a new product table model.
+      * Instantiates a new department table model.
       * 
       *
-      * @param products the products
+      * @param departments the departments
       * @param columns the columns to be displayed
       * @throws SQLException
       */
@@ -54,10 +54,10 @@ import model.Department;
      }
 
      /**
-      * Instantiates a new product table model.
+      * Instantiates a new department table model.
       * Note: This constructor shows all columns
       *
-      * @param products the products
+      * @param departments the departments
       */
      public DepartmentTableModel(List<Department> departments) {
      	this.columns = new ArrayList<Column>(Arrays.asList(Column.class.getEnumConstants()));

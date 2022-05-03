@@ -94,8 +94,8 @@ public class CRUDDepartments extends JPanel {
  		topPanel.add(txtSearch, gbc_txtSearch);
  		txtSearch.setColumns(10);
 
- 		// ***** button: Add product  *****
- 		btnAddDepartment = new JButton("Add Product");
+ 		// ***** button: Add department  *****
+ 		btnAddDepartment = new JButton("Add department");
  		GridBagConstraints gbc_btnAddDepartment = new GridBagConstraints();
  		gbc_btnAddDepartment.insets = new Insets(0, 0, 5, 0);
  		gbc_btnAddDepartment.gridx = 2;
@@ -173,12 +173,12 @@ public class CRUDDepartments extends JPanel {
  	}
 
  	/**
- 	 * Select a product in the CRUD table.
+ 	 * Select a department in the CRUD table.
  	 *
- 	 * @param product the product
+ 	 * @param department the department
  	 * @return true, if successful
  	 */
- 	public boolean selectProduct(Department department) {
+ 	public boolean selectdepartment(Department department) {
  		int rows = tableModel.getRowCount();
  		for (int i = 0; i < rows; i++) {
  			Department foundDepartment = tableModel.getObj(i);
@@ -213,7 +213,7 @@ public class CRUDDepartments extends JPanel {
  			}
  		});
 
- 		// Disable product
+ 		// Disable department
  		btnDisable.addActionListener(e -> {
  			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
  			Department department = tableModel.getObj(row);
@@ -231,7 +231,7 @@ public class CRUDDepartments extends JPanel {
  			}
  		);
 
- 		// View product
+ 		// View department
  		btnView.addActionListener(e -> {
  			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
  			Department department = tableModel.getObj(row);
@@ -244,7 +244,7 @@ public class CRUDDepartments extends JPanel {
              }
  		});
 
- 		// Edit product
+ 		// Edit department
  		btnEdit.addActionListener(e -> {
  			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
  			Department department = tableModel.getObj(row);
@@ -261,7 +261,7 @@ public class CRUDDepartments extends JPanel {
  			tableMain.getSelectionModel().setSelectionInterval(0, row);
  		});
 
- 		// Create product
+ 		// Create department
  		btnAddDepartment.addActionListener(e -> {
  			DepartmentUI frame;
              try {

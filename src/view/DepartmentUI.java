@@ -43,7 +43,7 @@ public class DepartmentUI extends JDialog {
 	private JButton btnSelect;
     private City zipCode;
 	/**
-	 * Constructor: create new product
+	 * Constructor: create new DepartmentUI
 	 *
 	 * @param auth the auth controller 
 	 * @throws SQLException
@@ -213,10 +213,10 @@ public class DepartmentUI extends JDialog {
 	 */
 	
 	/**
-	 * Gets the product.
-	 * Useful for Create mode (to get the created product)
+	 * Gets the Department.
+	 * Useful for Create mode (to get the created department)
 	 *
-	 * @return the product
+	 * @return the department
 	 */
 	public Department getDepartment() {
 		return this.department;
@@ -258,7 +258,7 @@ public class DepartmentUI extends JDialog {
 	 */
 	private void addEventHandlers() {
 		
-		// 'update' button: Update the product
+		// 'update' button: Update the department
 		btnSubmit.addActionListener(e -> {
 			String message = "";
 			if (mode == Mode.EDIT) {
@@ -298,7 +298,7 @@ public class DepartmentUI extends JDialog {
                     }
 
 				} else if (mode == Mode.CREATE) {
-					// if mode == Create, create a new product
+					// if mode == Create, create a new department
 					try {
                         departmentCtrl.createDepartment(name, zipCode, address);
                     } catch (SQLException e1) {
