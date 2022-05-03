@@ -50,9 +50,4 @@ public class CustomerTypeController {
 		CustomerType customerType = customerTypeDBIF.findById(id);
 		return customerType;
 	}
-
-	public CustomerType findByName(String name) throws SQLException, NotFoundException{
-		CustomerType customerType = customerTypeDBIF.findByName(name);
-		return customerType;
-	}
 }

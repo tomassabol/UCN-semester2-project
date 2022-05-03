@@ -9,5 +9,4 @@ import model.Customer.CustomerType;;
 public interface CustomerTypeDBIF {
     public List<CustomerType> findAll() throws SQLException, NotFoundException;
     public CustomerType findById(int id) throws SQLException, NotFoundException;
-    public CustomerType findByName(String name) throws SQLException, NotFoundException;
 }
