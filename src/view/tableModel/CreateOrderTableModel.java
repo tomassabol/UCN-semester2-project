@@ -27,9 +27,9 @@ public class CreateOrderTableModel extends AbstractTableModel{
 	private List<OrderLine> orderLines;
 	private OrderController orderCtrl;
 	private OrderLineController orderLineCtrl;
-	private AuthenticationController auth;
 	private Order order;
 	private OrderDetailsController orderDetailsCtrl;
+	AuthenticationController auth;
 	
 	public CreateOrderTableModel(AuthenticationController authentication, Customer customer, Order order) throws SQLException, NotFoundException {
 		orderCtrl = new OrderController();
