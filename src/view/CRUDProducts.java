@@ -37,12 +37,6 @@ import javax.swing.JTextField;
 
 public class CRUDProducts extends JPanel {
 	
-	public enum Mode {
-		BUYABLE,
-		LOANABLE,
-		ALL;
-	}
-	
 	private JButton btnAddItem;
 	private ProductController productCtrl;
 	private TableRowSorter<TableModel> rowSorter;
@@ -61,7 +55,7 @@ public class CRUDProducts extends JPanel {
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
-	public CRUDProducts(AuthenticationController auth, Mode shownColumns) throws SQLException, NotFoundException {
+	public CRUDProducts(AuthenticationController auth) throws SQLException, NotFoundException {
 		this.auth = auth;
 		productCtrl = new ProductController();
 		setLayout(new BorderLayout(0, 0));

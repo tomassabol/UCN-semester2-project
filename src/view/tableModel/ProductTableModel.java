@@ -9,10 +9,6 @@ import javax.swing.table.AbstractTableModel;
 
 import model.Product;
 
-/**
- * @author Daniels Kanepe
- *
- */
 public class ProductTableModel extends AbstractTableModel {
 	
 	private static final long serialVersionUID = -2367962412967993282L;
