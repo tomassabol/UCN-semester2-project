@@ -32,6 +32,7 @@ public class ChooseProduct extends JDialog {
 	private int quantity;
 	
 	AuthenticationController auth;
+	private JPanel panel;
 
 	/**
 	 * Create the dialog.
@@ -48,10 +49,10 @@ public class ChooseProduct extends JDialog {
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 0, 420, 0};
-		gbl_contentPane.rowHeights = new int[]{210, 25, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWidths = new int[]{0, 0};
+		gbl_contentPane.rowHeights = new int[]{210, 25, 0, 0};
+		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		CRUDPanel = new CRUDProducts(this.auth);
@@ -74,35 +75,47 @@ public class ChooseProduct extends JDialog {
 			Messages.error(contentPane, "The given value was not a number");
 		}*/
 		
-		JLabel lblSpinner = new JLabel("Quantity:");
-		lblSpinner.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_lblSpinner = new GridBagConstraints();
-		gbc_lblSpinner.insets = new Insets(0, 0, 0, 5);
-		gbc_lblSpinner.gridx = 0;
-		gbc_lblSpinner.gridy = 1;
-		contentPane.add(lblSpinner, gbc_lblSpinner);
-		
 		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
-		JSpinner spinner = new JSpinner(spinnerModel);
-		GridBagConstraints gbc_spinner = new GridBagConstraints();
-		gbc_spinner.insets = new Insets(0, 0, 0, 5);
-		gbc_spinner.gridx = 1;
-		gbc_spinner.gridy = 1;
-		contentPane.add(spinner, gbc_spinner);
 		
 		try {
-			quantity = Integer.parseInt(String.valueOf(spinner.getValue()));
 		} catch (NumberFormatException e1) {
 			Messages.error(contentPane, "The given value was not a number");
 		}
 		
+		panel = new JPanel();
+		GridBagConstraints gbc_panel1 = new GridBagConstraints();
+		gbc_panel1.fill = GridBagConstraints.BOTH;
+		gbc_panel1.gridx = 0;
+		gbc_panel1.gridy = 2;
+		contentPane.add(panel, gbc_panel1);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel.rowHeights = new int[]{0, 0};
+		gbl_panel.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panel.setLayout(gbl_panel);
+		
+		JLabel lblSpinner = new JLabel("Quantity:");
+		GridBagConstraints gbc_lblSpinner = new GridBagConstraints();
+		gbc_lblSpinner.insets = new Insets(0, 0, 0, 5);
+		gbc_lblSpinner.gridx = 0;
+		gbc_lblSpinner.gridy = 0;
+		panel.add(lblSpinner, gbc_lblSpinner);
+		lblSpinner.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		JSpinner spinner = new JSpinner(spinnerModel);
+		GridBagConstraints gbc_spinner = new GridBagConstraints();
+		gbc_spinner.insets = new Insets(0, 0, 0, 5);
+		gbc_spinner.gridx = 3;
+		gbc_spinner.gridy = 0;
+		panel.add(spinner, gbc_spinner);
+		quantity = Integer.parseInt(String.valueOf(spinner.getValue()));
+		
 		btnChoose = new JButtonPrimary("Choose...");
-		btnChoose.setEnabled(false);
 		GridBagConstraints gbc_btnChoose = new GridBagConstraints();
-		gbc_btnChoose.anchor = GridBagConstraints.EAST;
-		gbc_btnChoose.gridx = 2;
-		gbc_btnChoose.gridy = 1;
-		contentPane.add(btnChoose, gbc_btnChoose);
+		gbc_btnChoose.gridx = 18;
+		gbc_btnChoose.gridy = 0;
+		panel.add(btnChoose, gbc_btnChoose);
+		btnChoose.setEnabled(false);
 		
 		// Attach event handlers
 		this.addEventHandlers();
@@ -151,7 +164,7 @@ public class ChooseProduct extends JDialog {
 		btnChoose.addActionListener(e -> {
 			JTable table = CRUDPanel.getTable();
 			if (!table.getSelectionModel().isSelectionEmpty()) {
-				CustomerTableModel tableModel = CRUDPanel.getTableModel();
+				ProductTableModel tableModel = CRUDPanel.getTableModel();
 				Product product = tableModel.getObj(table.getSelectedRow());
 				selectedProduct = product;
 				selectedQuantity = quantity;
