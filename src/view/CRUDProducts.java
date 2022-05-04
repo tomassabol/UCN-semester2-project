@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 
 import java.awt.BorderLayout;
@@ -23,6 +24,7 @@ import model.Product;
 
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;

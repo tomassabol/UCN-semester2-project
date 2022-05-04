@@ -17,10 +17,13 @@ import javax.swing.border.EmptyBorder;
 
 
 import controller.AuthenticationController;
+import controller.CustomerController;
 import controller.EmployeeController;
+import controller.OrderController;
 import exceptions.NotFoundException;
 import model.Customer;
 import model.Employee;
+import model.Order;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -63,7 +66,10 @@ public class Dashboard extends JFrame {
 	// Fields for classes created by us
 	private AuthenticationController auth;
 	private EmployeeController employeeCtrl;
+	private CustomerController customerCtrl;
 	private Customer customer;
+	private OrderController orderCtrl;
+	private Order order;
 	
 	/**
 	 * Create the frame.
@@ -71,6 +77,8 @@ public class Dashboard extends JFrame {
 	 */
 	public Dashboard(AuthenticationController authentication) throws SQLException {
 		auth = authentication;
+		orderCtrl = new OrderController();
+		customerCtrl = new CustomerController();
 		//Window
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 550);
@@ -448,9 +456,25 @@ public class Dashboard extends JFrame {
 		
 		//Create order button
 		btnCreateOrder.addActionListener(new ActionListener() {
+			
+
 			//TODO: Implement choose customer
 			public void actionPerformed(ActionEvent e) {
-				CreateOrder frame = new CreateOrder(auth, customer, null);
+				try {
+					customer = customerCtrl.findById(1);
+				} catch (SQLException | NotFoundException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				
+				try {
+					order = orderCtrl.createOrder(auth.getLoggedInUser(), customer);
+				} catch (SQLException e1) {
+					Messages.error(contentPane, "There was an error connecting to the database");
+				} catch (NotFoundException e1) {
+					Messages.error(contentPane, "The order was not created for some reason");
+				}
+				CreateOrder frame = new CreateOrder(auth, customer, order);
 				frame.setVisible(true);
 			}
 		});

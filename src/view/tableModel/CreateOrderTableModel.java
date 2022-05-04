@@ -2,6 +2,7 @@ package view.tableModel;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -24,11 +25,10 @@ public class CreateOrderTableModel extends AbstractTableModel{
 
 	private static final String[] columnNames = {"ID", "Product", "Quantity"}; //TODO: Add price per orderLine
 	
-	private List<OrderLine> orderLines;
+	private Set<OrderLine> orderLines;
 	private OrderController orderCtrl;
 	private OrderLineController orderLineCtrl;
 	private Order order;
-	private OrderDetailsController orderDetailsCtrl;
 	AuthenticationController auth;
 	
 	public CreateOrderTableModel(AuthenticationController authentication, Customer customer, Order order) throws SQLException, NotFoundException {
@@ -36,7 +36,7 @@ public class CreateOrderTableModel extends AbstractTableModel{
 		auth = authentication;
 		this.order = order;
 		orderLineCtrl = new OrderLineController();
-		orderLines = orderDetailsCtrl.findByOrderId(order.getId());
+		orderLines = order.getOrderLines();
 	}
 	
 	@Override
@@ -58,12 +58,15 @@ public class CreateOrderTableModel extends AbstractTableModel{
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object value = null;
-		OrderLine orderLine = orderLines.get(rowIndex);
-		switch(columnIndex) {
-			case 0: value = orderLine.getId();
-			case 1: value = orderLine.getProduct();
-			case 2: value = orderLine.getQuantity();
-			default: value = null;
+		for(OrderLine orderLine : orderLines) {
+			if(orderLine.getId() == rowIndex) {
+				switch(columnIndex) {
+				case 0: value = orderLine.getId();
+				case 1: value = orderLine.getProduct();
+				case 2: value = orderLine.getQuantity();
+				default: value = null;
+				}
+			}
 		}
 		return value;
 	}
@@ -101,13 +104,14 @@ public class CreateOrderTableModel extends AbstractTableModel{
      * @throws SQLException 
      */
     public void remove(int row) throws SQLException {
-    	OrderLine orderLine = orderLines.get(row);
-    	if (orderLine != null) {
-        	// update this model's itemLine copies
-        	orderLines.remove(orderLine);
-        	orderLineCtrl.deleteOrderLine(orderLine);
-        	// Update the rendered table
-        	this.fireTableRowsDeleted(row, row);
+    	for(OrderLine orderLine : orderLines) {
+    		if(orderLine.getId() == row && orderLine != null) {
+    			// update this model's itemLine copies
+            	orderLines.remove(orderLine);
+            	orderLineCtrl.deleteOrderLine(orderLine);
+            	// Update the rendered table
+            	this.fireTableRowsDeleted(row, row);
+    		}
     	}
     }
     
@@ -119,7 +123,8 @@ public class CreateOrderTableModel extends AbstractTableModel{
      * @throws SQLException 
      */
     public void add(Product product, int quantity) throws SQLException, NotFoundException, NotEnoughInStockException {
-    	orderCtrl.addProduct(order, product, quantity);
+    	OrderLine orderLine = orderCtrl.addProduct(order, product, quantity);
+    	orderLines.add(orderLine);
     	this.fireTableRowsInserted(this.getRowCount() - 1, this.getRowCount() - 1);
     }
     
