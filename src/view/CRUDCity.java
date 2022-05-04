@@ -5,72 +5,70 @@ import javax.swing.JLabel;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
 import controller.AuthenticationController;
+import controller.CityController;
 import controller.ProductController;
 import exceptions.NotFoundException;
+import model.City;
 import model.Product;
 
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import view.JLink.COLORS;
-//import view.ProductUI;
-//import view.models.Product;
-import view.tableModel.ProductTableModel;
-import view.tableModel.ProductTableModel.Column;
+import view.tableModel.CityTableModel;
+import view.tableModel.CityTableModel.Column;
 
 import javax.swing.JTextField;
 
-public class CRUDProducts extends JPanel {
+public class CRUDCity extends JPanel {
 	
-	private JButton btnAddItem;
-	private ProductController productCtrl;
+	private JButton btnAddCity;
+	private JPanel contentPane;
+	private CityController cityCtrl;
 	private TableRowSorter<TableModel> rowSorter;
 
 	private static final long serialVersionUID = -8329527605114016878L;
 	private JTable tableMain;
-	private ProductTableModel tableModel;
+	private CityTableModel tableModel;
 	private JLink btnView;
 	private JLink btnEdit;
-	private JLink btnDisable;
+	private JLink btnRemove;
 	private AuthenticationController auth;
 	private JTextField txtSearch;
+	private JLabel label;
 
 	/**
 	 * Create the dialog.
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
-	public CRUDProducts(AuthenticationController auth) throws SQLException, NotFoundException {
+	public CRUDCity(AuthenticationController auth) throws SQLException, NotFoundException {
 		this.auth = auth;
-		productCtrl = new ProductController();
+		cityCtrl = new CityController();
 		setLayout(new BorderLayout(0, 0));
 		
-		tableModel = new ProductTableModel(productCtrl.findAll(), 
+		tableModel = new CityTableModel(cityCtrl.findAll(),
 		Arrays.asList(
-			    Column.ID,
-			    Column.NAME,
-			    Column.DESCRIPTION,
-			    Column.PRODUCT_TYPE,
-			    Column.PRICE,
-			    Column.DISCOUNT,
-                Column.ACTIVE
+				Column.ID,
+				Column.ZIPCODE,
+				Column.NAME
 			    )
 	        );
 		
@@ -85,14 +83,23 @@ public class CRUDProducts extends JPanel {
 		topPanel.setLayout(gbl_topPanel);
 		// ***** Title *****
 		JLabel lblTitle = new JLabel(
-			String.format("Products")
+			String.format("Cities")
 		);
 		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
 		gbc_lblTitle.insets = new Insets(0, 0, 5, 0);
 		gbc_lblTitle.gridx = 1;
 		gbc_lblTitle.gridy = 0;
 		topPanel.add(lblTitle, gbc_lblTitle);
-			
+		
+		label = new JLabel(
+		String.format("Search")
+		);
+		GridBagConstraints gbc_label = new GridBagConstraints();
+		gbc_label.insets = new Insets(0, 0, 5, 5);
+		gbc_label.gridx = 0;
+		gbc_label.gridy = 0;
+		topPanel.add(label, gbc_label);
+		
 		txtSearch = new JTextField();
 		GridBagConstraints gbc_txtSearch = new GridBagConstraints();
 		gbc_txtSearch.insets = new Insets(0, 0, 5, 5);
@@ -101,13 +108,13 @@ public class CRUDProducts extends JPanel {
 		topPanel.add(txtSearch, gbc_txtSearch);
 		txtSearch.setColumns(10);
 			
-		// ***** button: Add product  *****
-		btnAddItem = new JButton("Add Product");
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton.gridx = 2;
-		gbc_btnNewButton.gridy = 1;
-		topPanel.add(btnAddItem, gbc_btnNewButton);
+		// ***** button: Add city *****
+		btnAddCity = new JButton("Add a new city");
+		GridBagConstraints gbc_btnAddCity = new GridBagConstraints();
+		gbc_btnAddCity.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAddCity.gridx = 2;
+		gbc_btnAddCity.gridy = 1;
+		topPanel.add(btnAddCity, gbc_btnAddCity);
 		
 		// ***** Middle panel: Scroll panel *****
 		JScrollPane scrollPanel = new JScrollPane();
@@ -145,17 +152,17 @@ public class CRUDProducts extends JPanel {
 		gbc_btnEdit.gridy = 0;
 		bottomPanel.add(btnEdit, gbc_btnEdit);
 			
-		// ***** Disable button *****
-		btnDisable = new JLink("Disable", COLORS.RED);
-		GridBagConstraints gbc_btnDisable = new GridBagConstraints();
-		gbc_btnDisable.gridx = 3;
-		gbc_btnDisable.gridy = 0;
-		bottomPanel.add(btnDisable, gbc_btnDisable);
+		// ***** Remove button *****
+		btnRemove = new JLink("Remove", COLORS.RED);
+		GridBagConstraints gbc_btnRemove = new GridBagConstraints();
+		gbc_btnRemove.gridx = 3;
+		gbc_btnRemove.gridy = 0;
+		bottomPanel.add(btnRemove, gbc_btnRemove);
 		
 		// By default: all selection buttons disabled
 		btnView.setEnabled(false);
 		btnEdit.setEnabled(false);
-		btnDisable.setEnabled(false);
+		btnRemove.setEnabled(false);
 		
 		// Add filtering
 		rowSorter = new TableRowSorter<TableModel>(tableModel);
@@ -175,21 +182,21 @@ public class CRUDProducts extends JPanel {
 		return tableMain;
 	}
 	
-	public ProductTableModel getTableModel() {
+	public CityTableModel getTableModel() {
 		return tableModel;
 	}
 	
 	/**
-	 * Select a product in the CRUD table.
+	 * Select a city in the CRUD table.
 	 *
-	 * @param product the product
+	 * @param city the city
 	 * @return true, if successful
 	 */
-	public boolean selectProduct(Product product) {
+	public boolean selectCity(City city) {
 		int rows = tableModel.getRowCount();
 		for (int i = 0; i < rows; i++) {
-			Product foundProduct = tableModel.getObj(i);
-			if (foundProduct == product) {
+			City foundCity = tableModel.getObj(i);
+			if (foundCity == city) {
 				tableMain.getSelectionModel().setSelectionInterval(0, i);
 				return true;
 			}
@@ -209,70 +216,49 @@ public class CRUDProducts extends JPanel {
 				// Not selected
 				btnView.setEnabled(false);
 				btnEdit.setEnabled(false);
-				btnDisable.setEnabled(false);
+				btnRemove.setEnabled(false);
 			} else {
 				// Selected
 				int row = tableMain.getSelectedRow();
-				Product product = tableModel.getObj(row);
+				City city = tableModel.getObj(row);
 				btnView.setEnabled(true);
 				btnEdit.setEnabled(true);
-				btnDisable.setEnabled(true);
-				if (product.isActive()) {
-					btnDisable.setText("Disable");
-				} else {
-					btnDisable.setText("Enable");
+				btnRemove.setEnabled(false);
+			}});
+					
+		// Remove city
+		btnRemove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = tableMain.getSelectedRow();
+				City city = tableModel.getObj(row);
+				try {
+					cityCtrl.deleteCity(city);
+				} catch (SQLException e1) {
+					Messages.error(contentPane, "There was an error connecting to the database");
 				}
-
 			}
 		});
 		
-		// Disable product
-		btnDisable.addActionListener(e -> {
-			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
-			Product product = tableModel.getObj(row);
-			String keyword = product.isActive() ? "disable" : "enable";
-			if (Messages.confirm(this, String.format("Are you sure you wish to %s the product '%s'?",
-					keyword,
-					product.getName()))) {
-                if (product.isActive() == false) {
-                    try {
-                        productCtrl.enableProduct(product);
-                    } catch (SQLException | NotFoundException e1) {
-                        e1.printStackTrace();
-                    }
-                } else {
-                    try {
-                        productCtrl.disableProduct(product);
-                    } catch (SQLException | NotFoundException e1) {
-                        e1.printStackTrace();
-                    } 
-                }
-
-				tableModel.fireTableRowsUpdated(row, row);
-				tableMain.getSelectionModel().clearSelection();
-			}
-		});
-		
-		// View product
+		// View city
 		btnView.addActionListener(e -> {
 			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
-			Product product = tableModel.getObj(row);
-			ProductUI frame;
+			City city = tableModel.getObj(row);
+			CityUI frame;
             try {
-                frame = new ProductUI(auth, product, ProductUI.Mode.VIEW);
+                frame = new CityUI(auth, city, CityUI.Mode.VIEW);
                 frame.setVisible(true);
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
 		});
 		
-		// Edit product
+		// Edit city
 		btnEdit.addActionListener(e -> {
 			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
-			Product product = tableModel.getObj(row);
-			ProductUI frame;
+			City city = tableModel.getObj(row);
+			CityUI frame;
             try {
-                frame = new ProductUI(auth, product, ProductUI.Mode.EDIT);
+                frame = new CityUI(auth, city, CityUI.Mode.EDIT);
                 frame.setVisible(true);
             } catch (SQLException e1) {
                 e1.printStackTrace();
@@ -283,14 +269,14 @@ public class CRUDProducts extends JPanel {
 			tableMain.getSelectionModel().setSelectionInterval(0, row);
 		});
 		
-		// Create product
-		btnAddItem.addActionListener(e -> {
-			ProductUI frame;
+		// Create city
+		btnAddCity.addActionListener(e -> {
+			CityUI frame;
             try {
-                frame = new ProductUI(auth);
+                frame = new CityUI(auth);
                 frame.setVisible(true);
-                if (frame.getProduct() != null) {
-                    tableModel.add(frame.getProduct());
+                if (frame.getCity() != null) {
+                    tableModel.add(frame.getCity());
                 }
             } catch (SQLException e1) {
                 e1.printStackTrace();
@@ -320,7 +306,7 @@ public class CRUDProducts extends JPanel {
 			}
 													
 			@Override
-			public void changedUpdate(DocumentEvent e) { /* Empty due to interface */ }
+			public void changedUpdate(DocumentEvent e) {}
 		});
+		}
 	}
-}

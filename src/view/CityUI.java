@@ -7,9 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
-import controller.DepartmentController;
+import controller.CityController;
 import model.City;
-import model.Department;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
@@ -18,11 +17,14 @@ import javax.swing.JTextField;
 import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Objects;
+import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class DepartmentUI extends JDialog {
+public class CityUI extends JDialog {
 	
 	public enum Mode {
 		VIEW,
@@ -33,37 +35,38 @@ public class DepartmentUI extends JDialog {
 	private JPanel contentPane;
 	private JTextField txtId;
 	private JTextField txtName;
-	private JTextField txtAddress;
-	private JTextField txtZip;
+	private JTextField txtZipcode;
 	private JButton btnSubmit;
-	private Department department;
-	private DepartmentController departmentCtrl;
+	private City city;
+	private CityController cityCtrl;
 	private Mode mode;
 	AuthenticationController auth;
-	private JButton btnSelect;
-    private City zipCode;
+	private JPanel panel;
+	private JRadioButton rdbtnYes;
+	private JRadioButton rdbtnNo;
+	private JButton btnNewButton;
 	/**
-	 * Constructor: create new DepartmentUI
+	 * Constructor: Create a New City
 	 *
 	 * @param auth the auth controller 
+	 * @wbp.parser.constructor
 	 * @throws SQLException
 	 */
-	public DepartmentUI(AuthenticationController auth, Mode mode) throws SQLException {
+	public CityUI(AuthenticationController auth) throws SQLException {
 		this(auth, null, Mode.CREATE);
-		this.department = null;
+		this.city = null;
 	}
 	
 	/**
 	 * Create the frame.
 	 * @throws SQLException
-	 * @wbp.parser.constructor
 	 */
-	public DepartmentUI(AuthenticationController auth, Department department, Mode mode) throws SQLException {
+	public CityUI(AuthenticationController auth, City city, Mode mode) throws SQLException {
 		this.auth = auth;
 		this.mode = mode;
-		this.department = department;
+		this.city = city;
 		
-		departmentCtrl = new DepartmentController();
+		cityCtrl = new CityController();
 		
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -73,9 +76,9 @@ public class DepartmentUI extends JDialog {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{208, 208, 0};
-		gbl_contentPane.rowHeights = new int[]{19, 0, 0, 0, 19, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{19, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblId = new JLabel("Id");
@@ -99,7 +102,7 @@ public class DepartmentUI extends JDialog {
 		JLabel lblName = new JLabel("Name *");
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
 		gbc_lblName.anchor = GridBagConstraints.WEST;
-		gbc_lblName.insets = new Insets(0, 0, 5, 0);
+		gbc_lblName.insets = new Insets(0, 0, 5, 5);
 		gbc_lblName.gridx = 1;
 		gbc_lblName.gridy = 0;
 		contentPane.add(lblName, gbc_lblName);
@@ -108,91 +111,62 @@ public class DepartmentUI extends JDialog {
 		txtName.setColumns(10);
 		GridBagConstraints gbc_txtName = new GridBagConstraints();
 		gbc_txtName.anchor = GridBagConstraints.WEST;
-		gbc_txtName.insets = new Insets(0, 0, 5, 0);
+		gbc_txtName.insets = new Insets(0, 0, 5, 5);
 		gbc_txtName.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtName.gridx = 1;
 		gbc_txtName.gridy = 1;
 		contentPane.add(txtName, gbc_txtName);
 		
-		JLabel lblZip = new JLabel("ZIP Code*");
-		GridBagConstraints gbc_lblZip = new GridBagConstraints();
-		gbc_lblZip.anchor = GridBagConstraints.WEST;
-		gbc_lblZip.insets = new Insets(0, 0, 5, 5);
-		gbc_lblZip.gridx = 0;
-		gbc_lblZip.gridy = 2;
-		contentPane.add(lblZip, gbc_lblZip);
+		JLabel lblZipcode = new JLabel("Zipcode *");
+		GridBagConstraints gbc_Zipcode = new GridBagConstraints();
+		gbc_Zipcode.anchor = GridBagConstraints.WEST;
+		gbc_Zipcode.insets = new Insets(0, 0, 5, 5);
+		gbc_Zipcode.gridx = 0;
+		gbc_Zipcode.gridy = 2;
+		contentPane.add(lblZipcode, gbc_Zipcode);
 		
-		txtZip = new JTextField();
-		txtZip.setColumns(10);
-		GridBagConstraints gbc_txtZip = new GridBagConstraints();
-		gbc_txtZip.insets = new Insets(0, 0, 5, 5);
-		gbc_txtZip.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtZip.gridx = 0;
-		gbc_txtZip.gridy = 3;
-		contentPane.add(txtZip, gbc_txtZip);
-		
-		btnSelect = new JButton("Select");
-		btnSelect.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		GridBagConstraints gbc_btnSelect = new GridBagConstraints();
-		gbc_btnSelect.anchor = GridBagConstraints.WEST;
-		gbc_btnSelect.insets = new Insets(0, 0, 5, 0);
-		gbc_btnSelect.gridx = 1;
-		gbc_btnSelect.gridy = 3;
-		contentPane.add(btnSelect, gbc_btnSelect);
-		
-		JLabel lblAddress = new JLabel("Address *");
-		GridBagConstraints gbc_lblAddress = new GridBagConstraints();
-		gbc_lblAddress.anchor = GridBagConstraints.WEST;
-		gbc_lblAddress.insets = new Insets(0, 0, 5, 5);
-		gbc_lblAddress.gridx = 0;
-		gbc_lblAddress.gridy = 4;
-		contentPane.add(lblAddress, gbc_lblAddress);
-		
-		txtAddress = new JTextField();
-		txtAddress.setColumns(10);
-		GridBagConstraints gbc_txtAddress = new GridBagConstraints();
-		gbc_txtAddress.insets = new Insets(0, 0, 5, 5);
-		gbc_txtAddress.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtAddress.gridx = 0;
-		gbc_txtAddress.gridy = 5;
-		contentPane.add(txtAddress, gbc_txtAddress);
-		
-		
+		txtZipcode = new JTextField();
+		txtZipcode.setColumns(10);
+		GridBagConstraints gbc_txtZipcode = new GridBagConstraints();
+		gbc_txtZipcode.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtZipcode.insets = new Insets(0, 0, 5, 5);
+		gbc_txtName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtZipcode.gridx = 0;
+		gbc_txtZipcode.gridy = 3;
+		contentPane.add(txtZipcode, gbc_txtZipcode);
+				
 		btnSubmit = new JButton("Submit");
 		GridBagConstraints gbc_btnOk = new GridBagConstraints();
+		gbc_btnOk.insets = new Insets(0, 0, 0, 5);
 		gbc_btnOk.anchor = GridBagConstraints.EAST;
 		gbc_btnOk.gridx = 1;
-		gbc_btnOk.gridy = 7;
+		gbc_btnOk.gridy = 5;
 		contentPane.add(btnSubmit, gbc_btnOk);
-		
 		
 		switch (mode) {
 			case VIEW:
 				// Set title
-				setTitle("View Department - " + department.getName());
+				setTitle("View Product - " + city.getName());
 				// Hide 'Update' button if in view mode
 				btnSubmit.setVisible(false);
 				// Disable fields
 				this.disableFields();
 				// Fill fields with content
-				this.fillFields(department);
+				this.fillFields(city);
 				break;
 			case EDIT: 
 				// Set title
-				setTitle("Edit Department");
+				setTitle("Edit Product");
 				// Change submit button text to 'Update'
 				btnSubmit.setText("Update");
 				// Enable fields for editing
 				this.enableFields();
 				// Fill fields with content
-				this.fillFields(department);
+				this.fillFields(city);
 				break;
 			case CREATE:
 				// Set title
-				setTitle("Add New Department");
+				setTitle("Add New Product");
 				// Change submit button text to 'Create'
 				btnSubmit.setText("Create");
 				// Enable fields
@@ -211,13 +185,13 @@ public class DepartmentUI extends JDialog {
 	 */
 	
 	/**
-	 * Gets the Department.
-	 * Useful for Create mode (to get the created department)
+	 * Gets the city.
+	 * Useful for Create mode (to get the created city)
 	 *
-	 * @return the department
+	 * @return the city
 	 */
-	public Department getDepartment() {
-		return this.department;
+	public City getCity() {
+		return this.city;
 	}
 	
 	// Makes the text fields uneditable
@@ -241,12 +215,10 @@ public class DepartmentUI extends JDialog {
 	}
 	
 	// FIll in the fields
-	private void fillFields(Department department) {
-		txtId.setText(String.valueOf(department.getId()));
-		txtName.setText(department.getName());
-		txtZip.setText(department.getZipCode().getZipCode().toString());
-        this.zipCode = department.getZipCode();
-		txtAddress.setText(department.getAddress());
+	private void fillFields(City city) {
+		txtId.setText(String.valueOf(city.getId()));
+		txtName.setText(city.getName());
+		txtZipcode.setText(city.getZipCode());
 	}
 	
 	/*
@@ -256,49 +228,44 @@ public class DepartmentUI extends JDialog {
 	 */
 	private void addEventHandlers() {
 		
-		// 'update' button: Update the department
+		// 'update' button: Update the city
 		btnSubmit.addActionListener(e -> {
 			String message = "";
 			if (mode == Mode.EDIT) {
-				message = "Are you sure you want to update the changes to Department?";
+				message = "Are you sure you want to update the city?";
 			} else if (mode == Mode.CREATE) {
-				message = "Create Department?";
+				message = "Add a new City?";
 			}
-			if (Messages.confirm(DepartmentUI.this, message)) {
+			if (Messages.confirm(CityUI.this, message)) {
 				
 				// Validate name
 				String name = txtName.getText().strip();
 				if (name.isEmpty()) {
-					Messages.error(this, "Department name cannot be empty");
+					Messages.error(this, "City name cannot be empty!");
 					return;
 				}
 				
-				// Validate description
-                if (zipCode == null) {
-                    Messages.error(this, "You must choose a Zip Code");
-					return;
-                }
-						
-				// Validate price
-				String address = txtAddress.getText().strip();
-				if (address.isEmpty()) {
-					Messages.error(this, "Department Address cannot be empty");
+				// Validate zipcode
+				String zipcode = txtZipcode.getText().strip();
+				if (name.isEmpty()) {
+					Messages.error(this, "Zipcode cannot be empty!");
 					return;
 				}
+				
 			
 				// if mode == view, update data
 				if (mode == Mode.EDIT) {
 			
                     try {
-                        departmentCtrl.updateDepartment(department, name, zipCode, address);;
+                        cityCtrl.updateCity(city, name, zipcode);
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
 
 				} else if (mode == Mode.CREATE) {
-					// if mode == Create, create a new department
+					// if mode == Create, create a new product
 					try {
-                        departmentCtrl.createDepartment(name, zipCode, address);
+                        cityCtrl.createCity(name,zipcode);
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     };

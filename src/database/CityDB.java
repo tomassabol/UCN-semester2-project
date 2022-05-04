@@ -122,7 +122,7 @@ public class CityDB implements CityDBIF {
      * @throws SQLException
      */
     private City buildObject(ResultSet rs) throws SQLException {
-        City city = new City(rs.getString("ZIP"), rs.getString("Name"));
+    	City city = new City(rs.getString("ZIP"), rs.getString("Name"));
         city.setId(rs.getInt("Id"));
         return city;
     }

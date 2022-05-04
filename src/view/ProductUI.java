@@ -17,6 +17,7 @@ import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -277,7 +278,6 @@ public class ProductUI extends JDialog {
 				// Enable fields
 				this.enableFields();
 				// Peek ID
-				txtId.setText(String.valueOf(product.getId()));
 		}
 		
 		
