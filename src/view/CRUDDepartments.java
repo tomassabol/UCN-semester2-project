@@ -27,6 +27,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import view.DepartmentUI.Mode;
 import view.JLink.COLORS;
 import view.tableModel.DepartmentTableModel;
 import view.tableModel.DepartmentTableModel.Column;
@@ -44,7 +46,7 @@ public class CRUDDepartments extends JPanel {
  	private DepartmentTableModel tableModel;
  	private JLink btnView;
  	private JLink btnEdit;
- 	private JLink btnDisable;
+ 	private JLink btnDelete;
  	private AuthenticationController auth;
  	private JTextField txtSearch;
 
@@ -138,17 +140,17 @@ public class CRUDDepartments extends JPanel {
  		gbc_btnEdit.gridy = 0;
  		bottomPanel.add(btnEdit, gbc_btnEdit);
 
- 		// ***** Disable button *****
- 		btnDisable = new JLink("Disable", COLORS.RED);
- 		GridBagConstraints gbc_btnDisable = new GridBagConstraints();
- 		gbc_btnDisable.gridx = 3;
- 		gbc_btnDisable.gridy = 0;
- 		bottomPanel.add(btnDisable, gbc_btnDisable);
+ 		// ***** Delete button *****
+ 		btnDelete = new JLink("Delete", COLORS.RED);
+ 		GridBagConstraints gbc_btnDelete = new GridBagConstraints();
+ 		gbc_btnDelete.gridx = 3;
+ 		gbc_btnDelete.gridy = 0;
+ 		bottomPanel.add(btnDelete, gbc_btnDelete);
 
  		// By default: all selection buttons disabled
  		btnView.setEnabled(false);
  		btnEdit.setEnabled(false);
- 		btnDisable.setEnabled(false);
+ 		btnDelete.setEnabled(false);
 
  		// Add filtering
  		rowSorter = new TableRowSorter<TableModel>(tableModel);
@@ -202,24 +204,24 @@ public class CRUDDepartments extends JPanel {
  				// Not selected
  				btnView.setEnabled(false);
  				btnEdit.setEnabled(false);
- 				btnDisable.setEnabled(false);
  			} else {
  				// Selected
  				//int row = tableMain.getSelectedRow();
  				// Department department = tableModel.getObj(row);
  				btnView.setEnabled(true);
  				btnEdit.setEnabled(true);
- 				btnDisable.setEnabled(true);
+ 				btnDelete.setEnabled(false);
  			}
  		});
 
- 		// Disable department
- 		btnDisable.addActionListener(e -> {
+ 		// Delete department
+ 		btnDelete.addActionListener(e -> {
  			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
  			Department department = tableModel.getObj(row);
  			if (Messages.confirm(this, String.format("Are you sure you wish to delete the Department '%s'?",
  					department.getName()))) {
                      try {
+						 System.out.println(department.getName());
                         departmentCtrl.deleteDepartment(department);
                      } catch (SQLException e1) {
                          e1.printStackTrace();
@@ -265,7 +267,7 @@ public class CRUDDepartments extends JPanel {
  		btnAddDepartment.addActionListener(e -> {
  			DepartmentUI frame;
              try {
-                 frame = new DepartmentUI(auth);
+                 frame = new DepartmentUI(auth, Mode.CREATE);
                  frame.setVisible(true);
                  if (frame.getDepartment() != null) {
                      tableModel.add(frame.getDepartment());
