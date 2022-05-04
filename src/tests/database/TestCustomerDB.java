@@ -64,7 +64,7 @@ public class TestCustomerDB {
         // Assert
         assertEquals(size, customers.size());
     }
-
+    
     @Test
     public void testCreateCustomer() throws SQLException, NotFoundException {
         // Arrange
