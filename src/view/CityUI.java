@@ -17,12 +17,7 @@ import javax.swing.JTextField;
 import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.Objects;
-import javax.swing.JRadioButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class CityUI extends JDialog {
 	
@@ -41,10 +36,7 @@ public class CityUI extends JDialog {
 	private CityController cityCtrl;
 	private Mode mode;
 	AuthenticationController auth;
-	private JPanel panel;
-	private JRadioButton rdbtnYes;
-	private JRadioButton rdbtnNo;
-	private JButton btnNewButton;
+	
 	/**
 	 * Constructor: Create a New City
 	 *
