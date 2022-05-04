@@ -527,8 +527,13 @@ public class Dashboard extends JFrame {
 		});
 
 		btnCustomer.addActionListener(e -> {
-			// TODO: update once implemented
-			Messages.info(null, "Not implemented yet");
+			ManageCustomer frame;
+			try {
+				frame = new ManageCustomer(auth);
+				frame.setVisible(true);
+			} catch (SQLException | NotFoundException e1) {
+				e1.printStackTrace();
+			}
 		});
 
 		btnEmployee.addActionListener(e -> {

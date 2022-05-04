@@ -115,7 +115,7 @@ public class ChooseProduct extends JDialog {
 		btnChoose.addActionListener(e -> {
 			JTable table = CRUDPanel.getTable();
 			if (!table.getSelectionModel().isSelectionEmpty()) {
-				ProductTableModel tableModel = CRUDPanel.getTableModel();
+				CustomerTableModel tableModel = CRUDPanel.getTableModel();
 				Product product = tableModel.getObj(table.getSelectedRow());
 				selectedProduct = product;
 				this.dispose();
