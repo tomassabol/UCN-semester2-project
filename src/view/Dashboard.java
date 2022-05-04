@@ -108,7 +108,6 @@ public class Dashboard extends JFrame {
 		
 		// ***** Order tab *****
 		initOrderTab();
-		initEmployeeTab(); // employee
 		initLocationTab(); // locations
 		initStorageTab(); // storage
 		initPeopleTab(); // people
@@ -194,57 +193,6 @@ public class Dashboard extends JFrame {
 		orderPanel.add(btnShowOrders, gbc_btnShowOrders);
 	}
 	
-	// employee
-	public void initEmployeeTab() {
-		JPanel employeePanel = new JPanel();
-		employeePanel.setBorder(new EmptyBorder(10, 0, 0, 0));
-		tabsPane.addTab("Employees", null, employeePanel, null);
-		GridBagLayout gbl_employeePanel = new GridBagLayout();
-		gbl_employeePanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
-		gbl_employeePanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_employeePanel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
-		gbl_employeePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		employeePanel.setLayout(gbl_employeePanel);
-		
-		btnNewButton = new JButton("Choose employee");
-		btnNewButton.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.gridwidth = 4;
-		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 1;
-		employeePanel.add(btnNewButton, gbc_btnNewButton);
-		
-		txtEmployeeEmail = new JTextField();
-		txtEmployeeEmail.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		txtEmployeeEmail.setText("Employee email");
-		GridBagConstraints gbc_txtEmployeeEmail = new GridBagConstraints();
-		gbc_txtEmployeeEmail.gridwidth = 4;
-		gbc_txtEmployeeEmail.insets = new Insets(0, 0, 5, 5);
-		gbc_txtEmployeeEmail.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtEmployeeEmail.gridx = 1;
-		gbc_txtEmployeeEmail.gridy = 2;
-		employeePanel.add(txtEmployeeEmail, gbc_txtEmployeeEmail);
-		txtEmployeeEmail.setColumns(10);
-		
-		lblEmployees = new JLabel("Employees");
-		lblEmployees.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_lblEmployees = new GridBagConstraints();
-		gbc_lblEmployees.insets = new Insets(0, 0, 5, 5);
-		gbc_lblEmployees.gridx = 3;
-		gbc_lblEmployees.gridy = 4;
-		employeePanel.add(lblEmployees, gbc_lblEmployees);
-		
-		btnEmployees = new JButton("Employees");
-		btnEmployees.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_btnEmployees = new GridBagConstraints();
-		gbc_btnEmployees.insets = new Insets(0, 0, 5, 5);
-		gbc_btnEmployees.gridx = 3;
-		gbc_btnEmployees.gridy = 5;
-		employeePanel.add(btnEmployees, gbc_btnEmployees);
-	}
-
 	// locations
 	public void initLocationTab() {
 		JPanel locationPanel = new JPanel();
@@ -400,17 +348,6 @@ public class Dashboard extends JFrame {
 				frame.setVisible(true);
 			}
 		});
-		
-		//Employees button
-		btnEmployees.addActionListener(e -> {
-			ManageEmployees frame;
-			try {
-				frame = new ManageEmployees(auth);
-				frame.setVisible(true);
-			} catch (SQLException | NotFoundException e1) {
-				e1.printStackTrace();
-			}
-		});
 
 		btnDepartment.addActionListener(e -> {
 			ManageDepartments frame;
@@ -449,8 +386,13 @@ public class Dashboard extends JFrame {
 		});
 
 		btnEmployee.addActionListener(e -> {
-			// TODO: update once implemented
-			Messages.info(null, "Not implemented yet");
+			ManageEmployees frame;
+			try {
+				frame = new ManageEmployees(auth);
+				frame.setVisible(true);
+			} catch (SQLException | NotFoundException e1) {
+				e1.printStackTrace();
+			}
 		});
 	}
 

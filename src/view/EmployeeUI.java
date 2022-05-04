@@ -348,7 +348,7 @@ public class EmployeeUI extends JDialog {
 	// Makes the text fields uneditable
 	private void disableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox) {
 				      c.setEnabled(false);
 				   }
 			}
@@ -358,7 +358,7 @@ public class EmployeeUI extends JDialog {
 	// Makes the text fields editable except ID field
 	private void enableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox) {
 			      c.setEnabled(true);
 			   }
 			}
