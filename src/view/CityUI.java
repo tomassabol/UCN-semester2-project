@@ -17,12 +17,7 @@ import javax.swing.JTextField;
 import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.Objects;
-import javax.swing.JRadioButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class CityUI extends JDialog {
 	
@@ -41,10 +36,6 @@ public class CityUI extends JDialog {
 	private CityController cityCtrl;
 	private Mode mode;
 	AuthenticationController auth;
-	private JPanel panel;
-	private JRadioButton rdbtnYes;
-	private JRadioButton rdbtnNo;
-	private JButton btnNewButton;
 	/**
 	 * Constructor: Create a New City
 	 *
@@ -146,7 +137,7 @@ public class CityUI extends JDialog {
 		switch (mode) {
 			case VIEW:
 				// Set title
-				setTitle("View Product - " + city.getName());
+				setTitle("View City - " + city.getName());
 				// Hide 'Update' button if in view mode
 				btnSubmit.setVisible(false);
 				// Disable fields
@@ -156,7 +147,7 @@ public class CityUI extends JDialog {
 				break;
 			case EDIT: 
 				// Set title
-				setTitle("Edit Product");
+				setTitle("Edit City");
 				// Change submit button text to 'Update'
 				btnSubmit.setText("Update");
 				// Enable fields for editing
@@ -166,7 +157,7 @@ public class CityUI extends JDialog {
 				break;
 			case CREATE:
 				// Set title
-				setTitle("Add New Product");
+				setTitle("Add New City");
 				// Change submit button text to 'Create'
 				btnSubmit.setText("Create");
 				// Enable fields

@@ -3,10 +3,8 @@ package view;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import controller.AuthenticationController;
 import exceptions.NotFoundException;
-
 import java.awt.GridBagLayout;
 import java.sql.SQLException;
 import java.awt.GridBagConstraints;
