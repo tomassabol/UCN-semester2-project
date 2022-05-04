@@ -18,8 +18,10 @@ import javax.swing.JPanel;
 
 import controller.AuthenticationController;
 import controller.DepartmentController;
+import controller.EmployeeController;
 import exceptions.NotFoundException;
 import model.Department;
+import model.Employee;
 
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
@@ -27,26 +29,25 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-
-import view.DepartmentUI.Mode;
 import view.JLink.COLORS;
 import view.tableModel.DepartmentTableModel;
 import view.tableModel.DepartmentTableModel.Column;
+import view.tableModel.EmployeeTableModel;
 
 import javax.swing.JTextField;
 
-public class CRUDDepartments extends JPanel {
+public class CRUDEmployees extends JPanel {
 
-	private JButton btnAddDepartment;
-	private DepartmentController departmentCtrl;
+	private JButton btnAddEmployee;
+	private EmployeeController employeeCtrl;
  	private TableRowSorter<TableModel> rowSorter;
 
  	private static final long serialVersionUID = -8329527605114016878L;
  	private JTable tableMain;
- 	private DepartmentTableModel tableModel;
+ 	private EmployeeTableModel tableModel;
  	private JLink btnView;
  	private JLink btnEdit;
- 	private JLink btnDelete;
+ 	private JLink btnDisable;
  	private AuthenticationController auth;
  	private JTextField txtSearch;
 
@@ -55,17 +56,23 @@ public class CRUDDepartments extends JPanel {
  	 * @throws SQLException
  	 * @throws NotFoundException
  	 */
-	public CRUDDepartments(AuthenticationController auth) throws SQLException, NotFoundException {
+	public CRUDEmployees(AuthenticationController auth) throws SQLException, NotFoundException {
  		this.auth = auth;
- 		departmentCtrl = new DepartmentController();
+ 		employeeCtrl = new EmployeeController();
  		setLayout(new BorderLayout(0, 0));
 
- 		tableModel = new DepartmentTableModel(departmentCtrl.findAll(), 
+ 		tableModel = new EmployeeTableModel(employeeCtrl.findAll(), 
  		Arrays.asList(
- 			    Column.ID,
- 			    Column.NAME,
- 			    Column.ZIP,
- 			    Column.ADDRESS
+ 			    EmployeeTableModel.Column.ID,
+ 			    EmployeeTableModel.Column.NAME,
+ 			    EmployeeTableModel.Column.EMAIL,
+ 			    EmployeeTableModel.Column.PHONE,
+ 			    EmployeeTableModel.Column.ZIP,
+ 			    EmployeeTableModel.Column.ADDRESS,
+ 			    EmployeeTableModel.Column.EMPLOYEE_TYPE,
+ 			    EmployeeTableModel.Column.PASSWORD,
+ 			    EmployeeTableModel.Column.CPR,
+ 			    EmployeeTableModel.Column.DEPARTMENT
  			    )
  	        );
 
@@ -80,7 +87,7 @@ public class CRUDDepartments extends JPanel {
  		topPanel.setLayout(gbl_topPanel);
  		// ***** Title *****
  		JLabel lblTitle = new JLabel(
- 			"Departments"
+ 			"Employees"
  		);
  		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
  		gbc_lblTitle.insets = new Insets(0, 0, 5, 0);
@@ -96,13 +103,13 @@ public class CRUDDepartments extends JPanel {
  		topPanel.add(txtSearch, gbc_txtSearch);
  		txtSearch.setColumns(10);
 
- 		// ***** button: Add department  *****
- 		btnAddDepartment = new JButton("Add department");
- 		GridBagConstraints gbc_btnAddDepartment = new GridBagConstraints();
- 		gbc_btnAddDepartment.insets = new Insets(0, 0, 5, 0);
- 		gbc_btnAddDepartment.gridx = 2;
- 		gbc_btnAddDepartment.gridy = 1;
- 		topPanel.add(btnAddDepartment, gbc_btnAddDepartment);
+ 		// ***** button: Add employee  *****
+ 		btnAddEmployee = new JButton("Add employee");
+ 		GridBagConstraints gbc_btnAddEmployee = new GridBagConstraints();
+ 		gbc_btnAddEmployee.insets = new Insets(0, 0, 5, 0);
+ 		gbc_btnAddEmployee.gridx = 2;
+ 		gbc_btnAddEmployee.gridy = 1;
+ 		topPanel.add(btnAddEmployee, gbc_btnAddEmployee);
 
  		// ***** Middle panel: Scroll panel *****
  		JScrollPane scrollPanel = new JScrollPane();
@@ -140,17 +147,17 @@ public class CRUDDepartments extends JPanel {
  		gbc_btnEdit.gridy = 0;
  		bottomPanel.add(btnEdit, gbc_btnEdit);
 
- 		// ***** Delete button *****
- 		btnDelete = new JLink("Delete", COLORS.RED);
- 		GridBagConstraints gbc_btnDelete = new GridBagConstraints();
- 		gbc_btnDelete.gridx = 3;
- 		gbc_btnDelete.gridy = 0;
- 		bottomPanel.add(btnDelete, gbc_btnDelete);
+ 		// ***** Disable button *****
+ 		btnDisable = new JLink("Disable", COLORS.RED);
+ 		GridBagConstraints gbc_btnDisable = new GridBagConstraints();
+ 		gbc_btnDisable.gridx = 3;
+ 		gbc_btnDisable.gridy = 0;
+ 		bottomPanel.add(btnDisable, gbc_btnDisable);
 
  		// By default: all selection buttons disabled
  		btnView.setEnabled(false);
  		btnEdit.setEnabled(false);
- 		btnDelete.setEnabled(false);
+ 		btnDisable.setEnabled(false);
 
  		// Add filtering
  		rowSorter = new TableRowSorter<TableModel>(tableModel);
@@ -170,21 +177,21 @@ public class CRUDDepartments extends JPanel {
  		return tableMain;
  	}
 
- 	public DepartmentTableModel getTableModel() {
+ 	public EmployeeTableModel getTableModel() {
  		return tableModel;
  	}
 
  	/**
- 	 * Select a department in the CRUD table.
+ 	 * Select an employee in the CRUD table.
  	 *
- 	 * @param department the department
+ 	 * @param employee the employee
  	 * @return true, if successful
  	 */
- 	public boolean selectdepartment(Department department) {
+ 	public boolean selectEmployee(Employee employee) {
  		int rows = tableModel.getRowCount();
  		for (int i = 0; i < rows; i++) {
- 			Department foundDepartment = tableModel.getObj(i);
- 			if (foundDepartment == department) {
+ 			Employee foundEmployee = tableModel.getObj(i);
+ 			if (foundEmployee == employee) {
  				tableMain.getSelectionModel().setSelectionInterval(0, i);
  				return true;
  			}
@@ -204,25 +211,25 @@ public class CRUDDepartments extends JPanel {
  				// Not selected
  				btnView.setEnabled(false);
  				btnEdit.setEnabled(false);
+ 				btnDisable.setEnabled(false);
  			} else {
  				// Selected
  				//int row = tableMain.getSelectedRow();
- 				// Department department = tableModel.getObj(row);
+ 				// Employee employee = tableModel.getObj(row);
  				btnView.setEnabled(true);
  				btnEdit.setEnabled(true);
- 				btnDelete.setEnabled(false);
+ 				btnDisable.setEnabled(true);
  			}
  		});
 
- 		// Delete department
- 		btnDelete.addActionListener(e -> {
+ 		// Disable employee
+ 		btnDisable.addActionListener(e -> {
  			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
- 			Department department = tableModel.getObj(row);
- 			if (Messages.confirm(this, String.format("Are you sure you wish to delete the Department '%s'?",
- 					department.getName()))) {
+ 			Employee employee = tableModel.getObj(row);
+ 			if (Messages.confirm(this, String.format("Are you sure you wish to delete the Employee '%s'?",
+ 					employee.getName()))) {
                      try {
-						 System.out.println(department.getName());
-                        departmentCtrl.deleteDepartment(department);
+                        employeeCtrl.deleteEmployee(employee);
                      } catch (SQLException e1) {
                          e1.printStackTrace();
                      } 
@@ -233,26 +240,26 @@ public class CRUDDepartments extends JPanel {
  			}
  		);
 
- 		// View department
+ 		// View employee
  		btnView.addActionListener(e -> {
  			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
- 			Department department = tableModel.getObj(row);
- 			DepartmentUI frame;
+ 			Employee employee = tableModel.getObj(row);
+ 			EmployeeUI frame;
              try {
-                 frame = new DepartmentUI(auth, department, DepartmentUI.Mode.VIEW);
+                 frame = new EmployeeUI(auth, employee, EmployeeUI.Mode.VIEW);
                  frame.setVisible(true);
              } catch (SQLException e1) {
                  e1.printStackTrace();
              }
  		});
 
- 		// Edit department
+ 		// Edit employee
  		btnEdit.addActionListener(e -> {
  			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
- 			Department department = tableModel.getObj(row);
- 			DepartmentUI frame;
+ 			Employee employee = tableModel.getObj(row);
+ 			EmployeeUI frame;
              try {
-                 frame = new DepartmentUI(auth, department, DepartmentUI.Mode.EDIT);
+                 frame = new EmployeeUI(auth, employee, EmployeeUI.Mode.EDIT);
                  frame.setVisible(true);
              } catch (SQLException e1) {
                  e1.printStackTrace();
@@ -263,14 +270,14 @@ public class CRUDDepartments extends JPanel {
  			tableMain.getSelectionModel().setSelectionInterval(0, row);
  		});
 
- 		// Create department
- 		btnAddDepartment.addActionListener(e -> {
- 			DepartmentUI frame;
+ 		// Create employee
+ 		btnAddEmployee.addActionListener(e -> {
+ 			EmployeeUI frame;
              try {
-                 frame = new DepartmentUI(auth, Mode.CREATE);
+                 frame = new EmployeeUI(auth);
                  frame.setVisible(true);
-                 if (frame.getDepartment() != null) {
-                     tableModel.add(frame.getDepartment());
+                 if (frame.getEmployee() != null) {
+                     tableModel.add(frame.getEmployee());
                  }
              } catch (SQLException e1) {
                  e1.printStackTrace();

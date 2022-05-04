@@ -37,20 +37,14 @@ public class Dashboard extends JFrame {
 	private JTabbedPane tabsPane;
 	private Component lblGreeting;
 	private JLabel lblCreateOrder;
-	private JLabel lblCreateEmployee; // employee
-	private JLabel lblUpdateEmployee; // employee
-	private JLabel lblReadEmployee; // employee
-	private JLabel lblDeleteEmployee;
+	private JLabel lblEmployees; 
 	private JLabel lblDepartment; // department
 	private JLabel lblCities; // cities
 	private JLabel lblProduct; // product
 	private JLabel lblCustomer; // customer
 	private JLabel lblEmployee; // employee
 	private JButton btnCreateOrder;
-	private JButton btnCreateEmployee; //employee
-	private JButton btnUpdateEmployee; // employee
-	private JButton btnReadEmployee; // employee
-	private JButton btnDeleteEmployee;
+	private JButton btnEmployees; 
 	private JButton btnDepartment; // department
 	private JButton btnCities; // cities
 	private JButton btnProduct; // product
@@ -122,7 +116,6 @@ public class Dashboard extends JFrame {
 		
 		// ***** Order tab *****
 		initOrderTab();
-		initEmployeeTab(); // employee
 		initLocationTab(); // locations
 		initStorageTab(); // storage
 		initPeopleTab(); // people
@@ -208,105 +201,6 @@ public class Dashboard extends JFrame {
 		orderPanel.add(btnShowOrders, gbc_btnShowOrders);
 	}
 	
-	// employee
-	public void initEmployeeTab() {
-		JPanel employeePanel = new JPanel();
-		employeePanel.setBorder(new EmptyBorder(10, 0, 0, 0));
-		tabsPane.addTab("Employees", null, employeePanel, null);
-		GridBagLayout gbl_employeePanel = new GridBagLayout();
-		gbl_employeePanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
-		gbl_employeePanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_employeePanel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
-		gbl_employeePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		employeePanel.setLayout(gbl_employeePanel);
-		
-		btnNewButton = new JButton("Choose employee");
-		btnNewButton.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.gridwidth = 4;
-		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 1;
-		employeePanel.add(btnNewButton, gbc_btnNewButton);
-		
-		txtEmployeeEmail = new JTextField();
-		txtEmployeeEmail.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		txtEmployeeEmail.setText("Employee email");
-		GridBagConstraints gbc_txtEmployeeEmail = new GridBagConstraints();
-		gbc_txtEmployeeEmail.gridwidth = 4;
-		gbc_txtEmployeeEmail.insets = new Insets(0, 0, 5, 5);
-		gbc_txtEmployeeEmail.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtEmployeeEmail.gridx = 1;
-		gbc_txtEmployeeEmail.gridy = 2;
-		employeePanel.add(txtEmployeeEmail, gbc_txtEmployeeEmail);
-		txtEmployeeEmail.setColumns(10);
-		
-		lblCreateEmployee = new JLabel("Create Employee");
-		lblCreateEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_lblCreateEmployee = new GridBagConstraints();
-		gbc_lblCreateEmployee.insets = new Insets(0, 0, 5, 5);
-		gbc_lblCreateEmployee.gridx = 1;
-		gbc_lblCreateEmployee.gridy = 4;
-		employeePanel.add(lblCreateEmployee, gbc_lblCreateEmployee);
-		
-		btnCreateEmployee = new JButton("Create Employee");
-		btnCreateEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_btnCreateEmployee = new GridBagConstraints();
-		gbc_btnCreateEmployee.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCreateEmployee.gridx = 1;
-		gbc_btnCreateEmployee.gridy = 5;
-		employeePanel.add(btnCreateEmployee, gbc_btnCreateEmployee);
-		
-		lblUpdateEmployee = new JLabel("Update Employee");
-		lblUpdateEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_lblUpdateEmployee = new GridBagConstraints();
-		gbc_lblUpdateEmployee.insets = new Insets(0, 0, 5, 5);
-		gbc_lblUpdateEmployee.gridx = 2;
-		gbc_lblUpdateEmployee.gridy = 4;
-		employeePanel.add(lblUpdateEmployee, gbc_lblUpdateEmployee);
-		
-		btnUpdateEmployee = new JButton("Update Employee");
-		btnUpdateEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_btnUpdateEmployee = new GridBagConstraints();
-		gbc_btnUpdateEmployee.insets = new Insets(0, 0, 5, 5);
-		gbc_btnUpdateEmployee.gridx = 2;
-		gbc_btnUpdateEmployee.gridy = 5;
-		employeePanel.add(btnUpdateEmployee, gbc_btnUpdateEmployee);
-
-		lblReadEmployee = new JLabel("View Employee Info");
-		lblReadEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_lblReadEmployee = new GridBagConstraints();
-		gbc_lblReadEmployee.insets = new Insets(0, 0, 5, 5);
-		gbc_lblReadEmployee.gridx = 3;
-		gbc_lblReadEmployee.gridy = 4;
-		employeePanel.add(lblReadEmployee, gbc_lblReadEmployee);
-		
-		btnReadEmployee = new JButton("View Employee Info");
-		btnReadEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_btnReadEmployee = new GridBagConstraints();
-		gbc_btnReadEmployee.insets = new Insets(0, 0, 5, 5);
-		gbc_btnReadEmployee.gridx = 3;
-		gbc_btnReadEmployee.gridy = 5;
-		employeePanel.add(btnReadEmployee, gbc_btnReadEmployee);
-		
-		lblDeleteEmployee = new JLabel("Delete Employee");
-		lblDeleteEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_lblDeleteEmployee = new GridBagConstraints();
-		gbc_lblDeleteEmployee.insets = new Insets(0, 0, 5, 5);
-		gbc_lblDeleteEmployee.gridx = 4;
-		gbc_lblDeleteEmployee.gridy = 4;
-		employeePanel.add(lblDeleteEmployee, gbc_lblDeleteEmployee);
-		
-		btnDeleteEmployee = new JButton("Delete Employee");
-		btnDeleteEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_btnDeleteEmployee = new GridBagConstraints();
-		gbc_btnDeleteEmployee.insets = new Insets(0, 0, 5, 5);
-		gbc_btnDeleteEmployee.gridx = 4;
-		gbc_btnDeleteEmployee.gridy = 5;
-		employeePanel.add(btnDeleteEmployee, gbc_btnDeleteEmployee);
-	}
-
 	// locations
 	public void initLocationTab() {
 		JPanel locationPanel = new JPanel();
@@ -478,52 +372,6 @@ public class Dashboard extends JFrame {
 				frame.setVisible(true);
 			}
 		});
-		
-		//Create employee button
-		btnCreateEmployee.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					CreateEmployee frame = new CreateEmployee();
-					frame.setVisible(true);
-				} catch (IllegalArgumentException | SQLException | NotFoundException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		
-		//Read employee button
-		btnReadEmployee.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					String employeeEmailInput = txtEmployeeEmail.getText();
-					employeeCtrl = new EmployeeController();
-					Employee foundEmployee = employeeCtrl.findOnlyByEmail(employeeEmailInput);
-					ReadEmployee frame = new ReadEmployee(foundEmployee);
-					frame.setVisible(true);
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				} catch (NotFoundException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		
-		//Delete employee button
-		btnDeleteEmployee.addActionListener(new ActionListener() {
-			//TODO: Implement choose employee
-			public void actionPerformed(ActionEvent e) { 
-				try {
-					String employeeEmailInput = txtEmployeeEmail.getText();
-					employeeCtrl = new EmployeeController();
-					Employee foundEmployee = employeeCtrl.findOnlyByEmail(employeeEmailInput);
-					employeeCtrl.deleteEmployee(foundEmployee);
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				} catch (NotFoundException e1) {
-					e1.printStackTrace();
-				}	
-			}
-		});
 
 		btnDepartment.addActionListener(e -> {
 			ManageDepartments frame;
@@ -546,8 +394,14 @@ public class Dashboard extends JFrame {
 		});
 
 		btnCities.addActionListener(e -> {
-			// TODO: update once implemented
-			Messages.info(null, "Not implemented yet");
+			ManageCities frame;
+			try {
+				frame = new ManageCities(auth);
+				frame.setVisible(true);
+			} catch (SQLException | NotFoundException e1) {
+				e1.printStackTrace();
+			}
+		
 		});
 
 		btnCustomer.addActionListener(e -> {
@@ -556,8 +410,13 @@ public class Dashboard extends JFrame {
 		});
 
 		btnEmployee.addActionListener(e -> {
-			// TODO: update once implemented
-			Messages.info(null, "Not implemented yet");
+			ManageEmployees frame;
+			try {
+				frame = new ManageEmployees(auth);
+				frame.setVisible(true);
+			} catch (SQLException | NotFoundException e1) {
+				e1.printStackTrace();
+			}
 		});
 	}
 

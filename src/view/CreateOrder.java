@@ -113,7 +113,7 @@ public class CreateOrder extends JFrame {
 		gbc_lblTitle.gridy = 0;
 		topPanel.add(lblTitle, gbc_lblTitle);
 			
-		// ***** Button: add item *****
+		// ***** Button: clear *****
 		btnClear = new JButton("Clear");
 		GridBagConstraints gbc_btnTest_2 = new GridBagConstraints();
 		gbc_btnTest_2.insets = new Insets(0, 0, 5, 5);
@@ -121,7 +121,7 @@ public class CreateOrder extends JFrame {
 		gbc_btnTest_2.gridy = 1;
 		topPanel.add(btnClear, gbc_btnTest_2);
 					
-		// ***** button: clear  *****
+		// ***** button: Add item  *****
 		btnAddItem = new JButton("Add item");
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
