@@ -48,7 +48,7 @@ public class DepartmentUI extends JDialog {
 	 * @param auth the auth controller 
 	 * @throws SQLException
 	 */
-	public DepartmentUI(AuthenticationController auth) throws SQLException {
+	public DepartmentUI(AuthenticationController auth, Mode mode) throws SQLException {
 		this(auth, null, Mode.CREATE);
 		this.department = null;
 	}
@@ -197,8 +197,6 @@ public class DepartmentUI extends JDialog {
 				btnSubmit.setText("Create");
 				// Enable fields
 				this.enableFields();
-				// Peek ID
-				txtId.setText(String.valueOf(department.getId()));
 		}
 		
 		
