@@ -522,8 +522,14 @@ public class Dashboard extends JFrame {
 		});
 
 		btnCities.addActionListener(e -> {
-			// TODO: update once implemented
-			Messages.info(null, "Not implemented yet");
+			ManageCities frame;
+			try {
+				frame = new ManageCities(auth);
+				frame.setVisible(true);
+			} catch (SQLException | NotFoundException e1) {
+				e1.printStackTrace();
+			}
+		
 		});
 
 		btnCustomer.addActionListener(e -> {
