@@ -61,9 +61,10 @@ public class CityController {
      * @param active 
      * @throws SQLException
      */
-    public void createCity(String zipCode, String name) throws SQLException {
+    public City createCity(String zipCode, String name) throws SQLException {
         City city = new City(zipCode, name);
         cityDBIF.createCity(city);
+        return city;
     }
 
     /**

@@ -115,8 +115,8 @@ public class CityTableModel extends AbstractTableModel {
     	this.fireTableRowsDeleted(row, row);
     }
     
-    public void add(City product) {
-    	this.cities.add(product);
+    public void add(City city) {
+    	this.cities.add(city);
     	this.fireTableRowsInserted(this.getRowCount() - 1, this.getRowCount() -1);
     }
 

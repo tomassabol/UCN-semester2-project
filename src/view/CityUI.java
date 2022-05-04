@@ -36,7 +36,7 @@ public class CityUI extends JDialog {
 	private CityController cityCtrl;
 	private Mode mode;
 	AuthenticationController auth;
-	
+
 	/**
 	 * Constructor: Create a New City
 	 *
@@ -257,7 +257,8 @@ public class CityUI extends JDialog {
 				} else if (mode == Mode.CREATE) {
 					// if mode == Create, create a new product
 					try {
-                        cityCtrl.createCity(name,zipcode);
+                        City city = cityCtrl.createCity(name,zipcode);
+						this.city = city;
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     };

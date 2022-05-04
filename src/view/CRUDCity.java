@@ -20,10 +20,8 @@ import javax.swing.JPanel;
 
 import controller.AuthenticationController;
 import controller.CityController;
-import controller.ProductController;
 import exceptions.NotFoundException;
 import model.City;
-import model.Product;
 
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
@@ -185,6 +183,14 @@ public class CRUDCity extends JPanel {
 	public CityTableModel getTableModel() {
 		return tableModel;
 	}
+
+	public void setTableModel(CityTableModel tableModel) {
+		this.tableMain.setModel(tableModel);
+		this.tableModel = tableModel;
+		// Update table row sorter
+		rowSorter = new TableRowSorter<>(tableMain.getModel());
+		tableMain.setRowSorter(rowSorter);
+	}
 	
 	/**
 	 * Select a city in the CRUD table.
@@ -220,7 +226,7 @@ public class CRUDCity extends JPanel {
 			} else {
 				// Selected
 				int row = tableMain.getSelectedRow();
-				City city = tableModel.getObj(row);
+				tableModel.getObj(row);
 				btnView.setEnabled(true);
 				btnEdit.setEnabled(true);
 				btnRemove.setEnabled(false);
@@ -277,6 +283,7 @@ public class CRUDCity extends JPanel {
                 frame.setVisible(true);
                 if (frame.getCity() != null) {
                     tableModel.add(frame.getCity());
+					setTableModel(tableModel);
                 }
             } catch (SQLException e1) {
                 e1.printStackTrace();
