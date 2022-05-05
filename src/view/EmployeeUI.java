@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
-import controller.DepartmentController;
 import controller.EmployeeController;
 import exceptions.NotFoundException;
 import model.City;
@@ -24,8 +23,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import java.sql.SQLException;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class EmployeeUI extends JDialog {
 	
@@ -46,14 +43,15 @@ public class EmployeeUI extends JDialog {
 	private JTextField txtCPR;
 	private JButton btnSubmit;
 	private JComboBox<EmployeeType> boxEmployeeType;
-	private JComboBox<String> boxDepartment;
 	private Employee employee;
 	private EmployeeController employeeCtrl;
-	private DepartmentController departmentCtrl;
 	private Mode mode;
 	AuthenticationController auth;
-	private JButton btnSelect;
+	private JButton btnSelectCity;
     private City zipCode;
+    private JTextField txtDepartment;
+    private JButton btnSelectDepartment;
+	private Department department;
 	/**
 	 * Constructor: create new EmployeeUI
 	 *
@@ -76,7 +74,6 @@ public class EmployeeUI extends JDialog {
 		this.employee = employee;
 		
 		employeeCtrl = new EmployeeController();
-		departmentCtrl = new DepartmentController();
 		
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -86,9 +83,9 @@ public class EmployeeUI extends JDialog {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{208, 208, 0};
-		gbl_contentPane.rowHeights = new int[]{19, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{19, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblId = new JLabel("Id");
@@ -180,17 +177,13 @@ public class EmployeeUI extends JDialog {
 		gbc_txtZip.gridy = 5;
 		contentPane.add(txtZip, gbc_txtZip);
 		
-		btnSelect = new JButton("Select");
-		btnSelect.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		GridBagConstraints gbc_btnSelect = new GridBagConstraints();
-		gbc_btnSelect.anchor = GridBagConstraints.WEST;
-		gbc_btnSelect.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSelect.gridx = 1;
-		gbc_btnSelect.gridy = 5;
-		contentPane.add(btnSelect, gbc_btnSelect);
+		btnSelectCity = new JButton("Select");
+		GridBagConstraints gbc_btnSelectCity = new GridBagConstraints();
+		gbc_btnSelectCity.anchor = GridBagConstraints.WEST;
+		gbc_btnSelectCity.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSelectCity.gridx = 1;
+		gbc_btnSelectCity.gridy = 5;
+		contentPane.add(btnSelectCity, gbc_btnSelectCity);
 		
 		JLabel lblAddress = new JLabel("Address *");
 		GridBagConstraints gbc_lblAddress = new GridBagConstraints();
@@ -267,28 +260,28 @@ public class EmployeeUI extends JDialog {
 		gbc_lblDepartment.gridy = 10;
 		contentPane.add(lblDepartment, gbc_lblDepartment);
 		
-		boxDepartment = new JComboBox<>();
-		try {
-			for(Department department : departmentCtrl.findAll()) {
-				boxDepartment.addItem(department.getName());
-			}
-		} catch (SQLException | NotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		txtDepartment = new JTextField();
+		txtDepartment.setColumns(10);
+		GridBagConstraints gbc_txtDepartment = new GridBagConstraints();
+		gbc_txtDepartment.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDepartment.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDepartment.gridx = 0;
+		gbc_txtDepartment.gridy = 11;
+		contentPane.add(txtDepartment, gbc_txtDepartment);
 		
-		GridBagConstraints gbc_boxDepartment = new GridBagConstraints();
-		gbc_boxDepartment.anchor = GridBagConstraints.WEST;
-		gbc_boxDepartment.insets = new Insets(0, 0, 0, 5);
-		gbc_boxDepartment.gridx = 0;
-		gbc_boxDepartment.gridy = 11;
-		contentPane.add(boxDepartment, gbc_boxDepartment);
+		btnSelectDepartment = new JButton("Select");
+		GridBagConstraints gbc_btnSelectDepartment = new GridBagConstraints();
+		gbc_btnSelectDepartment.anchor = GridBagConstraints.WEST;
+		gbc_btnSelectDepartment.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSelectDepartment.gridx = 1;
+		gbc_btnSelectDepartment.gridy = 11;
+		contentPane.add(btnSelectDepartment, gbc_btnSelectDepartment);
 		
 		btnSubmit = new JButton("Submit");
 		GridBagConstraints gbc_btnOk = new GridBagConstraints();
 		gbc_btnOk.anchor = GridBagConstraints.EAST;
 		gbc_btnOk.gridx = 2;
-		gbc_btnOk.gridy = 11;
+		gbc_btnOk.gridy = 14;
 		contentPane.add(btnSubmit, gbc_btnOk);
 		
 		
@@ -348,7 +341,7 @@ public class EmployeeUI extends JDialog {
 	// Makes the text fields uneditable
 	private void disableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox || c instanceof JButton) {
 				      c.setEnabled(false);
 				   }
 			}
@@ -358,7 +351,7 @@ public class EmployeeUI extends JDialog {
 	// Makes the text fields editable except ID field
 	private void enableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox || c instanceof JButton) {
 			      c.setEnabled(true);
 			   }
 			}
@@ -377,7 +370,8 @@ public class EmployeeUI extends JDialog {
 		boxEmployeeType.setSelectedItem(employee.getEmployeeType());
 		txtPassword.setText(employee.getPassword());
 		txtCPR.setText(employee.getCPR());
-		boxDepartment.setSelectedItem(employee.getDepartment());
+		txtDepartment.setText(employee.getDepartment().getName());
+		this.department = employee.getDepartment();
 	}
 	
 	/*
@@ -432,9 +426,22 @@ public class EmployeeUI extends JDialog {
 				}
 			
 				EmployeeType employeeType = (EmployeeType) boxEmployeeType.getSelectedItem();
+				if (employeeType == null) {
+					Messages.error(this, "Employee type cannot be empty. Select Employee Type");
+					return;
+				}
+
 				String password = txtPassword.getText().strip();
+				if (password.isEmpty()) {
+					Messages.error(this, "Employee password cannot be empty");
+					return;
+				}
+
 				String CPR = txtCPR.getText().strip();
-				Department department = (Department) boxDepartment.getSelectedItem();
+				if (password.isEmpty()) {
+					Messages.error(this, "Employee CPR cannot be empty");
+					return;
+				}
 				
 				// if mode == view, update data
 				if (mode == Mode.EDIT) {
@@ -448,7 +455,8 @@ public class EmployeeUI extends JDialog {
 				} else if (mode == Mode.CREATE) {
 					// if mode == Create, create a new employee
 					try {
-                        employeeCtrl.createEmployee(name, email, phone, zipCode, address, employeeType, password, CPR, department);
+                        Employee employee = employeeCtrl.createEmployee(name, email, phone, zipCode, address, employeeType, password, CPR, department);
+						this.employee = employee;
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     };
@@ -459,6 +467,34 @@ public class EmployeeUI extends JDialog {
 			}
 			// Dispose of the window
 			this.dispose();
+		});
+
+		btnSelectCity.addActionListener(e -> {
+			ChooseCity frame;
+			try {
+				frame = new ChooseCity(auth);
+				frame.setVisible(true);
+				if (frame.getSelectedCity() != null) {
+					this.zipCode = frame.getSelectedCity();
+					txtZip.setText(zipCode.getZipCode());
+				}
+			} catch (SQLException | NotFoundException e1) {
+				e1.printStackTrace();
+			}
+		});
+
+		btnSelectDepartment.addActionListener(e -> {
+			ChooseDepartment frame;
+			try {
+				frame = new ChooseDepartment(auth);
+				frame.setVisible(true);
+				if (frame.getSelectedDepartment() != null) {
+					this.department = frame.getSelectedDepartment();
+					txtDepartment.setText(department.getName());
+				}
+			} catch (SQLException | NotFoundException e1) {
+				e1.printStackTrace();
+			}
 		});
 	}
 }

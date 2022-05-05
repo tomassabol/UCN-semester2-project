@@ -12,15 +12,15 @@ public class Product {
     private boolean active;
 
     public enum ProductType {
-        BIKE(),
-        EBIKE(),
-        ACCESSORIES(),
-        ELECTRONICS(),
-        PARTS(),
-        TOOLS(),
-        CLOTHING(),
-        SHOES(),
-        NUTRITION();
+        BIKE,
+        EBIKE,
+        ACCESSORIES,
+        ELECTRONICS,
+        PARTS,
+        TOOLS,
+        CLOTHING,
+        SHOES,
+        NUTRITION;
 
         private int id;
 

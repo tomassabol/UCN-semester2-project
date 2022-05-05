@@ -96,7 +96,7 @@ public class ProductDB implements ProductDBIF {
     public void createProduct(Product product) throws SQLException {
         createProduct.setString(1, product.getName());
         createProduct.setString(2, product.getDescription());
-        createProduct.setString(3, String.valueOf(product.getProductType().getId()));
+        createProduct.setInt(3, product.getProductType().getId());
         createProduct.setBigDecimal(4, product.getPrice());
         createProduct.setInt(5, product.getDiscount());
         createProduct.setBoolean(6, product.getActive());
@@ -111,7 +111,7 @@ public class ProductDB implements ProductDBIF {
     public void updateProduct(Product product) throws SQLException {
         updateProduct.setString(1, product.getName());
         updateProduct.setString(2, product.getDescription());
-        updateProduct.setString(3, String.valueOf(product.getProductType().getId()));
+        updateProduct.setInt(3, product.getProductType().getId());
         updateProduct.setBigDecimal(4, product.getPrice());
         updateProduct.setInt(5, product.getDiscount());
         updateProduct.setBoolean(6, product.getActive()); // Maybe remove later

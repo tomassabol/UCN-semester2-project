@@ -47,7 +47,7 @@ public class TestProductTypeDB {
     @Test
     public void testFindAll() throws SQLException {
         // Arrange
-        int size = 3;
+        int size = 9;
         List<ProductType> productTypes = new ArrayList<>();
         // Act
         productTypes = productTypeDBIF.findAll();
