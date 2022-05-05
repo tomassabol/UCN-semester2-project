@@ -59,11 +59,6 @@ public class EmployeeController {
         Employee employee = employeeDBIF.findByEmail(email, password);
         return employee;
     }
-    
-    public Employee findOnlyByEmail(String email) throws SQLException, NotFoundException {
-    	Employee employee = employeeDBIF.findOnlyByEmail(email);
-    	return employee;
-    }
 
     /**
      * creates a new employee
