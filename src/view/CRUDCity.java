@@ -2,7 +2,6 @@ package view;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
-
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -10,19 +9,15 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
-
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
-
 import controller.AuthenticationController;
 import controller.CityController;
 import exceptions.NotFoundException;
 import model.City;
-
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
@@ -41,7 +36,6 @@ public class CRUDCity extends JPanel {
 	private JPanel contentPane;
 	private CityController cityCtrl;
 	private TableRowSorter<TableModel> rowSorter;
-
 	private static final long serialVersionUID = -8329527605114016878L;
 	private JTable tableMain;
 	private CityTableModel tableModel;
@@ -270,7 +264,6 @@ public class CRUDCity extends JPanel {
                 e1.printStackTrace();
             }
 			tableModel.fireTableRowsUpdated(row, row);
-			// Refresh selection (e.g. in case sell price is now set to nothing)
 			tableMain.clearSelection();
 			tableMain.getSelectionModel().setSelectionInterval(0, row);
 		});

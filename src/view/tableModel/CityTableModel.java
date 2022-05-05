@@ -40,10 +40,10 @@ public class CityTableModel extends AbstractTableModel {
     private List<Column> columns;
 
     /**
-     * Instantiates a new product table model.
+     * Instantiates a new city table model.
      * 
      *
-     * @param products the products
+     * @param city the cities
      * @param columns the columns to be displayed
      * @throws SQLException
      */
@@ -54,15 +54,15 @@ public class CityTableModel extends AbstractTableModel {
     }
     
     /**
-     * Instantiates a new product table model.
+     * Instantiates a new city table model.
      * Note: This constructor shows all columns
      *
-     * @param products the products
+     * @param cities the cities
      */
-    public CityTableModel(List<City> products) {
+    public CityTableModel(List<City> cities) {
     	this.columns = new ArrayList<Column>(Arrays.asList(Column.class.getEnumConstants()));
         // Prevent possible external mutation
-        this.cities = new ArrayList<>(products);
+        this.cities = new ArrayList<>(cities);
     }
 
     @Override
