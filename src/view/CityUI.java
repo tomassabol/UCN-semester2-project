@@ -249,7 +249,7 @@ public class CityUI extends JDialog {
 				if (mode == Mode.EDIT) {
 			
                     try {
-                        cityCtrl.updateCity(city, name, zipcode);
+                        cityCtrl.updateCity(city, zipcode, name);
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
