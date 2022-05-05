@@ -174,6 +174,14 @@ public class CRUDDepartments extends JPanel {
  		return tableModel;
  	}
 
+	public void setTableModel(DepartmentTableModel tableModel) {
+ 		this.tableMain.setModel(tableModel);
+ 		this.tableModel = tableModel;
+ 		// Update table row sorter
+ 		rowSorter = new TableRowSorter<>(tableMain.getModel());
+ 		tableMain.setRowSorter(rowSorter);
+ 	}
+
  	/**
  	 * Select a department in the CRUD table.
  	 *
@@ -221,10 +229,9 @@ public class CRUDDepartments extends JPanel {
  			if (Messages.confirm(this, String.format("Are you sure you wish to delete the Department '%s'?",
  					department.getName()))) {
                      try {
-						 System.out.println(department.getName());
-                        departmentCtrl.deleteDepartment(department);
+						departmentCtrl.deleteDepartment(department);
                      } catch (SQLException e1) {
-                         e1.printStackTrace();
+						e1.printStackTrace();
                      } 
                  }
 
@@ -271,6 +278,7 @@ public class CRUDDepartments extends JPanel {
                  frame.setVisible(true);
                  if (frame.getDepartment() != null) {
                      tableModel.add(frame.getDepartment());
+					 setTableModel(tableModel);
                  }
              } catch (SQLException e1) {
                  e1.printStackTrace();

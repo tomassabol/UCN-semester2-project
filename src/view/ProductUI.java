@@ -17,7 +17,6 @@ import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import java.math.BigDecimal;
 import java.sql.SQLException;

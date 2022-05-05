@@ -56,9 +56,10 @@ public class DepartmentController {
      * @param address - address of the department
      * @throws SQLException
      */
-    public void createDepartment(String name, City zipCode, String address) throws SQLException {
+    public Department createDepartment(String name, City zipCode, String address) throws SQLException {
         Department department = new Department(name, zipCode, address);
         departmentDBIF.createDepartment(department);
+        return department;
     }
 
     /**

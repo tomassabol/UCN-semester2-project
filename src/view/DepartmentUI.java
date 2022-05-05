@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
 import controller.DepartmentController;
+import exceptions.NotFoundException;
 import model.City;
 import model.Department;
 
@@ -19,8 +20,6 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.sql.SQLException;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class DepartmentUI extends JDialog {
 	
@@ -132,10 +131,6 @@ public class DepartmentUI extends JDialog {
 		contentPane.add(txtZip, gbc_txtZip);
 		
 		btnSelect = new JButton("Select");
-		btnSelect.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		GridBagConstraints gbc_btnSelect = new GridBagConstraints();
 		gbc_btnSelect.anchor = GridBagConstraints.WEST;
 		gbc_btnSelect.insets = new Insets(0, 0, 5, 0);
@@ -298,7 +293,8 @@ public class DepartmentUI extends JDialog {
 				} else if (mode == Mode.CREATE) {
 					// if mode == Create, create a new department
 					try {
-                        departmentCtrl.createDepartment(name, zipCode, address);
+                        Department department = departmentCtrl.createDepartment(name, zipCode, address);
+						this.department = department;
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     };
@@ -309,6 +305,20 @@ public class DepartmentUI extends JDialog {
 			}
 			// Dispose of the window
 			this.dispose();
+		});
+
+		btnSelect.addActionListener(e -> {
+			ChooseCity frame;
+			try {
+				frame = new ChooseCity(auth);
+				frame.setVisible(true);
+				if (frame.getSelectedCity() != null) {
+					this.zipCode = frame.getSelectedCity();
+					txtZip.setText(zipCode.getZipCode());
+				}
+			} catch (SQLException | NotFoundException e1) {
+				e1.printStackTrace();
+			}
 		});
 	}
 }
