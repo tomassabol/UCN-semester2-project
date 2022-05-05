@@ -58,6 +58,10 @@ public class Order {
         return found;
     }
 
+    /**
+     * @param product - product to get orderline for
+     * @return orderline including the given product
+     */
     public OrderLine getOrderLinebyProduct(Product product) {
         OrderLine returnOrderLine = null;
 
@@ -81,6 +85,30 @@ public class Order {
         }
 
         return returnValue;
+    }
+
+    /**
+     * Get order price
+     * @return total price excluding discounts
+     */
+    public BigDecimal getOrderPrice() {
+        price = BigDecimal.valueOf(0);
+        orderLines.forEach(orderLine -> {
+            price.add(orderLine.getPrice());
+        });
+        return price;
+    }
+
+    /**
+     * Get order price including discounts
+     * @return total price including discounts
+     */
+    public BigDecimal getOrderPriceAfterDiscount() {
+        price = BigDecimal.valueOf(0);
+        orderLines.forEach(orderLine -> {
+            price.add(orderLine.getPriceAfterDiscount());
+        });
+        return price;
     }
 
     // getters and setters
@@ -119,24 +147,6 @@ public class Order {
 
     public Set<OrderLine> getOrderLines() {
         return this.orderLines;
-    }
-
-    // 
-
-    public BigDecimal getOrderPrice() {
-        price = BigDecimal.valueOf(0);
-        orderLines.forEach(orderLine -> {
-            price.add(orderLine.getPrice());
-        });
-        return price;
-    }
-
-    public BigDecimal getOrderPriceAfterDiscount() {
-        price = BigDecimal.valueOf(0);
-        orderLines.forEach(orderLine -> {
-            price.add(orderLine.getPriceAfterDiscount());
-        });
-        return price;
     }
 
 }

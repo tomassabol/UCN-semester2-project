@@ -25,18 +25,6 @@ public class OrderLine {
 
     // add and remove methods for items Set<Item>
 
-    public BigDecimal getPrice() {
-        BigDecimal productQuantity = BigDecimal.valueOf(quantity);
-        price = product.getPrice().multiply(productQuantity);
-        return price;
-    }
-
-    public BigDecimal getPriceAfterDiscount() {
-        BigDecimal productQuantity = BigDecimal.valueOf(quantity);
-        price = product.getPriceAfterDiscount().multiply(productQuantity);
-        return price;
-    }
-
     /**
      * Add the item to the Set
      * @param item - item to be added
@@ -51,6 +39,24 @@ public class OrderLine {
      */
     public void removeItem(Item item) {
         items.remove(item);
+    }
+
+    /**
+     * @return price of the orderline excluding discounts
+     */
+    public BigDecimal getPrice() {
+        BigDecimal productQuantity = BigDecimal.valueOf(quantity);
+        price = product.getPrice().multiply(productQuantity);
+        return price;
+    }
+
+    /**
+     * @return price of the orderline including discounts
+     */
+    public BigDecimal getPriceAfterDiscount() {
+        BigDecimal productQuantity = BigDecimal.valueOf(quantity);
+        price = product.getPriceAfterDiscount().multiply(productQuantity);
+        return price;
     }
 
     // getters and setters
