@@ -17,10 +17,8 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
 import controller.AuthenticationController;
-import controller.DepartmentController;
 import controller.EmployeeController;
 import exceptions.NotFoundException;
-import model.Department;
 import model.Employee;
 
 import javax.swing.ListSelectionModel;
@@ -30,8 +28,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import view.JLink.COLORS;
-import view.tableModel.DepartmentTableModel;
-import view.tableModel.DepartmentTableModel.Column;
 import view.tableModel.EmployeeTableModel;
 
 import javax.swing.JTextField;
@@ -181,6 +177,14 @@ public class CRUDEmployees extends JPanel {
  		return tableModel;
  	}
 
+	 public void setTableModel(EmployeeTableModel tableModel) {
+		this.tableMain.setModel(tableModel);
+		this.tableModel = tableModel;
+		// Update table row sorter
+		rowSorter = new TableRowSorter<>(tableMain.getModel());
+		tableMain.setRowSorter(rowSorter);
+	}
+
  	/**
  	 * Select an employee in the CRUD table.
  	 *
@@ -278,6 +282,7 @@ public class CRUDEmployees extends JPanel {
                  frame.setVisible(true);
                  if (frame.getEmployee() != null) {
                      tableModel.add(frame.getEmployee());
+					 setTableModel(tableModel);
                  }
              } catch (SQLException e1) {
                  e1.printStackTrace();

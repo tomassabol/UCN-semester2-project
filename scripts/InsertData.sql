@@ -9,7 +9,13 @@ INSERT INTO Suppliers VALUES('Supplier3','Supplier3@emal.com','333333','CZ-60200
 
 INSERT INTO ProductTypes VALUES('BIKE')
 INSERT INTO ProductTypes VALUES('EBIKE')
+INSERT INTO ProductTypes VALUES('ACCESSORIES')
+INSERT INTO ProductTypes VALUES('ELECTRONICS')
+INSERT INTO ProductTypes VALUES('PARTS')
 INSERT INTO ProductTypes VALUES('TOOLS')
+INSERT INTO ProductTypes VALUES('CLOTHING')
+INSERT INTO ProductTypes VALUES('SHOES')
+INSERT INTO ProductTypes VALUES('NUTRITION')
 
 INSERT INTO Products VALUES('Product1','Description one',1,'1000',0,1)
 INSERT INTO Products VALUES('Product2','Description two',2,'2000',10,1)

@@ -11,7 +11,8 @@ public class Employee extends Person {
     public enum EmployeeType {
         ADMIN,
         CEO,
-        EMPLOYEE;
+        EMPLOYEE,
+        TEST;
 
         private int id;
 
