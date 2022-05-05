@@ -419,7 +419,8 @@ public class ProductUI extends JDialog {
 				} else if (mode == Mode.CREATE) {
 					// if mode == Create, create a new product
 					try {
-                        productCtrl.createProduct(name, description, productType, price, discount, active);
+                        Product product = productCtrl.createProduct(name, description, productType, price, discount, active);
+						this.product = product;
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     };

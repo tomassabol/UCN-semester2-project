@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 
 import java.awt.BorderLayout;
@@ -24,7 +23,6 @@ import model.Product;
 
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
@@ -178,6 +176,14 @@ public class CRUDProducts extends JPanel {
 	public ProductTableModel getTableModel() {
 		return tableModel;
 	}
+
+	public void setTableModel(ProductTableModel tableModel) {
+		this.tableMain.setModel(tableModel);
+		this.tableModel = tableModel;
+		// Update table row sorter
+		rowSorter = new TableRowSorter<>(tableMain.getModel());
+		tableMain.setRowSorter(rowSorter);
+	}
 	
 	/**
 	 * Select a product in the CRUD table.
@@ -291,6 +297,7 @@ public class CRUDProducts extends JPanel {
                 frame.setVisible(true);
                 if (frame.getProduct() != null) {
                     tableModel.add(frame.getProduct());
+					setTableModel(tableModel);
                 }
             } catch (SQLException e1) {
                 e1.printStackTrace();

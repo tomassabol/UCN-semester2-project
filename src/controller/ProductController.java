@@ -55,9 +55,10 @@ public class ProductController {
 	 * @param active
 	 * @throws SQLException
 	 */
-	public void createProduct(String name, String description, ProductType productType, BigDecimal price, int discount, boolean active) throws SQLException {
+	public Product createProduct(String name, String description, ProductType productType, BigDecimal price, int discount, boolean active) throws SQLException {
 		Product product = new Product(name, description, productType, price, discount, active);
 		productDBIF.createProduct(product);
+		return product;
 	}
 	
 	/**
