@@ -36,6 +36,7 @@ public class CityUI extends JDialog {
 	private CityController cityCtrl;
 	private Mode mode;
 	AuthenticationController auth;
+	
 	/**
 	 * Constructor: Create a New City
 	 *

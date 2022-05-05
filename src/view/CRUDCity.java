@@ -27,7 +27,6 @@ import javax.swing.table.TableRowSorter;
 import view.JLink.COLORS;
 import view.tableModel.CityTableModel;
 import view.tableModel.CityTableModel.Column;
-
 import javax.swing.JTextField;
 
 public class CRUDCity extends JPanel {
