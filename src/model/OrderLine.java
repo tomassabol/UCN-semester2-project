@@ -31,6 +31,12 @@ public class OrderLine {
         return price;
     }
 
+    public BigDecimal getPriceAfterDiscount() {
+        BigDecimal productQuantity = BigDecimal.valueOf(quantity);
+        price = product.getPriceAfterDiscount().multiply(productQuantity);
+        return price;
+    }
+
     /**
      * Add the item to the Set
      * @param item - item to be added

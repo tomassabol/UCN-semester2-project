@@ -131,4 +131,12 @@ public class Order {
         return price;
     }
 
+    public BigDecimal getOrderPriceAfterDiscount() {
+        price = BigDecimal.valueOf(0);
+        orderLines.forEach(orderLine -> {
+            price.add(orderLine.getPriceAfterDiscount());
+        });
+        return price;
+    }
+
 }
