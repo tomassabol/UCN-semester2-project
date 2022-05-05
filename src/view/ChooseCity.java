@@ -2,13 +2,12 @@ package view;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
 import exceptions.NotFoundException;
 import view.tableModel.*;
-import model.Product;
+import model.City;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -16,20 +15,15 @@ import java.awt.Insets;
 import java.sql.SQLException;
 
 import javax.swing.JTable;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.JLabel;
-import java.awt.Font;
 
-public class ChooseProduct extends JDialog {
+public class ChooseCity extends JDialog {
 
 	private static final long serialVersionUID = 2968937672159813565L;
 	private final JPanel contentPane;
-	private CRUDProducts CRUDPanel;
+	private CRUDCity CRUDPanel;
 	private JButtonPrimary btnChoose;
 	
-	private Product selectedProduct = null;
-	private int selectedQuantity;
-	private int quantity;
+	private City selectedCity = null;
 	
 	AuthenticationController auth;
 	private JPanel panel;
@@ -39,9 +33,9 @@ public class ChooseProduct extends JDialog {
 	 * @throws NotFoundException
 	 * @throws SQLException
 	 */
-	public ChooseProduct(AuthenticationController auth) throws SQLException, NotFoundException {
+	public ChooseCity(AuthenticationController auth) throws SQLException, NotFoundException {
 		this.auth = auth;
-		this.setTitle("Choose a product...");
+		this.setTitle("Choose a City...");
 		setModal(true);
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 450);
@@ -55,7 +49,7 @@ public class ChooseProduct extends JDialog {
 		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		CRUDPanel = new CRUDProducts(this.auth);
+		CRUDPanel = new CRUDCity(this.auth);
 		
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.fill = GridBagConstraints.BOTH;
@@ -63,24 +57,6 @@ public class ChooseProduct extends JDialog {
 		gbc_panel.gridx = 0;
 		gbc_panel.gridy = 0;
 		getContentPane().add(CRUDPanel, gbc_panel);
-		
-		//Create the spinner which makes the edit quantity look better
-		/*SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
-		JSpinner spinner = new JSpinner(spinnerModel);
-		GridBagConstraints gbc_spinner = new GridBagConstraints();
-		
-		try {
-			int quantity = Integer.parseInt(String.valueOf(spinner.getValue()));
-		} catch (NumberFormatException e1) {
-			Messages.error(contentPane, "The given value was not a number");
-		}*/
-		
-		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
-		
-		try {
-		} catch (NumberFormatException e1) {
-			Messages.error(contentPane, "The given value was not a number");
-		}
 		
 		panel = new JPanel();
 		GridBagConstraints gbc_panel1 = new GridBagConstraints();
@@ -95,22 +71,7 @@ public class ChooseProduct extends JDialog {
 		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
-		JLabel lblSpinner = new JLabel("Quantity:");
-		GridBagConstraints gbc_lblSpinner = new GridBagConstraints();
-		gbc_lblSpinner.insets = new Insets(0, 0, 0, 5);
-		gbc_lblSpinner.gridx = 0;
-		gbc_lblSpinner.gridy = 0;
-		panel.add(lblSpinner, gbc_lblSpinner);
-		lblSpinner.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		JSpinner spinner = new JSpinner(spinnerModel);
-		GridBagConstraints gbc_spinner = new GridBagConstraints();
-		gbc_spinner.insets = new Insets(0, 0, 0, 5);
-		gbc_spinner.gridx = 3;
-		gbc_spinner.gridy = 0;
-		panel.add(spinner, gbc_spinner);
-		quantity = Integer.parseInt(String.valueOf(spinner.getValue()));
-		
-		btnChoose = new JButtonPrimary("Choose...");
+		btnChoose = new JButtonPrimary("Select...");
 		GridBagConstraints gbc_btnChoose = new GridBagConstraints();
 		gbc_btnChoose.gridx = 18;
 		gbc_btnChoose.gridy = 0;
@@ -126,17 +87,12 @@ public class ChooseProduct extends JDialog {
 	 * *******************************************************
 	 */
 		public boolean isProductSelected() {
-			return selectedProduct != null;
+			return selectedCity != null;
 		}
 	
-		public Product getSelectedProduct() {
-			return selectedProduct;
+		public City getSelectedCity() {
+			return selectedCity;
 		}
-		
-		public int getSelectedQuantity() {
-			return selectedQuantity;
-		}
-
 	
 	/*
 	 * *******************************************************
@@ -164,10 +120,9 @@ public class ChooseProduct extends JDialog {
 		btnChoose.addActionListener(e -> {
 			JTable table = CRUDPanel.getTable();
 			if (!table.getSelectionModel().isSelectionEmpty()) {
-				ProductTableModel tableModel = CRUDPanel.getTableModel();
-				Product product = tableModel.getObj(table.getSelectedRow());
-				selectedProduct = product;
-				selectedQuantity = quantity;
+				CityTableModel tableModel = CRUDPanel.getTableModel();
+				City city = tableModel.getObj(table.getSelectedRow());
+				selectedCity = city;
 				this.dispose();
 			}
 		});

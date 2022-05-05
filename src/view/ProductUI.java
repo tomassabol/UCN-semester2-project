@@ -277,7 +277,6 @@ public class ProductUI extends JDialog {
 				// Enable fields
 				this.enableFields();
 				// Peek ID
-				txtId.setText(String.valueOf(product.getId()));
 		}
 		
 		

@@ -1,5 +1,6 @@
 package model;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ public class OrderLine {
     private Product product;
     private int quantity;
     private Set<Item> items;
+    private BigDecimal price;
 
     /**
      * Constructor for the OrderLine class
@@ -22,6 +24,12 @@ public class OrderLine {
     }
 
     // add and remove methods for items Set<Item>
+
+    public BigDecimal getPrice() {
+        BigDecimal productQuantity = BigDecimal.valueOf(quantity);
+        price = product.getPrice().multiply(productQuantity);
+        return price;
+    }
 
     /**
      * Add the item to the Set

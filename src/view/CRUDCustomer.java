@@ -11,41 +11,38 @@ import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
 import controller.AuthenticationController;
-import controller.ProductController;
 import exceptions.NotFoundException;
-import model.Product;
+import model.Customer;
+import controller.CustomerController;
 
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import view.JLink.COLORS;
-//import view.ProductUI;
-//import view.models.Product;
-import view.tableModel.ProductTableModel;
-import view.tableModel.ProductTableModel.Column;
+import view.tableModel.CustomerTableModel;
+import view.tableModel.CustomerTableModel.Column;
 
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
 
-public class CRUDProducts extends JPanel {
+public class CRUDCustomer extends JPanel {
 	
-	private JButton btnAddItem;
-	private ProductController productCtrl;
+	private JButton btnAddCustomer;
+	private CustomerController customertCtrl;
 	private TableRowSorter<TableModel> rowSorter;
 
 	private static final long serialVersionUID = -8329527605114016878L;
 	private JTable tableMain;
-	private ProductTableModel tableModel;
+	private CustomerTableModel tableModel;
 	private JLink btnView;
 	private JLink btnEdit;
 	private JLink btnDisable;
@@ -57,20 +54,20 @@ public class CRUDProducts extends JPanel {
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
-	public CRUDProducts(AuthenticationController auth) throws SQLException, NotFoundException {
+	public CRUDCustomer(AuthenticationController auth) throws SQLException, NotFoundException {
 		this.auth = auth;
-		productCtrl = new ProductController();
+		customertCtrl = new CustomerController();
 		setLayout(new BorderLayout(0, 0));
 		
-		tableModel = new ProductTableModel(productCtrl.findAll(), 
+		tableModel = new CustomerTableModel(customertCtrl.findAll(), 
 		Arrays.asList(
 			    Column.ID,
-			    Column.NAME,
-			    Column.DESCRIPTION,
-			    Column.PRODUCT_TYPE,
-			    Column.PRICE,
-			    Column.DISCOUNT,
-                Column.ACTIVE
+				Column.NAME,
+				Column.EMAIL,
+				Column.PHONE,
+				Column.ZIP,
+				Column.ADDRESS,
+				Column.CUSTOMERTYPE
 			    )
 	        );
 		
@@ -85,7 +82,7 @@ public class CRUDProducts extends JPanel {
 		topPanel.setLayout(gbl_topPanel);
 		// ***** Title *****
 		JLabel lblTitle = new JLabel(
-			String.format("Products")
+			"Customers"
 		);
 		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
 		gbc_lblTitle.insets = new Insets(0, 0, 5, 0);
@@ -101,13 +98,13 @@ public class CRUDProducts extends JPanel {
 		topPanel.add(txtSearch, gbc_txtSearch);
 		txtSearch.setColumns(10);
 			
-		// ***** button: Add product  *****
-		btnAddItem = new JButton("Add Product");
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton.gridx = 2;
-		gbc_btnNewButton.gridy = 1;
-		topPanel.add(btnAddItem, gbc_btnNewButton);
+		// ***** button: Add customer  *****
+		btnAddCustomer = new JButton("Add Customer");
+		GridBagConstraints gbc_btnAddCustomer = new GridBagConstraints();
+		gbc_btnAddCustomer.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAddCustomer.gridx = 2;
+		gbc_btnAddCustomer.gridy = 1;
+		topPanel.add(btnAddCustomer, gbc_btnAddCustomer);
 		
 		// ***** Middle panel: Scroll panel *****
 		JScrollPane scrollPanel = new JScrollPane();
@@ -175,21 +172,21 @@ public class CRUDProducts extends JPanel {
 		return tableMain;
 	}
 	
-	public ProductTableModel getTableModel() {
+	public CustomerTableModel getTableModel() {
 		return tableModel;
 	}
 	
 	/**
-	 * Select a product in the CRUD table.
+	 * Select a cusstomer in the CRUD table.
 	 *
-	 * @param product the product
+	 * @param customer the customer
 	 * @return true, if successful
 	 */
-	public boolean selectProduct(Product product) {
+	public boolean selectCustomer(Customer customer) {
 		int rows = tableModel.getRowCount();
 		for (int i = 0; i < rows; i++) {
-			Product foundProduct = tableModel.getObj(i);
-			if (foundProduct == product) {
+			Customer foundCustomer = tableModel.getObj(i);
+			if (foundCustomer == customer) {
 				tableMain.getSelectionModel().setSelectionInterval(0, i);
 				return true;
 			}
@@ -213,36 +210,36 @@ public class CRUDProducts extends JPanel {
 			} else {
 				// Selected
 				int row = tableMain.getSelectedRow();
-				Product product = tableModel.getObj(row);
+				Customer customer = tableModel.getObj(row);
 				btnView.setEnabled(true);
 				btnEdit.setEnabled(true);
 				btnDisable.setEnabled(true);
-				if (product.isActive()) {
+				/*if (customer.isActive()) {
 					btnDisable.setText("Disable");
 				} else {
 					btnDisable.setText("Enable");
-				}
+				}*/
 
 			}
 		});
-		
-		// Disable product
+		/*
+		// Disable Customer
 		btnDisable.addActionListener(e -> {
 			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
-			Product product = tableModel.getObj(row);
-			String keyword = product.isActive() ? "disable" : "enable";
-			if (Messages.confirm(this, String.format("Are you sure you wish to %s the product '%s'?",
+			Customer customer = tableModel.getObj(row);
+			String keyword = customer.isActive() ? "disable" : "enable";
+			if (Messages.confirm(this, String.format("Are you sure you wish to %s the customer '%s'?",
 					keyword,
-					product.getName()))) {
-                if (product.isActive() == false) {
+					customer.getName()))) {
+                if (customer.isActive() == false) {
                     try {
-                        productCtrl.enableProduct(product);
+                        customertCtrl.enableProduct(customer);
                     } catch (SQLException | NotFoundException e1) {
                         e1.printStackTrace();
                     }
                 } else {
                     try {
-                        productCtrl.disableProduct(product);
+                        customertCtrl.disableProduct(customer);
                     } catch (SQLException | NotFoundException e1) {
                         e1.printStackTrace();
                     } 
@@ -252,27 +249,27 @@ public class CRUDProducts extends JPanel {
 				tableMain.getSelectionModel().clearSelection();
 			}
 		});
-		
-		// View product
+		*/
+		// View customer
 		btnView.addActionListener(e -> {
 			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
-			Product product = tableModel.getObj(row);
-			ProductUI frame;
+			Customer customer = tableModel.getObj(row);
+			CustomerUI frame;
             try {
-                frame = new ProductUI(auth, product, ProductUI.Mode.VIEW);
+                frame = new CustomerUI(auth, customer, CustomerUI.Mode.VIEW);
                 frame.setVisible(true);
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
 		});
 		
-		// Edit product
+		// Edit customer
 		btnEdit.addActionListener(e -> {
 			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
-			Product product = tableModel.getObj(row);
-			ProductUI frame;
+			Customer customer = tableModel.getObj(row);
+			CustomerUI frame;
             try {
-                frame = new ProductUI(auth, product, ProductUI.Mode.EDIT);
+                frame = new CustomerUI(auth, customer, CustomerUI.Mode.EDIT);
                 frame.setVisible(true);
             } catch (SQLException e1) {
                 e1.printStackTrace();
@@ -283,14 +280,14 @@ public class CRUDProducts extends JPanel {
 			tableMain.getSelectionModel().setSelectionInterval(0, row);
 		});
 		
-		// Create product
-		btnAddItem.addActionListener(e -> {
-			ProductUI frame;
+		// Create customer
+		btnAddCustomer.addActionListener(e -> {
+			CustomerUI frame;
             try {
-                frame = new ProductUI(auth);
+                frame = new CustomerUI(auth);
                 frame.setVisible(true);
-                if (frame.getProduct() != null) {
-                    tableModel.add(frame.getProduct());
+                if (frame.getCustomer() != null) {
+                    tableModel.add(frame.getCustomer());
                 }
             } catch (SQLException e1) {
                 e1.printStackTrace();

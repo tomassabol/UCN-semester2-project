@@ -26,6 +26,7 @@ import controller.AuthenticationController;
 import controller.ItemController;
 import controller.OrderController;
 import controller.OrderLineController;
+import exceptions.NotEnoughInStockException;
 import exceptions.NotFoundException;
 import model.Customer;
 import model.Order;
@@ -43,7 +44,6 @@ public class CreateOrder extends JFrame {
 	private JButton btnClear;
 	private JButton btnAddItem;
 	private JTable tableMain;
-	private JButton btnCreateQuote;
 	private JLabel lblTotalValue;
 	private JComponent lblDiscountValue;
 	private JLabel lblSubtotalValue;
@@ -56,6 +56,7 @@ public class CreateOrder extends JFrame {
 	private OrderController orderCtrl;
 	private ItemController itemCtrl;
 	private OrderLineController orderLineCtrl;
+	private int availableQuantity;
 
 	/**
 	 * Create the frame.
@@ -63,6 +64,7 @@ public class CreateOrder extends JFrame {
 	public CreateOrder(AuthenticationController auth, Customer customer, Order order) {
 		this.auth = auth;
 		this.customer = customer;
+		this.order = order;
 		
 		try {
 			itemCtrl = new ItemController();
@@ -82,17 +84,6 @@ public class CreateOrder extends JFrame {
 			Messages.error(contentPane, "There was an error connecting to the database");
 		}
 		
-		if(order == null) {	
-			try {
-				this.order = orderCtrl.createOrder(this.auth.getLoggedInUser(), this.customer);
-			} catch (SQLException e1) {
-				Messages.error(contentPane, "There was an error connecting to the database");
-			} catch (NotFoundException e1) {
-				Messages.error(contentPane, "The order was not found in the database");
-			}
-		}else {
-			this.order = order;
-		}
 		
 		// ***** WINDOW *****
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -113,7 +104,8 @@ public class CreateOrder extends JFrame {
 		topPanel.setLayout(gbl_topPanel);
 		
 		// ***** Title *****
-		JLabel lblTitle = new JLabel(String.format("%s's order", customer.getName()));
+		//JLabel lblTitle = new JLabel(String.format("%s's order", customer.getName()));
+		JLabel lblTitle = new JLabel("Title");
 		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
 		gbc_lblTitle.gridwidth = 3;
 		gbc_lblTitle.insets = new Insets(0, 0, 5, 0);
@@ -280,21 +272,43 @@ public class CreateOrder extends JFrame {
 	 * The action performed when clicking the add item button
 	 */
 	private void addProduct() {
-		//TODO: Create window for inputing product and quantity
-		/*
+		ChooseProduct frame = null;
+		try {
+			frame = new ChooseProduct(auth);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		frame.setVisible(true);
 		if (frame.isProductSelected()) {
 			Product product = frame.getSelectedProduct();
 			int quantity = frame.getSelectedQuantity();
-			// add to cart
+			if(quantity < 0) {
+				Messages.error(frame, "You cannot give a negative number as quantity");
+				return;
+			}
+			// add to order
 			try {
-				tableModel.add(product, quantity);
+				try {
+					tableModel.add(product, quantity);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					Messages.error(frame, "There was an error connecting to the database");
+				} catch (NotFoundException e) {
+					// TODO Auto-generated catch block
+					Messages.error(frame, "The selected product was not found in the database");
+					
+				}
 			} catch (NotEnoughInStockException e) {
-				Messages.error(CreateOrder.this, String.format("There is not enough items in stock from %d", product.getName())
+				Messages.error(frame, String.format("There is not enough items in stock from %d", product.getName()));
 				
 				// Show the 'add to cart' window, again.
-				this.addItem();
+				this.addProduct();
 			}
-			*/
+		}
 	}
 	
 	/*
@@ -336,7 +350,7 @@ public class CreateOrder extends JFrame {
 		});
 		
 		// Action for createQuote button
-		btnCreateQuote.addActionListener(new ActionListener() {
+		btnCreateOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(Messages.confirm(contentPane, "Do you want to finalize the order?")) {
 					try {
@@ -376,7 +390,6 @@ public class CreateOrder extends JFrame {
 				Product product = orderLine.getProduct();
 				
 				//Get the available quantity from the product
-				int availableQuantity = 0;
 				try {
 					availableQuantity = itemCtrl.findAllPerProduct(product).size();
 				} catch (SQLException e1) {
