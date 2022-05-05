@@ -59,9 +59,10 @@ public class CustomerController {
 	 * @param customerType The type of the Customer
 	 * @throws SQLException
 	 */
-	public void createCustomer(String name, String email, String phone, City zipCode, String address, CustomerType customerType) throws SQLException {
+	public Customer createCustomer(String name, String email, String phone, City zipCode, String address, CustomerType customerType) throws SQLException {
 		Customer customer = new Customer(name, email, phone, zipCode, address, customerType);
 		customerDBIF.createCustomer(customer);
+		return customer;
 	}
 	
 	/**
@@ -69,7 +70,13 @@ public class CustomerController {
 	 * @param customer The customer that will be updated
 	 * @throws SQLException
 	 */
-	public void updateCustomer(Customer customer) throws SQLException {
+	public void updateCustomer(Customer customer, String name, String email, String phone, City zipCode, String address, CustomerType customerType) throws SQLException {
+		customer.setName(name);
+		customer.setEmail(email);
+		customer.setPhone(phone);
+		customer.setZipCode(zipCode);
+		customer.setAddress(address);
+		customer.setCustomerType(customerType);
 		customerDBIF.updateCustomer(customer);
 	}
 	

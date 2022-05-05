@@ -8,7 +8,6 @@ import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
 import controller.CustomerController;
-import controller.CustomerTypeController;
 import exceptions.NotFoundException;
 import model.City;
 import model.Customer;
@@ -22,8 +21,6 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.sql.SQLException;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
 public class CustomerUI extends JDialog {
@@ -42,18 +39,17 @@ public class CustomerUI extends JDialog {
 	private JButton btnSubmit;
 	private Customer customer;
 	private CustomerController customerCtrl;
-	private CustomerTypeController custTypeCtrl;
 	private Mode mode;
 	AuthenticationController auth;
 	private JPanel panel;
-    private CustomerType customerType;
-	private JTextField textField;
-    private JTextField textPhone;
+	private JTextField txtEmail;
+    private JTextField txtPhone;
     private JLabel lblCustomerType;
-    private JComboBox comboBoxCustomerType;
+    private JComboBox<CustomerType> boxCustomerType;
     private JLabel lblphone;
-	private City city;
+	private City zipCode;
 	private JButton btnSelect;
+
 	/**
 	 * Constructor: create new customer
 	 *@wbp.parser.constructor
@@ -71,7 +67,6 @@ public class CustomerUI extends JDialog {
 		this.customer = customer;
 		//SAD
 		customerCtrl = new CustomerController();
-		custTypeCtrl = new CustomerTypeController();
 		
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -132,28 +127,29 @@ public class CustomerUI extends JDialog {
 		
 		lblphone = new JLabel("Phone");
 		GridBagConstraints gbc_lblphone = new GridBagConstraints();
+		gbc_lblphone.anchor = GridBagConstraints.WEST;
 		gbc_lblphone.insets = new Insets(0, 0, 5, 0);
 		gbc_lblphone.gridx = 1;
 		gbc_lblphone.gridy = 3;
 		contentPane.add(lblphone, gbc_lblphone);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 0;
-		gbc_textField.gridy = 4;
-		contentPane.add(textField, gbc_textField);
+		txtEmail = new JTextField();
+		txtEmail.setColumns(10);
+		GridBagConstraints gbc_txtEmail = new GridBagConstraints();
+		gbc_txtEmail.insets = new Insets(0, 0, 5, 5);
+		gbc_txtEmail.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtEmail.gridx = 0;
+		gbc_txtEmail.gridy = 4;
+		contentPane.add(txtEmail, gbc_txtEmail);
 		
-		textPhone = new JTextField();
-		textPhone.setColumns(10);
-		GridBagConstraints gbc_textPhone = new GridBagConstraints();
-		gbc_textPhone.insets = new Insets(0, 0, 5, 0);
-		gbc_textPhone.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textPhone.gridx = 1;
-		gbc_textPhone.gridy = 4;
-		contentPane.add(textPhone, gbc_textPhone);
+		txtPhone = new JTextField();
+		txtPhone.setColumns(10);
+		GridBagConstraints gbc_txtPhone = new GridBagConstraints();
+		gbc_txtPhone.insets = new Insets(0, 0, 5, 0);
+		gbc_txtPhone.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtPhone.gridx = 1;
+		gbc_txtPhone.gridy = 4;
+		contentPane.add(txtPhone, gbc_txtPhone);
 		
 		JLabel lblZip = new JLabel("Zip");
 		GridBagConstraints gbc_lblZip = new GridBagConstraints();
@@ -174,6 +170,7 @@ public class CustomerUI extends JDialog {
 		
 		btnSelect = new JButton("Select");
 		GridBagConstraints gbc_btnSelect = new GridBagConstraints();
+		gbc_btnSelect.anchor = GridBagConstraints.WEST;
 		gbc_btnSelect.insets = new Insets(0, 0, 5, 0);
 		gbc_btnSelect.gridx = 1;
 		gbc_btnSelect.gridy = 7;
@@ -208,13 +205,13 @@ public class CustomerUI extends JDialog {
 		gbc_lblAddress.gridy = 9;
 		contentPane.add(lblAddress, gbc_lblAddress);
 		
-		comboBoxCustomerType = new JComboBox(Customer.CustomerType.values());
-		GridBagConstraints gbc_comboBoxCustomerType = new GridBagConstraints();
-		gbc_comboBoxCustomerType.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBoxCustomerType.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBoxCustomerType.gridx = 0;
-		gbc_comboBoxCustomerType.gridy = 10;
-		contentPane.add(comboBoxCustomerType, gbc_comboBoxCustomerType);
+		boxCustomerType = new JComboBox<>(CustomerType.values());
+		GridBagConstraints gbc_boxCustomerType = new GridBagConstraints();
+		gbc_boxCustomerType.insets = new Insets(0, 0, 5, 5);
+		gbc_boxCustomerType.fill = GridBagConstraints.HORIZONTAL;
+		gbc_boxCustomerType.gridx = 0;
+		gbc_boxCustomerType.gridy = 10;
+		contentPane.add(boxCustomerType, gbc_boxCustomerType);
 		
 		txtAddress = new JTextField();
 		txtAddress.setColumns(10);
@@ -295,7 +292,7 @@ public class CustomerUI extends JDialog {
 				   }
 			}
 		txtId.setEnabled(false);
-		comboBoxCustomerType.setEnabled(false);
+		boxCustomerType.setEnabled(false);
 	}
 	
 	
@@ -307,17 +304,17 @@ public class CustomerUI extends JDialog {
 			   }
 			}
 		txtId.setEnabled(false);
-		comboBoxCustomerType.setEnabled(true);
+		boxCustomerType.setEnabled(true);
 	}
 	
 	// FIll in the fields
 	private void fillFields(Customer customer) {
 		txtId.setText(String.valueOf(customer.getId()));
 		txtName.setText(customer.getName());
-		textField.setText(customer.getEmail());
-		textPhone.setText(customer.getPhone());
+		txtEmail.setText(customer.getEmail());
+		txtPhone.setText(customer.getPhone());
 		txtZip.setText(customer.getZipCode().getZipCode());
-		this.city = customer.getZipCode();
+		this.zipCode = customer.getZipCode();
 		txtAddress.setText(customer.getAddress());
 	}
 	
@@ -327,57 +324,94 @@ public class CustomerUI extends JDialog {
 	 * *******************************************************
 	 */
 	private void addEventHandlers() {
-		
-		btnSelect.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
+
+		btnSubmit.addActionListener(e -> {
+			String message = "";
+			if (mode == Mode.EDIT) {
+				message = "Are you sure you want to update the changes to Customer?";
+			} else if (mode == Mode.CREATE) {
+				message = "Create Customer?";
+			}
+			if (Messages.confirm(CustomerUI.this, message)) {
+				
+				// Validate name
+				String name = txtName.getText().strip();
+				if (name.isEmpty()) {
+					Messages.error(this, "Customer name cannot be empty");
+					return;
+				}
+				
+				// Validate email
+				String email = txtEmail.getText().strip();
+				if (email.isEmpty()) {
+					Messages.error(this, "Customer email cannot be empty");
+					return;
+				}
+				
+				// Validate phone
+				String phone = txtPhone.getText().strip();
+				if (phone.isEmpty()) {
+					Messages.error(this, "Customer phone cannot be empty");
+					return;
+				}
+				
+				// Validate zip
+                if (zipCode == null) {
+                    Messages.error(this, "You must choose a Zip Code");
+					return;
+                }
+						
+				// Validate address
+				String address = txtAddress.getText().strip();
+				if (address.isEmpty()) {
+					Messages.error(this, "Customer Address cannot be empty");
+					return;
+				}
+			
+				CustomerType customerType = (CustomerType) boxCustomerType.getSelectedItem();
+				if (customerType == null) {
+					Messages.error(this, "Customer type cannot be empty. Select Employee Type");
+					return;
+				}
+
+				
+				// if mode == view, update data
+				if (mode == Mode.EDIT) {
+			
+                    try {
+                        customerCtrl.updateCustomer(customer, name, email, phone, zipCode, address, customerType);
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+
+				} else if (mode == Mode.CREATE) {
+					// if mode == Create, create a new employee
+					try {
+                        Customer customer = customerCtrl.createCustomer(name, email, phone, zipCode, address, customerType);
+						this.customer = customer;
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    };
+				}
+
+
 				
 			}
+			// Dispose of the window
+			this.dispose();
 		});
-		btnSubmit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String message = "";
-				if(mode == mode.EDIT){
-					message ="Are you sure you want to make changes to the customer?"; 
+
+		btnSelect.addActionListener(e -> {
+			ChooseCity frame;
+			try {
+				frame = new ChooseCity(auth);
+				frame.setVisible(true);
+				if (frame.getSelectedCity() != null) {
+					this.zipCode = frame.getSelectedCity();
+					txtZip.setText(zipCode.getZipCode());
 				}
-				else if( mode == mode.CREATE){
-					message = "Do you want to create a new customer?";
-				}
-				if(Messages.confirm(null, message)){
-					//TODO: validate here
-					
-					if(mode == mode.EDIT){
-						try{
-							CustomerTypeController customerTypeController = new CustomerTypeController();
-							
-							customer.setName(txtName.getText());
-							customer.setEmail(textField.getText());
-							customer.setPhone(textPhone.getText());
-							customer.setAddress(txtAddress.getText());
-							customer.setZipCode(city);
-							customer.setCustomerType(customerTypeController.findByName(comboBoxCustomerType.getSelectedItem().toString()));
-							customerCtrl.updateCustomer(customer);
-							Messages.info(null, "Customer updated");
-						}catch(SQLException ex){
-							ex.printStackTrace();
-						}catch(NotFoundException exception){
-							exception.printStackTrace();
-						}
-					}else if (mode == mode.CREATE){
-						try{
-							String name = txtName.getText();
-							String email = textField.getText();
-							String phone = textPhone.getText();
-							String address = txtAddress.getText();
-							CustomerType customerType = custTypeCtrl.findByName(comboBoxCustomerType.getSelectedItem().toString());
-							customerCtrl.createCustomer(name, email, phone, city , address, customerType);
-							Messages.info(null, "Customer created");
-						}catch(SQLException er){
-							er.printStackTrace();
-						}catch(NotFoundException er){
-							er.printStackTrace();
-						}
-					}
-				}
+			} catch (SQLException | NotFoundException e1) {
+				e1.printStackTrace();
 			}
 		});
 

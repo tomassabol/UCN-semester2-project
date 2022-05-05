@@ -21,6 +21,7 @@ import exceptions.NotFoundException;
 import model.Customer;
 import controller.CustomerController;
 
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
@@ -30,9 +31,6 @@ import javax.swing.table.TableRowSorter;
 import view.JLink.COLORS;
 import view.tableModel.CustomerTableModel;
 import view.tableModel.CustomerTableModel.Column;
-
-import javax.swing.JTextField;
-import java.awt.event.ActionListener;
 
 public class CRUDCustomer extends JPanel {
 	
@@ -175,6 +173,14 @@ public class CRUDCustomer extends JPanel {
 	public CustomerTableModel getTableModel() {
 		return tableModel;
 	}
+
+	public void setTableModel(CustomerTableModel tableModel) {
+		this.tableMain.setModel(tableModel);
+		this.tableModel = tableModel;
+		// Update table row sorter
+		rowSorter = new TableRowSorter<>(tableMain.getModel());
+		tableMain.setRowSorter(rowSorter);
+	}
 	
 	/**
 	 * Select a cusstomer in the CRUD table.
@@ -210,46 +216,13 @@ public class CRUDCustomer extends JPanel {
 			} else {
 				// Selected
 				int row = tableMain.getSelectedRow();
-				Customer customer = tableModel.getObj(row);
+				tableModel.getObj(row);
 				btnView.setEnabled(true);
 				btnEdit.setEnabled(true);
 				btnDisable.setEnabled(true);
-				/*if (customer.isActive()) {
-					btnDisable.setText("Disable");
-				} else {
-					btnDisable.setText("Enable");
-				}*/
-
 			}
 		});
-		/*
-		// Disable Customer
-		btnDisable.addActionListener(e -> {
-			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
-			Customer customer = tableModel.getObj(row);
-			String keyword = customer.isActive() ? "disable" : "enable";
-			if (Messages.confirm(this, String.format("Are you sure you wish to %s the customer '%s'?",
-					keyword,
-					customer.getName()))) {
-                if (customer.isActive() == false) {
-                    try {
-                        customertCtrl.enableProduct(customer);
-                    } catch (SQLException | NotFoundException e1) {
-                        e1.printStackTrace();
-                    }
-                } else {
-                    try {
-                        customertCtrl.disableProduct(customer);
-                    } catch (SQLException | NotFoundException e1) {
-                        e1.printStackTrace();
-                    } 
-                }
 
-				tableModel.fireTableRowsUpdated(row, row);
-				tableMain.getSelectionModel().clearSelection();
-			}
-		});
-		*/
 		// View customer
 		btnView.addActionListener(e -> {
 			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
@@ -288,6 +261,7 @@ public class CRUDCustomer extends JPanel {
                 frame.setVisible(true);
                 if (frame.getCustomer() != null) {
                     tableModel.add(frame.getCustomer());
+					setTableModel(tableModel);
                 }
             } catch (SQLException e1) {
                 e1.printStackTrace();
