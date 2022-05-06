@@ -2,7 +2,9 @@ package model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Order {
@@ -11,7 +13,7 @@ public class Order {
     private Employee employee;
     private Customer customer;
     private LocalDate orderDate;
-    private Set<OrderLine> orderLines;
+    private List<OrderLine> orderLines;
     private BigDecimal price;
 
     /**
@@ -22,7 +24,7 @@ public class Order {
     public Order(Employee employee, Customer customer) {
         this.employee = employee;
         this.customer = customer;
-        this.orderLines = new HashSet<>();
+        this.orderLines = new ArrayList<>();
     }
 
     /**
@@ -117,7 +119,7 @@ public class Order {
         this.customer = customer;
     }
 
-    public Set<OrderLine> getOrderLines() {
+    public List<OrderLine> getOrderLines() {
         return this.orderLines;
     }
 

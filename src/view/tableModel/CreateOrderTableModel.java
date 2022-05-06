@@ -1,18 +1,16 @@
 package view.tableModel;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.table.AbstractTableModel;
 
 import controller.AuthenticationController;
 import controller.OrderController;
-import controller.OrderDetailsController;
 import controller.OrderLineController;
 import exceptions.NotEnoughInStockException;
 import exceptions.NotFoundException;
-import model.Customer;
 import model.Order;
 import model.OrderLine;
 import model.Product;
@@ -23,21 +21,47 @@ import model.Product;
  */
 public class CreateOrderTableModel extends AbstractTableModel{
 
-	private static final String[] columnNames = {"ID", "Product", "Quantity"}; //TODO: Add price per orderLine
+	//private static final String[] columnNames = {"ID", "Product", "Quantity"}; //TODO: Add price per orderLine
 	
-	private Set<OrderLine> orderLines;
+	public enum Column {
+		ID("ID"),
+		PRODUCT("Product"),
+		QUANTITY("Quantity");
+		
+
+		private String value;
+		
+		Column(final String value) {
+			this.value = value;
+		}
+		
+		public String getValue() {
+			return value;
+		}
+		
+		@Override
+		public String toString() {
+			//return name().replace('_', ' ').substring(0,1).toUpperCase() + name().substring(1).toLowerCase();
+			return this.getValue();
+		}
+	}
+	
+	private List<Column> columns;
+	private List<OrderLine> orderLines;
 	private OrderController orderCtrl;
 	private OrderLineController orderLineCtrl;
 	private Order order;
 	AuthenticationController auth;
 	
-	public CreateOrderTableModel(AuthenticationController authentication, Customer customer, Order order) throws SQLException, NotFoundException {
+	public CreateOrderTableModel(AuthenticationController authentication, Order order, List<Column> columns) throws SQLException, NotFoundException {
+		this.columns = new ArrayList<Column>(columns);
 		orderCtrl = new OrderController();
 		auth = authentication;
 		this.order = order;
 		orderLineCtrl = new OrderLineController();
-		orderLines = order.getOrderLines();
+		this.orderLines = new ArrayList<OrderLine>(order.getOrderLines());
 	}
+	
 	
 	@Override
 	public int getRowCount() {
@@ -46,30 +70,26 @@ public class CreateOrderTableModel extends AbstractTableModel{
 
 	@Override
 	public int getColumnCount() {
-		return columnNames.length;
+		return columns.size();
 	}
 
 	@Override
 	public String getColumnName(int column) {
-		return columnNames[column];
+		return this.columns.get(column).toString();
 	}
 	
 	
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		Object value = null;
-		for(OrderLine orderLine : orderLines) {
-			if(orderLine.getId() == rowIndex) {
-				switch(columnIndex) {
-				case 0: value = orderLine.getId();
-				case 1: value = orderLine.getProduct();
-				case 2: value = orderLine.getQuantity();
-				default: value = null;
-				}
-			}
-		}
-		return value;
-	}
+	 @Override
+	 public Object getValueAt(int rowIndex, int columnIndex) {
+		OrderLine orderLine = orderLines.get(rowIndex);
+		Column column = this.columns.get(columnIndex);
+		switch(column) {
+			case ID: return orderLine.getId();
+			case PRODUCT: return orderLine.getProduct().getName();
+			case QUANTITY: return orderLine.getQuantity();
+			default: return "Error retrieving column name"; 
+		}		
+	 }
 	
 	/**
 	 *  Make cells uneditable
@@ -124,8 +144,8 @@ public class CreateOrderTableModel extends AbstractTableModel{
      */
     public void add(Product product, int quantity) throws SQLException, NotFoundException, NotEnoughInStockException {
     	OrderLine orderLine = orderCtrl.addProduct(order, product, quantity);
-    	orderLines.add(orderLine);
-    	this.fireTableRowsInserted(this.getRowCount() - 1, this.getRowCount() - 1);
+    	this.orderLines.add(orderLine);
+    	this.fireTableRowsInserted(this.getRowCount() - 1, this.getRowCount() -1);
     }
     
 }
