@@ -4,18 +4,18 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import exceptions.NotFoundException;
+
+import database.interfaces.ShelfDBIF;
 import controller.DepartmentController;
 import controller.ProductController;
-import database.interfaces.ShelfDBIF;
-import exceptions.NotFoundException;
 import model.Department;
 import model.Product;
 import model.Shelf;
-import model.Department;
 
 public class ShelfDB implements ShelfDBIF {
-    //PreparedStatements
-    
+   
+    //PreparedStatements 
     private static final String FIND_ALL = "select * from Shelves";
     private static final String FIND_BY_ID = "select * from Shelves where Id = ?";
     private static final String CREATE_SHELF = "insert into Shelves values(?,?,?,?)";
@@ -28,9 +28,11 @@ public class ShelfDB implements ShelfDBIF {
     private PreparedStatement updateShelf;
     private PreparedStatement deleteShelf;
 
+    //Controllers
     ProductController productController;
     DepartmentController departmentController;
 
+    //The constuctor for the selfDB classs
     public ShelfDB()throws SQLException{
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
         findById = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
@@ -42,6 +44,11 @@ public class ShelfDB implements ShelfDBIF {
         departmentController  =  new DepartmentController();
     }
 
+    /**
+     * Returns all shelves in the database
+     * @return list of shelves
+     * @throws SQLException, NotFoundException
+     */
     @Override
     public List<Shelf> findAll() throws SQLException, NotFoundException{
         ResultSet rs;
@@ -51,6 +58,12 @@ public class ShelfDB implements ShelfDBIF {
 
     }
 
+    /**
+     * Finds a shelf by id
+     * @param id - id to be found
+     * @return shelf
+     * @throws SQLException, NotFoundException
+     */
     @Override
     public Shelf findById(int id) throws SQLException, NotFoundException{
             Shelf shelf = null;
@@ -66,6 +79,11 @@ public class ShelfDB implements ShelfDBIF {
             return shelf;
     }
 
+    /**
+     * Inserts a shelf into the database
+     * @param shelf - shelf to be inserted into the databe
+     * @throws SQLException
+     */
     @Override
     public void createShelf(Shelf shelf) throws SQLException{
         createShelf.setString(1, shelf.getName());
@@ -75,6 +93,11 @@ public class ShelfDB implements ShelfDBIF {
         shelf.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createShelf));
     };
 
+    /**
+     * Updates the shelf in the database
+     * @param shelf - the self that will be updated
+     * @throws SQLException
+     */
     @Override
     public void updateShelf(Shelf shelf) throws SQLException{
         updateShelf.setString(1, shelf.getName());
@@ -84,12 +107,26 @@ public class ShelfDB implements ShelfDBIF {
         updateShelf.executeUpdate();
     }
 
+    /**
+     * Deletes the shelf from the databes 
+     * @param shelf - the shelf that needs to be deleted
+     * @throws SQLException
+     */
     @Override
     public void deleteShelf(Shelf shelf) throws SQLException{
         deleteShelf.setInt(1, shelf.getId());
         deleteShelf.executeUpdate(); 
     }
 
+    // Local methodes
+
+    /**
+     * Build a shelf object from the database
+     * @param rs - resultset
+     * @return shelf - a shelf object
+     * @throws SQLException
+     * @throws  NotFoundException
+     */
     private Shelf buildObject(ResultSet rs)throws SQLException, NotFoundException{
         Product product = productController.findById(rs.getInt("ProductId"));
         Department department = departmentController.findById(rs.getInt("DepartmentId"));
@@ -98,6 +135,13 @@ public class ShelfDB implements ShelfDBIF {
         return shelf;
     }
 
+     /**
+     * Builds a list of shelf object from the database
+     * @param rs - resultset
+     * @return shelf - a list of shelf object
+     * @throws SQLException
+     * @throws  NotFoundException
+     */
     private List<Shelf> buildObjects(ResultSet rs)throws SQLException, NotFoundException{
         List<Shelf> shelves = new ArrayList<>();
         while(rs.next()){
