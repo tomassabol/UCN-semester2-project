@@ -230,7 +230,7 @@ public class Dashboard extends JFrame {
 		lblCreateEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblCreateEmployee = new GridBagConstraints();
 		gbc_lblCreateEmployee.insets = new Insets(0, 0, 5, 5);
-		gbc_lblCreateEmployee.gridx = 1;
+		gbc_lblCreateEmployee.gridx = 0;
 		gbc_lblCreateEmployee.gridy = 4;
 		employeePanel.add(lblCreateEmployee, gbc_lblCreateEmployee);
 		
