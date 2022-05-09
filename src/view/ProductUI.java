@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
 import controller.ProductController;
+import controller.ProductTypeController;
 import model.Product;
 import model.Product.ProductType;
 
@@ -17,13 +18,11 @@ import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.Objects;
 import javax.swing.JRadioButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class ProductUI extends JDialog {
 	
@@ -37,19 +36,18 @@ public class ProductUI extends JDialog {
 	private JTextField txtId;
 	private JTextField txtName;
 	private JTextField txtPrice;
-	private JTextField txtProductType;
 	private JTextField txtDiscount;
 	private JButton btnSubmit;
 	private JTextArea txtDescription;
 	private Product product;
 	private ProductController productCtrl;
+	private ProductTypeController productTypeCtrl;
 	private Mode mode;
 	AuthenticationController auth;
 	private JPanel panel;
 	private JRadioButton rdbtnYes;
 	private JRadioButton rdbtnNo;
-	private JButton btnNewButton;
-    private ProductType productType;
+	private JComboBox<ProductType> boxProductType;
 	/**
 	 * Constructor: create new product
 	 *
@@ -72,6 +70,7 @@ public class ProductUI extends JDialog {
 		this.product = product;
 		
 		productCtrl = new ProductController();
+		productTypeCtrl = new ProductTypeController();
 		
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -81,9 +80,9 @@ public class ProductUI extends JDialog {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{208, 208, 0};
-		gbl_contentPane.rowHeights = new int[]{19, 0, 0, 127, 0, 0, 19, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{19, 0, 0, 127, 0, 0, 19, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblId = new JLabel("Id");
@@ -148,26 +147,35 @@ public class ProductUI extends JDialog {
 		gbc_lblProductType.gridy = 4;
 		contentPane.add(lblProductType, gbc_lblProductType);
 		
-		txtProductType = new JTextField();
-		txtProductType.setColumns(10);
-		GridBagConstraints gbc_txtProductType = new GridBagConstraints();
-		gbc_txtProductType.insets = new Insets(0, 0, 5, 5);
-		gbc_txtProductType.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtProductType.gridx = 0;
-		gbc_txtProductType.gridy = 5;
-		contentPane.add(txtProductType, gbc_txtProductType);
+		boxProductType = new JComboBox<>();
+		for(ProductType productType : productTypeCtrl.findAll()) {
+			boxProductType.addItem(productType);
+		}
+
+		//boxProductType = new JComboBox(ProductType.values());
+		GridBagConstraints gbc_boxProductType = new GridBagConstraints();
+		gbc_boxProductType.anchor = GridBagConstraints.WEST;
+		gbc_boxProductType.insets = new Insets(0, 0, 5, 5);
+		gbc_boxProductType.gridx = 0;
+		gbc_boxProductType.gridy = 5;
+		contentPane.add(boxProductType, gbc_boxProductType);
+
+		JLabel lblDiscount = new JLabel("Discount");
+		GridBagConstraints gbc_lblDiscount = new GridBagConstraints();
+		gbc_lblDiscount.anchor = GridBagConstraints.WEST;
+		gbc_lblDiscount.insets = new Insets(0, 0, 5, 0);
+		gbc_lblDiscount.gridx = 1;
+		gbc_lblDiscount.gridy = 4;
+		contentPane.add(lblDiscount, gbc_lblDiscount);
 		
-		btnNewButton = new JButton("Select");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.anchor = GridBagConstraints.WEST;
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 5;
-		contentPane.add(btnNewButton, gbc_btnNewButton);
+		txtDiscount = new JTextField();
+		txtDiscount.setColumns(10);
+		GridBagConstraints gbc_txtDiscount = new GridBagConstraints();
+		gbc_txtDiscount.insets = new Insets(0, 0, 5, 0);
+		gbc_txtDiscount.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDiscount.gridx = 1;
+		gbc_txtDiscount.gridy = 5;
+		contentPane.add(txtDiscount, gbc_txtDiscount);
 		
 		JLabel lblPrice = new JLabel("Price *");
 		GridBagConstraints gbc_lblPrice = new GridBagConstraints();
@@ -177,13 +185,13 @@ public class ProductUI extends JDialog {
 		gbc_lblPrice.gridy = 6;
 		contentPane.add(lblPrice, gbc_lblPrice);
 		
-		JLabel lblDiscount = new JLabel("Discount");
-		GridBagConstraints gbc_lblDiscount = new GridBagConstraints();
-		gbc_lblDiscount.anchor = GridBagConstraints.WEST;
-		gbc_lblDiscount.insets = new Insets(0, 0, 5, 0);
-		gbc_lblDiscount.gridx = 1;
-		gbc_lblDiscount.gridy = 6;
-		contentPane.add(lblDiscount, gbc_lblDiscount);
+		JLabel lblActive = new JLabel("Active");
+		GridBagConstraints gbc_lblActive = new GridBagConstraints();
+		gbc_lblActive.anchor = GridBagConstraints.WEST;
+		gbc_lblActive.insets = new Insets(0, 0, 5, 0);
+		gbc_lblActive.gridx = 1;
+		gbc_lblActive.gridy = 6;
+		contentPane.add(lblActive, gbc_lblActive);
 		
 		txtPrice = new JTextField();
 		txtPrice.setColumns(10);
@@ -194,29 +202,12 @@ public class ProductUI extends JDialog {
 		gbc_txtPrice.gridy = 7;
 		contentPane.add(txtPrice, gbc_txtPrice);
 		
-		txtDiscount = new JTextField();
-		txtDiscount.setColumns(10);
-		GridBagConstraints gbc_txtDiscount = new GridBagConstraints();
-		gbc_txtDiscount.insets = new Insets(0, 0, 5, 0);
-		gbc_txtDiscount.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtDiscount.gridx = 1;
-		gbc_txtDiscount.gridy = 7;
-		contentPane.add(txtDiscount, gbc_txtDiscount);
-		
-		JLabel lblActive = new JLabel("Active");
-		GridBagConstraints gbc_lblActive = new GridBagConstraints();
-		gbc_lblActive.anchor = GridBagConstraints.WEST;
-		gbc_lblActive.insets = new Insets(0, 0, 5, 5);
-		gbc_lblActive.gridx = 0;
-		gbc_lblActive.gridy = 8;
-		contentPane.add(lblActive, gbc_lblActive);
-		
 		panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.insets = new Insets(0, 0, 5, 5);
+		gbc_panel.insets = new Insets(0, 0, 5, 0);
 		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 9;
+		gbc_panel.gridx = 1;
+		gbc_panel.gridy = 7;
 		contentPane.add(panel, gbc_panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0};
@@ -244,9 +235,15 @@ public class ProductUI extends JDialog {
 		GridBagConstraints gbc_btnOk = new GridBagConstraints();
 		gbc_btnOk.anchor = GridBagConstraints.EAST;
 		gbc_btnOk.gridx = 1;
-		gbc_btnOk.gridy = 11;
+		gbc_btnOk.gridy = 9;
 		contentPane.add(btnSubmit, gbc_btnOk);
-		
+
+		if (rdbtnNo.isSelected()) {
+			rdbtnYes.setSelected(false);
+		}
+		if (rdbtnYes.isSelected()) {
+			rdbtnNo.setSelected(false);
+		}
 		
 		switch (mode) {
 			case VIEW:
@@ -277,7 +274,6 @@ public class ProductUI extends JDialog {
 				// Enable fields
 				this.enableFields();
 				// Peek ID
-				txtId.setText(String.valueOf(product.getId()));
 		}
 		
 		
@@ -304,21 +300,26 @@ public class ProductUI extends JDialog {
 	// Makes the text fields uneditable
 	private void disableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JRadioButton || c instanceof JComboBox) {
 				      c.setEnabled(false);
 				   }
 			}
+		txtId.setEnabled(false);
+		rdbtnNo.setEnabled(false);
+		rdbtnYes.setEnabled(false);
 	}
 	
 	
 	// Makes the text fields editable except ID field
 	private void enableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JRadioButton || c instanceof JComboBox) {
 			      c.setEnabled(true);
 			   }
 			}
 		txtId.setEnabled(false);
+		rdbtnNo.setEnabled(true);
+		rdbtnYes.setEnabled(true);
 	}
 	
 	// FIll in the fields
@@ -326,15 +327,10 @@ public class ProductUI extends JDialog {
 		txtId.setText(String.valueOf(product.getId()));
 		txtName.setText(product.getName());
 		txtDescription.setText(product.getDescription());
-		txtProductType.setText(Objects.toString(product.getProductType().toString()));
-        this.productType = product.getProductType();
-		txtPrice.setText(Objects.toString(product.getPrice()));
-		txtDiscount.setText(Objects.toString(product.getDiscount(), ""));
-		if (product.isActive() == true) {
-            rdbtnYes.setSelected(true);
-        } else {
-            rdbtnNo.setSelected(true);
-        }
+		//txtProductType.setText(Objects.toString(product.getProductType().toString()));
+		boxProductType.setSelectedItem(product.getProductType());
+		txtPrice.setText(product.getPrice().toString());
+		txtDiscount.setText(String.valueOf(product.getDiscount()));
 	}
 	
 	/*
@@ -369,10 +365,11 @@ public class ProductUI extends JDialog {
 				}
 				
 				// Validate ProductTyoe
-				if (this.productType == null) {
-                    Messages.error(this, "You must choose a product type");
+				ProductType productType = (ProductType) boxProductType.getSelectedItem();
+				if (productType == null) {
+					Messages.error(this, "Product type cannot be empty. Select Employee Type");
 					return;
-                }
+				}
 						
 				// Validate price
 				String priceString = txtPrice.getText().strip();
@@ -415,7 +412,8 @@ public class ProductUI extends JDialog {
 				} else if (mode == Mode.CREATE) {
 					// if mode == Create, create a new product
 					try {
-                        productCtrl.createProduct(name, description, productType, price, discount, active);
+                        Product product = productCtrl.createProduct(name, description, productType, price, discount, active);
+						this.product = product;
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     };

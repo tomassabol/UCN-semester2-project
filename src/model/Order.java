@@ -1,8 +1,9 @@
 package model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Order {
     
@@ -10,7 +11,8 @@ public class Order {
     private Employee employee;
     private Customer customer;
     private LocalDate orderDate;
-    private Set<OrderLine> orderLines;
+    private List<OrderLine> orderLines;
+    private BigDecimal price;
 
     /**
      * Constructor for the class Order
@@ -20,7 +22,7 @@ public class Order {
     public Order(Employee employee, Customer customer) {
         this.employee = employee;
         this.customer = customer;
-        this.orderLines = new HashSet<>();
+        this.orderLines = new ArrayList<>();
     }
 
     /**
@@ -56,6 +58,10 @@ public class Order {
         return found;
     }
 
+    /**
+     * @param product - product to get orderline for
+     * @return orderline including the given product
+     */
     public OrderLine getOrderLinebyProduct(Product product) {
         OrderLine returnOrderLine = null;
 
@@ -79,6 +85,30 @@ public class Order {
         }
 
         return returnValue;
+    }
+
+    /**
+     * Get order price
+     * @return total price excluding discounts
+     */
+    public BigDecimal getOrderPrice() {
+        price = BigDecimal.valueOf(0);
+        orderLines.forEach(orderLine -> {
+            price.add(orderLine.getPrice());
+        });
+        return price;
+    }
+
+    /**
+     * Get order price including discounts
+     * @return total price including discounts
+     */
+    public BigDecimal getOrderPriceAfterDiscount() {
+        price = BigDecimal.valueOf(0);
+        orderLines.forEach(orderLine -> {
+            price.add(orderLine.getPriceAfterDiscount());
+        });
+        return price;
     }
 
     // getters and setters
@@ -115,7 +145,7 @@ public class Order {
         this.customer = customer;
     }
 
-    public Set<OrderLine> getOrderLines() {
+    public List<OrderLine> getOrderLines() {
         return this.orderLines;
     }
 

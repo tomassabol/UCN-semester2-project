@@ -31,11 +31,6 @@ public class DepartmentController {
         List<Department> departments = departmentDBIF.findAll();
         return departments;
     }
-
-    public Department findByName(String name) throws SQLException, NotFoundException {
-    	Department department = departmentDBIF.findByName(name);
-    	return department;
-    }
     
     /**
      * finds a department by the desired ID
@@ -56,9 +51,10 @@ public class DepartmentController {
      * @param address - address of the department
      * @throws SQLException
      */
-    public void createDepartment(String name, City zipCode, String address) throws SQLException {
+    public Department createDepartment(String name, City zipCode, String address) throws SQLException {
         Department department = new Department(name, zipCode, address);
         departmentDBIF.createDepartment(department);
+        return department;
     }
 
     /**

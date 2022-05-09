@@ -59,11 +59,6 @@ public class EmployeeController {
         Employee employee = employeeDBIF.findByEmail(email, password);
         return employee;
     }
-    
-    public Employee findOnlyByEmail(String email) throws SQLException, NotFoundException {
-    	Employee employee = employeeDBIF.findOnlyByEmail(email);
-    	return employee;
-    }
 
     /**
      * creates a new employee
@@ -78,9 +73,10 @@ public class EmployeeController {
      * @param department - employee's department
      * @throws SQLException
      */
-    public void createEmployee(String name, String email, String phone, City zipCode, String address, EmployeeType employeeType, String password, String CPR, Department department) throws SQLException {
+    public Employee createEmployee(String name, String email, String phone, City zipCode, String address, EmployeeType employeeType, String password, String CPR, Department department) throws SQLException {
         Employee employee = new Employee(name, email, phone, zipCode, address, employeeType, password, CPR, department);
         employeeDBIF.createEmployee(employee);
+        return employee;
     }
 
     /**

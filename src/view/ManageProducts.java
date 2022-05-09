@@ -10,12 +10,8 @@ import exceptions.NotFoundException;
 import java.awt.GridBagLayout;
 import java.sql.SQLException;
 import java.awt.GridBagConstraints;
-/**
- * @author Daniels Kanepe
- *
- */
-public class ManageProducts extends JDialog {
 
+public class ManageProducts extends JDialog {
 
 	private static final long serialVersionUID = 2968937622159813565L;
 	private final JPanel contentPane;
@@ -45,7 +41,7 @@ public class ManageProducts extends JDialog {
 		gbl_contentPane.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		CRUDPanel = new CRUDProducts(auth, CRUDProducts.Mode.ALL);
+		CRUDPanel = new CRUDProducts(auth);
 		GridBagConstraints gbc_CRUDPanel = new GridBagConstraints();
 		gbc_CRUDPanel.fill = GridBagConstraints.BOTH;
 		gbc_CRUDPanel.gridx = 0;

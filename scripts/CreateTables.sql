@@ -57,7 +57,8 @@ create table SupplyOrders(
     Quantity int,
     OrderDate date,
     SupplierId int,
-    foreign key (SupplierId) references Suppliers(Id)
+    foreign key (SupplierId) references Suppliers(Id),
+    Delivered bit
 );
 
 create table Items(
@@ -143,23 +144,12 @@ create table OrderDetails(
     foreign key (OrderLineId) references OrderLines(Id)
 );
 
-create table StorageLines(
-    Id int identity(1,1) primary key,
-    ProductId int,
-    foreign key (ProductId) references Products(Id),
-    Quantity int,
-);
-
-create table StorageLineDetails(
-    StorageLineId int,
-    foreign key (StorageLineId) references StorageLines(Id),
-    ItemId int,
-    foreign key (ItemId) references Items(Id)
-);
-
 create table Shelves(
     Id int identity(1,1) primary key,
     Name varchar(10),
+    ProductId int,
+    foreign key (ProductId) references Products(Id),
+    ItemQuantity int,
     DepartmentId int,
     foreign key (DepartmentId) references Departments(Id),
 );
@@ -167,6 +157,6 @@ create table Shelves(
 create table ShelfDetails(
     ShelfId int,
     foreign key (ShelfId) references Shelves(Id),
-    StorageLineId int,
-    foreign key (StorageLineId) references StorageLines(Id)
+    ItemId int,
+    foreign key (ItemId) references Items(Id)
 );

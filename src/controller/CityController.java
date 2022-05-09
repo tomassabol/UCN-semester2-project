@@ -58,11 +58,13 @@ public class CityController {
      * creates a new city
      * @param zipCode - zip code of the city
      * @param name - name of the city
+     * @param active 
      * @throws SQLException
      */
-    public void createCity(String zipCode, String name) throws SQLException {
+    public City createCity(String zipCode, String name) throws SQLException {
         City city = new City(zipCode, name);
         cityDBIF.createCity(city);
+        return city;
     }
 
     /**
@@ -70,6 +72,7 @@ public class CityController {
      * @param city - city to be updated
      * @param zipCode - new zip code
      * @param name - new name
+     * @param active 
      * @throws SQLException
      */
     public void updateCity(City city, String zipCode, String name) throws SQLException {

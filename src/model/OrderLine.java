@@ -1,5 +1,6 @@
 package model;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ public class OrderLine {
     private Product product;
     private int quantity;
     private Set<Item> items;
+    private BigDecimal price;
 
     /**
      * Constructor for the OrderLine class
@@ -37,6 +39,24 @@ public class OrderLine {
      */
     public void removeItem(Item item) {
         items.remove(item);
+    }
+
+    /**
+     * @return price of the orderline excluding discounts
+     */
+    public BigDecimal getPrice() {
+        BigDecimal productQuantity = BigDecimal.valueOf(quantity);
+        price = product.getPrice().multiply(productQuantity);
+        return price;
+    }
+
+    /**
+     * @return price of the orderline including discounts
+     */
+    public BigDecimal getPriceAfterDiscount() {
+        BigDecimal productQuantity = BigDecimal.valueOf(quantity);
+        price = product.getPriceAfterDiscount().multiply(productQuantity);
+        return price;
     }
 
     // getters and setters

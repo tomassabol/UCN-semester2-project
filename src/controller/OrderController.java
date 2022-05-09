@@ -84,8 +84,7 @@ public class OrderController {
 	 * @throws NotFoundException
 	 * @throws NotEnoughInStockException
 	 */
-	public boolean addProduct(Order order, Product product, int quantity) throws SQLException, NotFoundException, NotEnoughInStockException {
-		boolean returnValue = false;
+	public OrderLine addProduct(Order order, Product product, int quantity) throws SQLException, NotFoundException, NotEnoughInStockException {
 		if(order.isProductPresent(product)) {
 			quantity += order.getOrderLinebyProduct(product).getQuantity();
 			// basic stock check 
@@ -98,9 +97,8 @@ public class OrderController {
 
 		OrderLine orderLine = new OrderLine(product, quantity);
 		order.addOrderLine(orderLine);
-		returnValue = true;
 
-		return returnValue;
+		return orderLine;
 	}
 
 	/**
