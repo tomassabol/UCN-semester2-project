@@ -37,14 +37,12 @@ public class Dashboard extends JFrame {
 	private JTabbedPane tabsPane;
 	private Component lblGreeting;
 	private JLabel lblCreateOrder;
-	private JLabel lblEmployees; 
 	private JLabel lblDepartment; // department
 	private JLabel lblCities; // cities
 	private JLabel lblProduct; // product
 	private JLabel lblCustomer; // customer
 	private JLabel lblEmployee; // employee
 	private JButton btnCreateOrder;
-	private JButton btnEmployees; 
 	private JButton btnDepartment; // department
 	private JButton btnCities; // cities
 	private JButton btnProduct; // product
@@ -55,7 +53,6 @@ public class Dashboard extends JFrame {
 	private JButton btnLogOut;
 	private JButton btnNewButton;
 	private JTextField txtCustomerEmail;
-	private JTextField txtEmployeeEmail; // employee
 
 	// Fields for classes created by us
 	private AuthenticationController auth;
@@ -199,6 +196,7 @@ public class Dashboard extends JFrame {
 		gbc_btnShowOrders.gridx = 3;
 		gbc_btnShowOrders.gridy = 5;
 		orderPanel.add(btnShowOrders, gbc_btnShowOrders);
+		
 	}
 	
 	// locations
@@ -244,6 +242,7 @@ public class Dashboard extends JFrame {
 		gbc_btnCities.gridx = 3;
 		gbc_btnCities.gridy = 5;
 		locationPanel.add(btnCities, gbc_btnCities);
+		
 	}
 
 	// storage
