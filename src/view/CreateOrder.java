@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -33,6 +34,8 @@ import model.Order;
 import model.OrderLine;
 import model.Product;
 import view.tableModel.CreateOrderTableModel;
+import view.tableModel.CreateOrderTableModel.Column;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -84,9 +87,21 @@ public class CreateOrder extends JFrame {
 			Messages.error(contentPane, "There was an error connecting to the database");
 		}
 		
+		try {
+			tableModel = new CreateOrderTableModel(auth, order, Arrays.asList(
+					Column.ID,
+					Column.PRODUCT,
+					Column.QUANTITY
+				    )
+		        );
+		} catch (SQLException e1) {
+			Messages.error(contentPane, "There was an error connecting to the database");
+		} catch (NotFoundException e1) {
+			Messages.error(contentPane, "There was an error creating the order");
+		}
 		
 		// ***** WINDOW *****
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 611, 356);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -139,14 +154,6 @@ public class CreateOrder extends JFrame {
 		middlePanel.add(scrollPanel);
 				
 		// ***** Table *****
-		try {
-			tableModel = new CreateOrderTableModel(this.auth, this.customer, order);
-		} catch (SQLException e) {
-			Messages.error(contentPane, "There was an error connecting to the database");
-		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
-			Messages.error(contentPane, "The given order was not found in the database");
-		}
 		tableMain = new JTable();
 		tableMain.setModel(tableModel);
 		tableMain.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -213,25 +220,6 @@ public class CreateOrder extends JFrame {
 		gbc_lblSubtotalValue.gridy = 0;
 		priceAndSubmitPanel.add(lblSubtotalValue, gbc_lblSubtotalValue);
 						
-		// ***** Customer type discount label *****
-		JLabel lblDiscount = new JLabel(customer.getCustomerType() + " Discount:");
-		GridBagConstraints gbc_lblDiscount = new GridBagConstraints();
-		gbc_lblDiscount.anchor = GridBagConstraints.WEST;
-		gbc_lblDiscount.insets = new Insets(0, 0, 5, 5);
-		gbc_lblDiscount.gridx = 0;
-		gbc_lblDiscount.gridy = 1;
-		priceAndSubmitPanel.add(lblDiscount, gbc_lblDiscount);
-						
-		// ***** Customer type discount value (might not be needed) *****
-		lblDiscountValue = new JLabel("N/A"); //TODO: Make it write out the correct value
-		lblDiscountValue.setForeground(new Color(0, 102, 0));
-		GridBagConstraints gbc_lblDiscountValue = new GridBagConstraints();
-		gbc_lblDiscountValue.anchor = GridBagConstraints.WEST;
-		gbc_lblDiscountValue.insets = new Insets(0, 0, 5, 5);
-		gbc_lblDiscountValue.gridx = 2;
-		gbc_lblDiscountValue.gridy = 1;
-		priceAndSubmitPanel.add(lblDiscountValue, gbc_lblDiscountValue);
-						
 		// ***** Total price label *****
 		JLabel lblTotal = new JLabel("Total:");
 		GridBagConstraints gbc_lblTotal = new GridBagConstraints();
@@ -268,6 +256,12 @@ public class CreateOrder extends JFrame {
 	 * *******************************************************
 	 */
 	
+	public void setTableModel(CreateOrderTableModel tableModel) {
+		this.tableMain.setModel(tableModel);
+		this.tableModel = tableModel;
+		
+	}
+	
 	/**
 	 * The action performed when clicking the add item button
 	 */
@@ -276,8 +270,7 @@ public class CreateOrder extends JFrame {
 		try {
 			frame = new ChooseProduct(auth);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Messages.error(frame, "There was an error connecting to the database");
 		} catch (NotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -294,18 +287,15 @@ public class CreateOrder extends JFrame {
 			try {
 				try {
 					tableModel.add(product, quantity);
+					setTableModel(tableModel);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					Messages.error(frame, "There was an error connecting to the database");
 				} catch (NotFoundException e) {
-					// TODO Auto-generated catch block
 					Messages.error(frame, "The selected product was not found in the database");
-					
 				}
 			} catch (NotEnoughInStockException e) {
 				Messages.error(frame, String.format("There is not enough items in stock from %d", product.getName()));
-				
-				// Show the 'add to cart' window, again.
+				// Repeat the whole thing again
 				this.addProduct();
 			}
 		}
@@ -349,7 +339,7 @@ public class CreateOrder extends JFrame {
 			}
 		});
 		
-		// Action for createQuote button
+		// Action for createOrder button
 		btnCreateOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(Messages.confirm(contentPane, "Do you want to finalize the order?")) {

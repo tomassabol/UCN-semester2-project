@@ -249,7 +249,7 @@ public class CityUI extends JDialog {
 				if (mode == Mode.EDIT) {
 			
                     try {
-                        cityCtrl.updateCity(city, name, zipcode);
+                        cityCtrl.updateCity(city, zipcode, name);
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
@@ -257,7 +257,7 @@ public class CityUI extends JDialog {
 				} else if (mode == Mode.CREATE) {
 					// if mode == Create, create a new product
 					try {
-                        City city = cityCtrl.createCity(name,zipcode);
+                        City city = cityCtrl.createCity(zipcode, name);
 						this.city = city;
                     } catch (SQLException e1) {
                         e1.printStackTrace();

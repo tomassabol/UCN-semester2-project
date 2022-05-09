@@ -75,13 +75,6 @@ public class ChooseProduct extends JDialog {
 			Messages.error(contentPane, "The given value was not a number");
 		}*/
 		
-		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
-		
-		try {
-		} catch (NumberFormatException e1) {
-			Messages.error(contentPane, "The given value was not a number");
-		}
-		
 		panel = new JPanel();
 		GridBagConstraints gbc_panel1 = new GridBagConstraints();
 		gbc_panel1.fill = GridBagConstraints.BOTH;
@@ -102,13 +95,19 @@ public class ChooseProduct extends JDialog {
 		gbc_lblSpinner.gridy = 0;
 		panel.add(lblSpinner, gbc_lblSpinner);
 		lblSpinner.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		
+		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
 		JSpinner spinner = new JSpinner(spinnerModel);
 		GridBagConstraints gbc_spinner = new GridBagConstraints();
 		gbc_spinner.insets = new Insets(0, 0, 0, 5);
 		gbc_spinner.gridx = 3;
 		gbc_spinner.gridy = 0;
 		panel.add(spinner, gbc_spinner);
-		quantity = Integer.parseInt(String.valueOf(spinner.getValue()));
+		try {
+			quantity = Integer.parseInt(String.valueOf(spinner.getValue()));
+		} catch (NumberFormatException e1) {
+			Messages.error(contentPane, "The given value was not a number");
+		}
 		
 		btnChoose = new JButtonPrimary("Choose...");
 		GridBagConstraints gbc_btnChoose = new GridBagConstraints();
