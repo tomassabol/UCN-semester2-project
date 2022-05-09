@@ -1,6 +1,8 @@
 package model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Product {
     private int id;
@@ -10,6 +12,7 @@ public class Product {
     private BigDecimal price;
     private int discount;
     private boolean active;
+    private List<SupplyOrder> supplyOrders;
 
     public enum ProductType {
         BIKE,
@@ -49,6 +52,7 @@ public class Product {
         this.price = price;
         this.discount = discount;
         this.active = active;
+        this.supplyOrders = new ArrayList<>();
     }
 
     /**
@@ -66,6 +70,10 @@ public class Product {
         BigDecimal priceAfterDiscount = price.subtract(decimaldiscount.multiply(price));
         // return price with discount applied
         return priceAfterDiscount;
+    }
+
+    public void addSupplyOrder(SupplyOrder supplyOrder) {
+        supplyOrders.add(supplyOrder);
     }
 
     // getters & setters
@@ -128,6 +136,10 @@ public class Product {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public List<SupplyOrder> getSupplyOrders() {
+        return this.supplyOrders;
     }
 
 }
