@@ -14,7 +14,7 @@ import model.Supplier;
 
 public class SupplierDB implements SupplierDBIF {
 	
-	// PreparedStatements for the EmployeeDB class
+	// PreparedStatements for the SupplierDB class
 	private static final String FIND_ALL = "select * from Suppliers";
 	private static final String FIND_BY_ID = "select * from Suppliers where Id = ?";
 	private static final String CREATE_SUPPLIER = "insert into Suppliers values(?, ?, ?, ?, ?)";
