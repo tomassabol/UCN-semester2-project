@@ -11,5 +11,5 @@ public interface SupplierDBIF {
 	public Supplier findById(int id) throws SQLException, NotFoundException;
 	public void createSupplier(Supplier supplier) throws SQLException;
 	public void updateSupplier(Supplier supplier) throws SQLException;
-	public void disableSupplier(Supplier supplier) throws SQLException;
+	public void deleteSupplier(Supplier supplier) throws SQLException;
 }

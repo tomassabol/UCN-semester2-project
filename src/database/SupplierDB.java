@@ -41,6 +41,11 @@ public class SupplierDB implements SupplierDBIF {
 		deleteSupplier = DBConnection.getInstance().getConnection().prepareStatement(DELETE_SUPPLIER);
 	}
 	
+	/**
+	 * @return a list of all Suppliers in a DB
+	 * @throws SQLException
+	 * @throws NotFoundException
+	 */
 	@Override
 	public List<Supplier> findAll() throws SQLException, NotFoundException {
 		ResultSet rs;
@@ -63,6 +68,10 @@ public class SupplierDB implements SupplierDBIF {
 		return supplier;
 	}
 	
+	/**
+	 * inserts a new Supplier into DB
+	 * @throws SQLException
+	 */
 	@Override
 	public void createSupplier(Supplier supplier) throws SQLException {
 		createSupplier.setString(1, supplier.getName());
@@ -73,6 +82,10 @@ public class SupplierDB implements SupplierDBIF {
 		supplier.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createSupplier));
 	}
 	
+	/**
+	 * updates employee details in DB
+	 * @throws SQLException
+	 */
 	@Override
 	public void updateSupplier(Supplier supplier) throws SQLException {
 		updateSupplier.setString(1, supplier.getName());
@@ -84,12 +97,17 @@ public class SupplierDB implements SupplierDBIF {
 		updateSupplier.executeQuery();
 	}
 	
+	/**
+	 * deletes Supplier from DB
+	 * @throws SQLException
+	 */
 	@Override
-	public void disableSupplier(Supplier supplier) throws SQLException {
+	public void deleteSupplier(Supplier supplier) throws SQLException {
 		deleteSupplier.setInt(1, supplier.getId());
 		deleteSupplier.executeQuery();
 	}
 	
+	// local methods
 	private Supplier buildObject(ResultSet rs) throws SQLException, NotFoundException {
 		City zipCode = cityCtrl.findByZip(rs.getString("ZIP"));
 		Supplier supplier = new Supplier(rs.getString("Name"), rs.getString("Email"), rs.getString("Phone"), zipCode, rs.getString("Address"));
