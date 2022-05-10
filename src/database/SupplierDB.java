@@ -16,14 +16,12 @@ public class SupplierDB implements SupplierDBIF {
 	
 	// PreparedStatements for the EmployeeDB class
 	private static final String FIND_ALL = "select * from Suppliers";
-	private static final String FIND_ALL_PER_PRODUCT = ""; // fix it
 	private static final String FIND_BY_ID = "select * from Suppliers where Id = ?";
 	private static final String CREATE_SUPPLIER = "insert into Suppliers values(?, ?, ?, ?, ?)";
 	private static final String UPDATE_SUPPLIER = "update Suppliers set Name = ?, Email = ?, Phone = ?, Zipcode = ?, Adress = ? from Suppliers where Id = ?";
 	private static final String DELETE_SUPPLIER = "delete from Suppliers where Id = ?";
 	
 	private PreparedStatement findAll;
-	private PreparedStatement findAllPerProduct;
 	private PreparedStatement findById;
 	private PreparedStatement createSupplier;
 	private PreparedStatement updateSupplier;
@@ -37,7 +35,6 @@ public class SupplierDB implements SupplierDBIF {
 	 */
 	public SupplierDB() throws SQLException {
 		findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
-		findAllPerProduct = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL_PER_PRODUCT);
 		findById = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
 		createSupplier = DBConnection.getInstance().getConnection().prepareStatement(CREATE_SUPPLIER);
 		updateSupplier = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_SUPPLIER);
@@ -49,12 +46,6 @@ public class SupplierDB implements SupplierDBIF {
 		ResultSet rs;
 		rs = findAll.executeQuery();
 		List<Supplier> suppliers = buildObjects(rs);
-		return suppliers;
-	}
-	
-	@Override
-	public List<Supplier> findAllPerProduct() {
-		List<Supplier> suppliers = new ArrayList<>();
 		return suppliers;
 	}
 	
