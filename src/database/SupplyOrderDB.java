@@ -18,12 +18,12 @@ import model.SupplyOrder;
 
 public class SupplyOrderDB implements SupplyOrderDBIF {
 	// PreparedStatements for the SupplyOrderDB class
-	private static final String FIND_ALL = "select * from SupplyOrder";
-	private static final String FIND_ALL_PER_PRODUCT = "select * from SupplyOrder where ProductId = ?";
-	private static final String FIND_BY_ID = "select * from SupplyOrder where Id = ?";
-	private static final String CREATE_SUPPLYORDER = "insert into SupplyOrder values(?, ?, ?, ?, ?)";
-	private static final String UPDATE_SUPPLYORDER = "update SupplyOrder set Product = ?, Quantity = ?, OrderDate = ?, Supplier = ?, IsDelivered = ? from Suppliers where Id = ?";
-	private static final String DISABLE_SUPPLYORDER = "delete from SupplyOrder where Id = ?";
+	private static final String FIND_ALL = "select * from SupplyOrders";
+	private static final String FIND_ALL_PER_PRODUCT = "select * from SupplyOrders where ProductId = ?";
+	private static final String FIND_BY_ID = "select * from SupplyOrders where Id = ?";
+	private static final String CREATE_SUPPLYORDER = "insert into SupplyOrders values(?, ?, ?, ?, ?)";
+	private static final String UPDATE_SUPPLYORDER = "update SupplyOrders set Quantity = ? from SupplyOrders where Id = ?";
+	private static final String DISABLE_SUPPLYORDER = "delete from SupplyOrders where Id = ?";
 	
 	private PreparedStatement findAll;
 	private PreparedStatement findAllPerProduct;
@@ -95,21 +95,15 @@ public class SupplyOrderDB implements SupplyOrderDBIF {
 		createSupplyOrder.setInt(2, supplyOrder.getQuantity());
 		createSupplyOrder.setDate(3, Date.valueOf(supplyOrder.getOrderDate()));
 		createSupplyOrder.setInt(4, supplyOrder.getSupplier().getId());
+		createSupplyOrder.setBoolean(5, false);
 		supplyOrder.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createSupplyOrder));
 	}
-	
-	/**
-	 * updates a Supply Order in DB
-	 * @throws SQLException
-	 */
+
 	@Override
 	public void updateSupplyOrder(SupplyOrder supplyOrder) throws SQLException {
-		updateSupplyOrder.setInt(1, supplyOrder.getProduct().getId());
-		updateSupplyOrder.setInt(2, supplyOrder.getQuantity());
-		updateSupplyOrder.setDate(3, Date.valueOf(supplyOrder.getOrderDate()));
-		updateSupplyOrder.setInt(4, supplyOrder.getSupplier().getId());
-		updateSupplyOrder.setInt(5, supplyOrder.getId());
-		updateSupplyOrder.executeQuery();
+		updateSupplyOrder.setInt(1, supplyOrder.getQuantity());
+		updateSupplyOrder.setInt(2, supplyOrder.getId());
+		updateSupplyOrder.executeUpdate();
 	}
 	
 	/**
@@ -119,10 +113,11 @@ public class SupplyOrderDB implements SupplyOrderDBIF {
 	@Override
 	public void disableSupplyOrder(SupplyOrder supplyOrder) throws SQLException {
 		disableSupplyOrder.setInt(1, supplyOrder.getId());
-		disableSupplyOrder.executeQuery();
+		disableSupplyOrder.execute();
 	}
 	
 	// local methods
+	
 	private SupplyOrder buildObject(ResultSet rs) throws SQLException, NotFoundException {
 		Product product = productCtrl.findById(rs.getInt("ProductId"));
 		Supplier supplier = supplierDBIF.findById(rs.getInt("SupplierId"));
