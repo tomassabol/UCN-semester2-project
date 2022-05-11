@@ -24,6 +24,7 @@ public class SupplyOrderDB implements SupplyOrderDBIF {
 	private static final String CREATE_SUPPLYORDER = "insert into SupplyOrders values(?, ?, ?, ?, ?)";
 	private static final String UPDATE_SUPPLYORDER = "update SupplyOrders set Quantity = ? from SupplyOrders where Id = ?";
 	private static final String DISABLE_SUPPLYORDER = "delete from SupplyOrders where Id = ?";
+	private static final String SET_DELIVERED = "update SupplyOrders set Delivered = ? where Id = ?";
 	
 	private PreparedStatement findAll;
 	private PreparedStatement findAllPerProduct;
@@ -31,6 +32,7 @@ public class SupplyOrderDB implements SupplyOrderDBIF {
 	private PreparedStatement createSupplyOrder;
 	private PreparedStatement updateSupplyOrder;
 	private PreparedStatement disableSupplyOrder;
+	private PreparedStatement setDelivered;
 
 	ProductController productCtrl = new ProductController();
 	SupplierDBIF supplierDBIF = new SupplierDB();
@@ -47,6 +49,7 @@ public class SupplyOrderDB implements SupplyOrderDBIF {
 		createSupplyOrder = DBConnection.getInstance().getConnection().prepareStatement(CREATE_SUPPLYORDER, Statement.RETURN_GENERATED_KEYS);
 		updateSupplyOrder = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_SUPPLYORDER);
 		disableSupplyOrder = DBConnection.getInstance().getConnection().prepareStatement(DISABLE_SUPPLYORDER);
+		setDelivered = DBConnection.getInstance().getConnection().prepareStatement(SET_DELIVERED);
 	}
 	
 	/**
@@ -114,6 +117,17 @@ public class SupplyOrderDB implements SupplyOrderDBIF {
 	public void disableSupplyOrder(SupplyOrder supplyOrder) throws SQLException {
 		disableSupplyOrder.setInt(1, supplyOrder.getId());
 		disableSupplyOrder.execute();
+	}
+
+	/**
+	 * sets delivered to true
+	 * @throws SQLException
+	 */
+	@Override
+	public void setDelivered(SupplyOrder supplyOrder) throws SQLException {
+		setDelivered.setBoolean(1, true);
+		setDelivered.setInt(2, supplyOrder.getId());
+		setDelivered.executeUpdate();
 	}
 	
 	// local methods

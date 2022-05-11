@@ -66,7 +66,6 @@ public class SupplyOrderController {
 	 * @throws SQLException
 	 */
 	public void updateSupplyOrder(SupplyOrder supplyOrder) throws SQLException {
-
 		supplyOrderDBIF.updateSupplyOrder(supplyOrder);
 	}
 	
@@ -76,8 +75,18 @@ public class SupplyOrderController {
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
-	public void disableSupplyOrder(SupplyOrder supplyOrder) throws SQLException, NotFoundException {
+	public void disableSupplyOrder(SupplyOrder supplyOrder) throws SQLException {
 		supplyOrderDBIF.disableSupplyOrder(supplyOrder);
+	}
+
+	/**
+	 * set delivered to true
+	 * use when supplyOrder is put into stock - put into shelf
+	 * @param supplyOrder
+	 * @throws SQLException
+	 */
+	public void setDelivered(SupplyOrder supplyOrder) throws SQLException {
+		supplyOrderDBIF.setDelivered(supplyOrder);
 	}
 	
 }

@@ -14,4 +14,5 @@ public interface SupplyOrderDBIF {
 	public void createSupplyOrder(SupplyOrder supplyOrder) throws SQLException;
 	public void updateSupplyOrder(SupplyOrder supplyOrder) throws SQLException;
 	public void disableSupplyOrder(SupplyOrder supplyOrder) throws SQLException;
+	public void setDelivered(SupplyOrder supplyOrder) throws SQLException;
 }
