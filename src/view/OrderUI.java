@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -17,11 +18,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import controller.AuthenticationController;
 import controller.ItemController;
@@ -38,8 +45,9 @@ import view.tableModel.CreateOrderTableModel.Column;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
-public class CreateOrder extends JFrame {
+public class OrderUI extends JFrame {
 
 	private JPanel contentPane;
 	private JButton btnEditQuantity;
@@ -48,10 +56,17 @@ public class CreateOrder extends JFrame {
 	private JButton btnAddItem;
 	private JTable tableMain;
 	private JLabel lblTotalValue;
-	private JComponent lblDiscountValue;
 	private JLabel lblSubtotalValue;
 	private JButton btnCreateOrder;
+	private JTextField txtSearch;
+	private JLabel label;
 	
+	public enum Mode {
+		VIEW,
+		CREATE
+	}
+	
+	private TableRowSorter<TableModel> rowSorter;
 	private CreateOrderTableModel tableModel;
 	private AuthenticationController auth;
 	private Customer customer;
@@ -60,12 +75,15 @@ public class CreateOrder extends JFrame {
 	private ItemController itemCtrl;
 	private OrderLineController orderLineCtrl;
 	private int availableQuantity;
+	private Mode mode;
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public CreateOrder(AuthenticationController auth, Customer customer, Order order) {
+	public OrderUI(AuthenticationController auth, Customer customer, Order order, Mode mode) {
 		this.auth = auth;
+		this.mode = mode;
 		this.customer = customer;
 		this.order = order;
 		
@@ -112,9 +130,9 @@ public class CreateOrder extends JFrame {
 		JPanel topPanel = new JPanel();
 		getContentPane().add(topPanel, BorderLayout.NORTH);
 		GridBagLayout gbl_topPanel = new GridBagLayout();
-		gbl_topPanel.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_topPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_topPanel.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_topPanel.columnWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_topPanel.columnWeights = new double[]{0.0, 1.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_topPanel.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		topPanel.setLayout(gbl_topPanel);
 		
@@ -122,17 +140,36 @@ public class CreateOrder extends JFrame {
 		//JLabel lblTitle = new JLabel(String.format("%s's order", customer.getName()));
 		JLabel lblTitle = new JLabel("Title");
 		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
-		gbc_lblTitle.gridwidth = 3;
+		gbc_lblTitle.gridwidth = 5;
 		gbc_lblTitle.insets = new Insets(0, 0, 5, 0);
 		gbc_lblTitle.gridx = 0;
 		gbc_lblTitle.gridy = 0;
 		topPanel.add(lblTitle, gbc_lblTitle);
+		
+		label = new JLabel(String.format("Search"));
+		label.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_label = new GridBagConstraints();
+		gbc_label.insets = new Insets(0, 5, 5, 5);
+		gbc_label.gridx = 0;
+		gbc_label.gridy = 1;
+		topPanel.add(label, gbc_label);
+		
+		txtSearch = new JTextField();
+		txtSearch.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_txtSearch = new GridBagConstraints();
+		gbc_txtSearch.fill = GridBagConstraints.BOTH;
+		gbc_txtSearch.anchor = GridBagConstraints.WEST;
+		gbc_txtSearch.insets = new Insets(0, 0, 5, 5);
+		gbc_txtSearch.gridx = 1;
+		gbc_txtSearch.gridy = 1;
+		topPanel.add(txtSearch, gbc_txtSearch);
+		txtSearch.setColumns(10);
 			
 		// ***** Button: clear *****
 		btnClear = new JButton("Clear");
 		GridBagConstraints gbc_btnTest_2 = new GridBagConstraints();
 		gbc_btnTest_2.insets = new Insets(0, 0, 5, 5);
-		gbc_btnTest_2.gridx = 1;
+		gbc_btnTest_2.gridx = 3;
 		gbc_btnTest_2.gridy = 1;
 		topPanel.add(btnClear, gbc_btnTest_2);
 					
@@ -140,7 +177,7 @@ public class CreateOrder extends JFrame {
 		btnAddItem = new JButton("Add item");
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton.gridx = 2;
+		gbc_btnNewButton.gridx = 4;
 		gbc_btnNewButton.gridy = 1;
 		topPanel.add(btnAddItem, gbc_btnNewButton);
 					
@@ -246,6 +283,10 @@ public class CreateOrder extends JFrame {
 		gbc_btnCreateOrder.gridy = 3;
 		priceAndSubmitPanel.add(btnCreateOrder, gbc_btnCreateOrder);
 		
+		// Add filtering
+		rowSorter = new TableRowSorter<TableModel>(tableModel);
+		tableMain.setRowSorter(rowSorter);
+		
 		//Attach event handlers
 		addEventHandlers();
 	}
@@ -259,6 +300,9 @@ public class CreateOrder extends JFrame {
 	public void setTableModel(CreateOrderTableModel tableModel) {
 		this.tableMain.setModel(tableModel);
 		this.tableModel = tableModel;
+		// Update table row sorter
+		rowSorter = new TableRowSorter<>(tableMain.getModel());
+		tableMain.setRowSorter(rowSorter);
 		
 	}
 	
@@ -290,11 +334,13 @@ public class CreateOrder extends JFrame {
 					setTableModel(tableModel);
 				} catch (SQLException e) {
 					Messages.error(frame, "There was an error connecting to the database");
+					this.addProduct();
 				} catch (NotFoundException e) {
 					Messages.error(frame, "The selected product was not found in the database");
+					this.addProduct();
 				}
 			} catch (NotEnoughInStockException e) {
-				Messages.error(frame, String.format("There is not enough items in stock from %d", product.getName()));
+				Messages.error(frame, String.format("There is not enough items in stock from %s", product.getName()));
 				// Repeat the whole thing again
 				this.addProduct();
 			}
@@ -311,14 +357,26 @@ public class CreateOrder extends JFrame {
 		tableMain.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				if (tableMain.getSelectionModel().isSelectionEmpty()) {
-					// NOT SELECTED
-					btnEditQuantity.setEnabled(false);
-					btnRemove.setEnabled(false);
-				} else {
-					// SELECTED
-					btnEditQuantity.setEnabled(true);
-					btnRemove.setEnabled(true);
+				switch(mode) {
+					case CREATE: {
+						if (tableMain.getSelectionModel().isSelectionEmpty()) {
+							// NOT SELECTED
+							btnEditQuantity.setEnabled(false);
+							btnRemove.setEnabled(false);
+						} else {
+							// SELECTED
+							btnEditQuantity.setEnabled(true);
+							btnRemove.setEnabled(true);
+						}
+						break;
+					}
+					case VIEW: {
+						btnEditQuantity.setEnabled(false);
+						btnRemove.setEnabled(false);
+						btnCreateOrder.setEnabled(false);
+						btnAddItem.setEnabled(false);
+						btnClear.setEnabled(false);
+					}
 				}
 			}
 		});
@@ -340,19 +398,18 @@ public class CreateOrder extends JFrame {
 		});
 		
 		// Action for createOrder button
-		btnCreateOrder.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(Messages.confirm(contentPane, "Do you want to finalize the order?")) {
-					try {
-						orderCtrl.finishOrder(order);
-					} catch (SQLException e1) {
+		btnCreateOrder.addActionListener(e -> {
+				
+			btnCreateOrder.setText("Create Order");
+			if(Messages.confirm(contentPane, "Do you want to finalize the order?")) {
+				try {
+					orderCtrl.finishOrder(order);
+				} catch (SQLException e1) {
 						Messages.error(contentPane, "There was an error connecting to the database");
-					} catch (NotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+				} catch (NotFoundException e1) {
+					Messages.error(contentPane, "There was an error finding the created order");
 				}
-			}
+			}					
 		});
 		
 		/**
@@ -366,15 +423,7 @@ public class CreateOrder extends JFrame {
 				int row = tableMain.getSelectedRow();
 				
 				//Get the orderLine from the selected row
-				OrderLine orderLine = null;
-				try {
-					orderLine = orderLineCtrl.findById((int) tableMain.getValueAt(row, 0));
-				} catch (SQLException e2) {
-					Messages.error(contentPane, "There was an error connecting to the database");
-				} catch (NotFoundException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				} 
+				OrderLine orderLine = tableModel.getOrderLine(row); 
 				
 				//Get the product from the orderLine
 				Product product = orderLine.getProduct();
@@ -436,6 +485,32 @@ public class CreateOrder extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				tableModel.clear();
 			}
+		});
+		
+		// Search implementation
+		txtSearch.getDocument().addDocumentListener(new DocumentListener(){
+					
+			private void search() {
+				String text = txtSearch.getText();
+				if(text.trim().length() == 0) {
+					rowSorter.setRowFilter(null);
+				} else {
+					rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(text)));
+				}
+			}
+															
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				search();
+			}
+			
+			@Override
+			public void  removeUpdate(DocumentEvent e) {
+				search();
+			}
+															
+			@Override
+			public void changedUpdate(DocumentEvent e) {}
 		});
 	}
 	

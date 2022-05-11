@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import controller.AuthenticationController;
+import controller.ItemController;
 import controller.OrderController;
 import controller.OrderLineController;
 import exceptions.NotEnoughInStockException;
@@ -24,7 +25,7 @@ public class CreateOrderTableModel extends AbstractTableModel{
 	//private static final String[] columnNames = {"ID", "Product", "Quantity"}; //TODO: Add price per orderLine
 	
 	public enum Column {
-		ID("ID"),
+		ID("OrderLine ID"),
 		PRODUCT("Product"),
 		QUANTITY("Quantity");
 		
@@ -52,6 +53,7 @@ public class CreateOrderTableModel extends AbstractTableModel{
 	private OrderLineController orderLineCtrl;
 	private Order order;
 	AuthenticationController auth;
+	private ItemController itemCtrl;
 	
 	public CreateOrderTableModel(AuthenticationController authentication, Order order, List<Column> columns) throws SQLException, NotFoundException {
 		this.columns = new ArrayList<Column>(columns);
@@ -60,6 +62,7 @@ public class CreateOrderTableModel extends AbstractTableModel{
 		this.order = order;
 		orderLineCtrl = new OrderLineController();
 		this.orderLines = new ArrayList<OrderLine>(order.getOrderLines());
+		itemCtrl = new ItemController();
 	}
 	
 	
@@ -143,9 +146,32 @@ public class CreateOrderTableModel extends AbstractTableModel{
      * @throws SQLException 
      */
     public void add(Product product, int quantity) throws SQLException, NotFoundException, NotEnoughInStockException {
-    	OrderLine orderLine = orderCtrl.addProduct(order, product, quantity);
-    	this.orderLines.add(orderLine);
-    	this.fireTableRowsInserted(this.getRowCount() - 1, this.getRowCount() -1);
+    	if(order.isProductPresent(product)) {
+			quantity += order.getOrderLinebyProduct(product).getQuantity();
+			// basic stock check 
+			// TODO: update once the stock UC is implemented
+			if(itemCtrl.findAllPerProduct(product).size() < quantity) {
+				int currentStock = itemCtrl.findAllPerProduct(product).size();
+				throw new NotEnoughInStockException(quantity, currentStock);
+			}
+			OrderLine orderLine = order.getOrderLinebyProduct(product);
+			orderLine.setQuantity(quantity);
+			this.fireTableRowsUpdated(this.getRowCount() - 1, this.getRowCount() -1);
+			
+		}else {
+			OrderLine newOrderLine = orderCtrl.addProduct(order, product, quantity);
+			this.orderLines.add(newOrderLine);
+			this.fireTableRowsInserted(this.getRowCount() - 1, this.getRowCount() -1);    					
+		}
+    }
+    
+    /**
+     * Returns an orderLine from the chosen row
+     * @param row - the row the orderLine is in
+     * @return the orderLine
+     */
+    public OrderLine getOrderLine(int row) {
+    	return orderLines.get(row);
     }
     
 }

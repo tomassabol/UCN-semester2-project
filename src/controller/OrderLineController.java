@@ -10,6 +10,7 @@ import database.OrderLineDB;
 import database.interfaces.OrderLineDBIF;
 import exceptions.NotFoundException;
 import model.Item;
+import model.Order;
 import model.OrderLine;
 import model.Product;
 
@@ -57,6 +58,18 @@ public class OrderLineController {
 	public OrderLine findById(int id) throws SQLException, NotFoundException {
 		OrderLine orderLine = orderLineDBIF.findById(id);
 		return orderLine;
+	}
+	
+	/**
+	 * Finds an orderLine by the order and the product
+	 * @param order - the order that the orderLine is in
+	 * @param product - the product the orderLine has
+	 * @return The orderLine within the order and with the product
+	 */
+	public OrderLine findByOrderAndProduct(Order order, Product product) {
+		OrderLine orderLine = order.getOrderLinebyProduct(product);
+		return orderLine;
+		
 	}
 	
 	/**

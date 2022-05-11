@@ -52,6 +52,18 @@ public class OrderController {
 		Order order = orderDBIF.findById(id);
 		return order;
 	}
+	
+	/**
+	 * Finds all the orders of a specific customer
+	 * @param customer - the customer whose orders are needed
+	 * @return a list of all the Orders of the specific customer
+	 * @throws SQLException
+	 * @throws NotFoundException
+	 */
+	public List<Order> findByCustomer(Customer customer) throws SQLException, NotFoundException {
+		List<Order> orders = orderDBIF.findByCustomer(customer);
+		return orders;
+	}
 	/**
 	 * Creates a new object of the Order class
 	 * @param employee - the employee that assigns the order
@@ -85,16 +97,6 @@ public class OrderController {
 	 * @throws NotEnoughInStockException
 	 */
 	public OrderLine addProduct(Order order, Product product, int quantity) throws SQLException, NotFoundException, NotEnoughInStockException {
-		if(order.isProductPresent(product)) {
-			quantity += order.getOrderLinebyProduct(product).getQuantity();
-			// basic stock check 
-			// TODO: update once the stock UC is implemented
-			if(itemCtrl.findAllPerProduct(product).size() < quantity) {
-				int currentStock = itemCtrl.findAllPerProduct(product).size();
-				throw new NotEnoughInStockException(quantity, currentStock);
-			}
-		}
-
 		OrderLine orderLine = new OrderLine(product, quantity);
 		order.addOrderLine(orderLine);
 

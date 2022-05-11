@@ -50,7 +50,7 @@ public class Dashboard extends JFrame {
 	private JButton btnProduct; // product
 	private JButton btnCustomer; // customer
 	private JButton btnEmployee; // employee
-	private JLabel lblOrders;
+	private JLabel lblCustomerOrders;
 	private JButton btnShowOrders;
 	private JButton btnLogOut;
 	private JButton btnNewButton;
@@ -64,6 +64,8 @@ public class Dashboard extends JFrame {
 	private Customer customer;
 	private OrderController orderCtrl;
 	private Order order;
+	private JLabel lblAllOrders;
+	private JButton btnShowAllOrders;
 	
 	/**
 	 * Create the frame.
@@ -139,18 +141,18 @@ public class Dashboard extends JFrame {
 		orderPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
 		tabsPane.addTab("Orders", null, orderPanel, null);
 		GridBagLayout gbl_orderPanel = new GridBagLayout();
-		gbl_orderPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_orderPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_orderPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_orderPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_orderPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_orderPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		orderPanel.setLayout(gbl_orderPanel);
 		
 		btnNewButton = new JButton("Choose customer");
 		btnNewButton.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.gridwidth = 3;
+		gbc_btnNewButton.gridwidth = 5;
 		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
+		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton.gridx = 1;
 		gbc_btnNewButton.gridy = 1;
 		orderPanel.add(btnNewButton, gbc_btnNewButton);
@@ -159,7 +161,7 @@ public class Dashboard extends JFrame {
 		txtCustomerEmail.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		txtCustomerEmail.setText("Customer email");
 		GridBagConstraints gbc_txtCustomerEmail = new GridBagConstraints();
-		gbc_txtCustomerEmail.gridwidth = 3;
+		gbc_txtCustomerEmail.gridwidth = 5;
 		gbc_txtCustomerEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_txtCustomerEmail.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtCustomerEmail.gridx = 1;
@@ -176,13 +178,20 @@ public class Dashboard extends JFrame {
 		gbc_lblCreateOrder.gridy = 4;
 		orderPanel.add(lblCreateOrder, gbc_lblCreateOrder);
 		
-		lblOrders = new JLabel("Show Orders");
-		lblOrders.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_lblOrders = new GridBagConstraints();
-		gbc_lblOrders.insets = new Insets(0, 0, 5, 5);
-		gbc_lblOrders.gridx = 3;
-		gbc_lblOrders.gridy = 4;
-		orderPanel.add(lblOrders, gbc_lblOrders);
+		lblCustomerOrders = new JLabel("Show Customer Orders");
+		lblCustomerOrders.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_lblCustomerOrders = new GridBagConstraints();
+		gbc_lblCustomerOrders.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCustomerOrders.gridx = 3;
+		gbc_lblCustomerOrders.gridy = 4;
+		orderPanel.add(lblCustomerOrders, gbc_lblCustomerOrders);
+		
+		lblAllOrders = new JLabel("Show All Orders");
+		GridBagConstraints gbc_lblAllOrders = new GridBagConstraints();
+		gbc_lblAllOrders.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAllOrders.gridx = 5;
+		gbc_lblAllOrders.gridy = 4;
+		orderPanel.add(lblAllOrders, gbc_lblAllOrders);
 		
 		btnCreateOrder = new JButton("Create Order");
 		btnCreateOrder.setFont(new Font("Open Sans", Font.PLAIN, 10));
@@ -192,13 +201,20 @@ public class Dashboard extends JFrame {
 		gbc_btnCreateOrder.gridy = 5;
 		orderPanel.add(btnCreateOrder, gbc_btnCreateOrder);
 		
-		btnShowOrders = new JButton("Show Orders");
+		btnShowOrders = new JButton("Show Customer Orders");
 		btnShowOrders.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_btnShowOrders = new GridBagConstraints();
 		gbc_btnShowOrders.insets = new Insets(0, 0, 5, 5);
 		gbc_btnShowOrders.gridx = 3;
 		gbc_btnShowOrders.gridy = 5;
 		orderPanel.add(btnShowOrders, gbc_btnShowOrders);
+		
+		btnShowAllOrders = new JButton("Show All Orders");
+		GridBagConstraints gbc_btnShowAllOrders = new GridBagConstraints();
+		gbc_btnShowAllOrders.insets = new Insets(0, 0, 5, 5);
+		gbc_btnShowAllOrders.gridx = 5;
+		gbc_btnShowAllOrders.gridy = 5;
+		orderPanel.add(btnShowAllOrders, gbc_btnShowAllOrders);
 	}
 	
 	// locations
@@ -349,28 +365,41 @@ public class Dashboard extends JFrame {
 		});
 		
 		//Create order button
-		btnCreateOrder.addActionListener(new ActionListener() {
+		btnCreateOrder.addActionListener(e-> {
 			
 
 			//TODO: Implement choose customer
-			public void actionPerformed(ActionEvent e) {
-				try {
-					customer = customerCtrl.findById(1);
-				} catch (SQLException | NotFoundException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
+			try {
+				customer = customerCtrl.findById(1);
+			} catch (SQLException | NotFoundException e2) {
+				// TODO Auto-generated catch block 
+				e2.printStackTrace();
+			}
 				
-				try {
-					order = orderCtrl.createOrder(auth.getLoggedInUser(), customer);
-				} catch (SQLException e1) {
-					Messages.error(contentPane, "There was an error connecting to the database");
-				} catch (NotFoundException e1) {
-					Messages.error(contentPane, "The order was not created for some reason");
-				}
-				CreateOrder frame = new CreateOrder(auth, customer, order);
+			try {
+				order = orderCtrl.createOrder(auth.getLoggedInUser(), customer);
+			} catch (SQLException e1) {
+				Messages.error(contentPane, "There was an error connecting to the database");
+			} catch (NotFoundException e1) {
+				Messages.error(contentPane, "The order was not created for some reason");
+			}
+			OrderUI frame = new OrderUI(auth, customer, order, OrderUI.Mode.CREATE);
+			frame.setVisible(true);
+		});
+		
+		//Shows the orders for a specific customer
+		btnShowOrders.addActionListener(e -> {
+			if(customer == null) {
+				Messages.error(this, "You need to choose a customer in order to open this window");
+			}else {
+				CRUDOrders frame = new CRUDOrders(auth, customer, CRUDOrders.Mode.CUSTOMER);
 				frame.setVisible(true);
 			}
+		});
+		
+		btnShowAllOrders.addActionListener(e -> {
+			CRUDOrders frame = new CRUDOrders(auth, null, CRUDOrders.Mode.ALL);
+			frame.setVisible(true);
 		});
 
 		btnDepartment.addActionListener(e -> {

@@ -14,6 +14,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
@@ -26,6 +27,7 @@ public class ChooseProduct extends JDialog {
 	private final JPanel contentPane;
 	private CRUDProducts CRUDPanel;
 	private JButtonPrimary btnChoose;
+	private JSpinner spinner;
 	
 	private Product selectedProduct = null;
 	private int selectedQuantity;
@@ -97,17 +99,12 @@ public class ChooseProduct extends JDialog {
 		lblSpinner.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		
 		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
-		JSpinner spinner = new JSpinner(spinnerModel);
+		spinner = new JSpinner(spinnerModel);
 		GridBagConstraints gbc_spinner = new GridBagConstraints();
 		gbc_spinner.insets = new Insets(0, 0, 0, 5);
 		gbc_spinner.gridx = 3;
 		gbc_spinner.gridy = 0;
 		panel.add(spinner, gbc_spinner);
-		try {
-			quantity = Integer.parseInt(String.valueOf(spinner.getValue()));
-		} catch (NumberFormatException e1) {
-			Messages.error(contentPane, "The given value was not a number");
-		}
 		
 		btnChoose = new JButtonPrimary("Choose...");
 		GridBagConstraints gbc_btnChoose = new GridBagConstraints();
@@ -166,7 +163,7 @@ public class ChooseProduct extends JDialog {
 				ProductTableModel tableModel = CRUDPanel.getTableModel();
 				Product product = tableModel.getObj(table.getSelectedRow());
 				selectedProduct = product;
-				selectedQuantity = quantity;
+				selectedQuantity = (int) spinner.getValue();
 				this.dispose();
 			}
 		});

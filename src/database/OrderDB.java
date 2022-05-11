@@ -22,11 +22,13 @@ public class OrderDB implements OrderDBIF {
     //PreparedStatments
     private static final String FIND_ALL = "select * from Orders";
     private static final String FIND_BY_ID = "select * from Orders where id = ?";
+    private static final String FIND_BY_CUSTOMER = "select * from Orders where customer = ?";
     private static final String CREATE_ORDER = "insert into Orders values(?, ?, ?)";
     private static final String DELETE_ORDER = "delete from Orders where id = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement findById;
+    private PreparedStatement findByCustomer;
     private PreparedStatement createOrder;
     private PreparedStatement deleteOrder;
 
@@ -36,6 +38,7 @@ public class OrderDB implements OrderDBIF {
     public OrderDB()throws SQLException{
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
         findById= DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
+        findByCustomer = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_CUSTOMER);
         createOrder= DBConnection.getInstance().getConnection().prepareStatement(CREATE_ORDER, Statement.RETURN_GENERATED_KEYS);
         deleteOrder = DBConnection.getInstance().getConnection().prepareStatement(DELETE_ORDER);
     }
@@ -60,6 +63,15 @@ public class OrderDB implements OrderDBIF {
 
         if(order == null){throw new NotFoundException("Order",id);}
         return order;
+    }
+    
+    @Override
+    public List<Order> findByCustomer(Customer customer) throws SQLException, NotFoundException {
+    	ResultSet rs;
+    	findByCustomer.setInt(1, customer.getId());
+    	rs = findByCustomer.executeQuery();
+    	List<Order> orders = buildObjects(rs);
+    	return orders;
     }
 
     @Override
