@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,11 +19,9 @@ import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
 import controller.CustomerController;
-import controller.EmployeeController;
 import controller.OrderController;
 import exceptions.NotFoundException;
 import model.Customer;
-import model.Employee;
 import model.Order;
 
 import java.awt.event.ActionListener;
@@ -37,14 +36,12 @@ public class Dashboard extends JFrame {
 	private JTabbedPane tabsPane;
 	private Component lblGreeting;
 	private JLabel lblCreateOrder;
-	private JLabel lblEmployees; 
 	private JLabel lblDepartment; // department
 	private JLabel lblCities; // cities
 	private JLabel lblProduct; // product
 	private JLabel lblCustomer; // customer
 	private JLabel lblEmployee; // employee
 	private JButton btnCreateOrder;
-	private JButton btnEmployees; 
 	private JButton btnDepartment; // department
 	private JButton btnCities; // cities
 	private JButton btnProduct; // product
@@ -55,11 +52,9 @@ public class Dashboard extends JFrame {
 	private JButton btnLogOut;
 	private JButton btnNewButton;
 	private JTextField txtCustomerEmail;
-	private JTextField txtEmployeeEmail; // employee
 
 	// Fields for classes created by us
 	private AuthenticationController auth;
-	private EmployeeController employeeCtrl;
 	private CustomerController customerCtrl;
 	private Customer customer;
 	private OrderController orderCtrl;
@@ -170,7 +165,9 @@ public class Dashboard extends JFrame {
 		txtCustomerEmail.setColumns(10);
 		///////////////////////////////////////////////////////////////////////
 		
-		lblCreateOrder = new JLabel("Create Order");
+		lblCreateOrder = new JLabel();
+		ImageIcon createOrderIcon = new ImageIcon("images/CreateOrder.png");
+		lblCreateOrder.setIcon(createOrderIcon);
 		lblCreateOrder.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblCreateOrder = new GridBagConstraints();
 		gbc_lblCreateOrder.insets = new Insets(0, 0, 5, 5);
@@ -178,6 +175,7 @@ public class Dashboard extends JFrame {
 		gbc_lblCreateOrder.gridy = 4;
 		orderPanel.add(lblCreateOrder, gbc_lblCreateOrder);
 		
+<<<<<<< HEAD
 		lblCustomerOrders = new JLabel("Show Customer Orders");
 		lblCustomerOrders.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblCustomerOrders = new GridBagConstraints();
@@ -192,6 +190,17 @@ public class Dashboard extends JFrame {
 		gbc_lblAllOrders.gridx = 5;
 		gbc_lblAllOrders.gridy = 4;
 		orderPanel.add(lblAllOrders, gbc_lblAllOrders);
+=======
+		lblOrders = new JLabel();
+		ImageIcon showOrdersIcon = new ImageIcon("images/Orders.png");
+		lblOrders.setIcon(showOrdersIcon);
+		lblOrders.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_lblOrders = new GridBagConstraints();
+		gbc_lblOrders.insets = new Insets(0, 0, 5, 5);
+		gbc_lblOrders.gridx = 3;
+		gbc_lblOrders.gridy = 4;
+		orderPanel.add(lblOrders, gbc_lblOrders);
+>>>>>>> e52d001476c8642add910589083fc9676801ae64
 		
 		btnCreateOrder = new JButton("Create Order");
 		btnCreateOrder.setFont(new Font("Open Sans", Font.PLAIN, 10));
@@ -209,12 +218,15 @@ public class Dashboard extends JFrame {
 		gbc_btnShowOrders.gridy = 5;
 		orderPanel.add(btnShowOrders, gbc_btnShowOrders);
 		
+<<<<<<< HEAD
 		btnShowAllOrders = new JButton("Show All Orders");
 		GridBagConstraints gbc_btnShowAllOrders = new GridBagConstraints();
 		gbc_btnShowAllOrders.insets = new Insets(0, 0, 5, 5);
 		gbc_btnShowAllOrders.gridx = 5;
 		gbc_btnShowAllOrders.gridy = 5;
 		orderPanel.add(btnShowAllOrders, gbc_btnShowAllOrders);
+=======
+>>>>>>> e52d001476c8642add910589083fc9676801ae64
 	}
 	
 	// locations
@@ -237,7 +249,9 @@ public class Dashboard extends JFrame {
 		gbc_btnDepartment.gridy = 5;
 		locationPanel.add(btnDepartment, gbc_btnDepartment);
 				
-		lblDepartment = new JLabel("Departments");
+		lblDepartment = new JLabel();
+		ImageIcon departmentIcon = new ImageIcon("images/Department.png");
+		lblDepartment.setIcon(departmentIcon);
 		lblDepartment.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblDepartment = new GridBagConstraints();
 		gbc_lblDepartment.insets = new Insets(0, 0, 5, 5);
@@ -245,7 +259,9 @@ public class Dashboard extends JFrame {
 		gbc_lblDepartment.gridy = 4;
 		locationPanel.add(lblDepartment, gbc_lblDepartment);
 		
-		lblCities = new JLabel("Cities");
+		lblCities = new JLabel();
+		ImageIcon cityIcon = new ImageIcon("images/Cities.png");
+		lblCities.setIcon(cityIcon);
 		lblCities.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblCities = new GridBagConstraints();
 		gbc_lblCities.insets = new Insets(0, 1, 5, 5);
@@ -260,6 +276,7 @@ public class Dashboard extends JFrame {
 		gbc_btnCities.gridx = 3;
 		gbc_btnCities.gridy = 5;
 		locationPanel.add(btnCities, gbc_btnCities);
+		
 	}
 
 	// storage
@@ -274,7 +291,9 @@ public class Dashboard extends JFrame {
 		gbl_storagePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		storagePanel.setLayout(gbl_storagePanel);
 		
-		lblProduct = new JLabel("Products");
+		lblProduct = new JLabel();
+		ImageIcon productIcon = new ImageIcon("images/product.png");
+		lblProduct.setIcon(productIcon);
 		lblProduct.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblProduct = new GridBagConstraints();
 		gbc_lblProduct.insets = new Insets(0, 0, 5, 5);
@@ -303,7 +322,9 @@ public class Dashboard extends JFrame {
 		gbl_peoplePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		peoplePanel.setLayout(gbl_peoplePanel);
 
-		lblCustomer = new JLabel("Customers");
+		lblCustomer = new JLabel();
+		ImageIcon customerIcon = new ImageIcon("images/customer.png");
+		lblCustomer.setIcon(customerIcon);
 		lblCustomer.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblCustomert = new GridBagConstraints();
 		gbc_lblCustomert.insets = new Insets(0, 0, 5, 5);
@@ -319,7 +340,9 @@ public class Dashboard extends JFrame {
 		gbc_btnCustomer.gridy = 5;
 		peoplePanel.add(btnCustomer, gbc_btnCustomer);
 		
-		lblEmployee = new JLabel("Employees");
+		lblEmployee = new JLabel();
+		ImageIcon employeeIcon = new ImageIcon("images/employee.png");
+		lblEmployee.setIcon(employeeIcon);
 		lblEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblEmployee = new GridBagConstraints();
 		gbc_lblEmployee.insets = new Insets(0, 1, 5, 5);

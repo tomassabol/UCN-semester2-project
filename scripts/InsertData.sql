@@ -21,9 +21,9 @@ INSERT INTO Products VALUES('Product1','Description one',1,'1000',0,1)
 INSERT INTO Products VALUES('Product2','Description two',2,'2000',10,1)
 INSERT INTO Products VALUES('Product3','Description three',3,'3000',5,0)
 
-INSERT INTO SupplyOrders VALUES(1,10,'2020-01-01',1)
-INSERT INTO SupplyOrders VALUES(2,20,'2021-02-02',2)
-INSERT INTO SupplyOrders VALUES(3,30,'2022-03-03',3)
+INSERT INTO SupplyOrders VALUES(1,10,'2020-01-01',1, 1)
+INSERT INTO SupplyOrders VALUES(2,20,'2021-02-02',2, 1)
+INSERT INTO SupplyOrders VALUES(3,30,'2022-03-03',3, 1)
 
 INSERT INTO Items VALUES(1, 0) 
 INSERT INTO Items VALUES(2, 0)
@@ -68,17 +68,9 @@ INSERT INTO OrderDetails VALUES(1,1)
 INSERT INTO OrderDetails VALUES(2,2)
 INSERT INTO OrderDetails VALUES(3,3)
 
-INSERT INTO StorageLines VALUES(1,10)
-INSERT INTO StorageLines VALUES(2,20)
-INSERT INTO StorageLines VALUES(3,30)
-
-INSERT INTO StorageLineDetails VALUES(1,1)
-INSERT INTO StorageLineDetails VALUES(2,2)
-INSERT INTO StorageLineDetails VALUES(3,3)
-
-INSERT INTO Shelves VALUES('Shelf1',1)
-INSERT INTO Shelves VALUES('Shelf2',2)
-INSERT INTO Shelves VALUES('Shelf3',3)
+INSERT INTO Shelves VALUES('A1',1, 1, 1)
+INSERT INTO Shelves VALUES('B2',2, 2, 2)
+INSERT INTO Shelves VALUES('C4',3, 3, 3)
 
 INSERT INTO ShelfDetails VALUES(1,1)
 INSERT INTO ShelfDetails VALUES(2,2)
