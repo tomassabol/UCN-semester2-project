@@ -21,12 +21,14 @@ public class ShelfDB implements ShelfDBIF {
     private static final String CREATE_SHELF = "insert into Shelves values(?,?,?,?)";
     private static final String UPDATE_SHELF = "update Shelves  set Name = ?,DepartmentId = ?";
     private static final String DISABLE_SHELF = "delete from Shelves where Id = ?";
+    private static final String PRODUCT_QUANTITY_PER_DEPARTMENT = "select * from Shelves where DepartmentId = ? and ProductId = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement findById;
     private PreparedStatement createShelf;
     private PreparedStatement updateShelf;
     private PreparedStatement deleteShelf;
+    private PreparedStatement productQuantityPerDepartment;
 
     //Controllers
     ProductController productController;
@@ -39,6 +41,7 @@ public class ShelfDB implements ShelfDBIF {
         createShelf = DBConnection.getInstance().getConnection().prepareStatement(CREATE_SHELF, Statement.RETURN_GENERATED_KEYS);
         updateShelf = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_SHELF);
         deleteShelf = DBConnection.getInstance().getConnection().prepareStatement(DISABLE_SHELF);
+        productQuantityPerDepartment = DBConnection.getInstance().getConnection().prepareStatement(PRODUCT_QUANTITY_PER_DEPARTMENT);
 
         productController = new ProductController();
         departmentController  =  new DepartmentController();
@@ -116,6 +119,16 @@ public class ShelfDB implements ShelfDBIF {
     public void deleteShelf(Shelf shelf) throws SQLException{
         deleteShelf.setInt(1, shelf.getId());
         deleteShelf.executeUpdate(); 
+    }
+
+    @Override
+    public List<Shelf> productQuantityPerDepartment(Department department, Product product) throws SQLException, NotFoundException {
+        ResultSet rs;
+        productQuantityPerDepartment.setInt(1, department.getId());
+        productQuantityPerDepartment.setInt(2, product.getId());
+        rs = productQuantityPerDepartment.executeQuery();
+        List<Shelf> shelves = buildObjects(rs);
+        return shelves;
     }
 
     // Local methodes

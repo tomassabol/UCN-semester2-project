@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import exceptions.NotFoundException;
+import model.Department;
+import model.Product;
 import model.Shelf;
 
 public interface ShelfDBIF {
@@ -12,4 +14,5 @@ public interface ShelfDBIF {
     public void createShelf(Shelf shelf) throws SQLException;
     public void updateShelf(Shelf shelf) throws SQLException;
     public void deleteShelf(Shelf shelf) throws SQLException;
+    public List<Shelf> productQuantityPerDepartment(Department department, Product product) throws SQLException, NotFoundException;
 }
