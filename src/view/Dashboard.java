@@ -61,6 +61,7 @@ public class Dashboard extends JFrame {
 	private Order order;
 	private JLabel lblAllOrders;
 	private JButton btnShowAllOrders;
+	private JLabel lblOrders;
 	
 	/**
 	 * Create the frame.
@@ -175,7 +176,6 @@ public class Dashboard extends JFrame {
 		gbc_lblCreateOrder.gridy = 4;
 		orderPanel.add(lblCreateOrder, gbc_lblCreateOrder);
 		
-<<<<<<< HEAD
 		lblCustomerOrders = new JLabel("Show Customer Orders");
 		lblCustomerOrders.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblCustomerOrders = new GridBagConstraints();
@@ -190,7 +190,7 @@ public class Dashboard extends JFrame {
 		gbc_lblAllOrders.gridx = 5;
 		gbc_lblAllOrders.gridy = 4;
 		orderPanel.add(lblAllOrders, gbc_lblAllOrders);
-=======
+		
 		lblOrders = new JLabel();
 		ImageIcon showOrdersIcon = new ImageIcon("images/Orders.png");
 		lblOrders.setIcon(showOrdersIcon);
@@ -200,7 +200,6 @@ public class Dashboard extends JFrame {
 		gbc_lblOrders.gridx = 3;
 		gbc_lblOrders.gridy = 4;
 		orderPanel.add(lblOrders, gbc_lblOrders);
->>>>>>> e52d001476c8642add910589083fc9676801ae64
 		
 		btnCreateOrder = new JButton("Create Order");
 		btnCreateOrder.setFont(new Font("Open Sans", Font.PLAIN, 10));
@@ -218,15 +217,13 @@ public class Dashboard extends JFrame {
 		gbc_btnShowOrders.gridy = 5;
 		orderPanel.add(btnShowOrders, gbc_btnShowOrders);
 		
-<<<<<<< HEAD
 		btnShowAllOrders = new JButton("Show All Orders");
 		GridBagConstraints gbc_btnShowAllOrders = new GridBagConstraints();
 		gbc_btnShowAllOrders.insets = new Insets(0, 0, 5, 5);
 		gbc_btnShowAllOrders.gridx = 5;
 		gbc_btnShowAllOrders.gridy = 5;
 		orderPanel.add(btnShowAllOrders, gbc_btnShowAllOrders);
-=======
->>>>>>> e52d001476c8642add910589083fc9676801ae64
+
 	}
 	
 	// locations
