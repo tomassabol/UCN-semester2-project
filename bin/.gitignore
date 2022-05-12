@@ -1,9 +1,2 @@
-<<<<<<< HEAD
-/view/
-=======
-/model/
-/tests/
-/view/
-/database/
->>>>>>> e52d001476c8642add910589083fc9676801ae64
 /controller/
+/view/
