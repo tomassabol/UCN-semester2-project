@@ -1,8 +1,6 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -21,14 +19,11 @@ import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
 import exceptions.NotFoundException;
-import model.City;
 import model.Customer;
 import model.Order;
 import view.JLink.COLORS;
 import view.tableModel.OrdersTableModel;
 import view.tableModel.OrdersTableModel.Column;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class CRUDOrders extends JFrame {
 

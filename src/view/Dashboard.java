@@ -48,9 +48,9 @@ public class Dashboard extends JFrame {
 	private JButton btnCustomer; // customer
 	private JButton btnEmployee; // employee
 	private JLabel lblCustomerOrders;
-	private JButton btnShowOrders;
+	private JButton btnShowCustomerOrders;
 	private JButton btnLogOut;
-	private JButton btnNewButton;
+	private JButton btnChooseCustomer;
 	private JTextField txtCustomerEmail;
 
 	// Fields for classes created by us
@@ -143,19 +143,19 @@ public class Dashboard extends JFrame {
 		gbl_orderPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		orderPanel.setLayout(gbl_orderPanel);
 		
-		btnNewButton = new JButton("Choose customer");
-		btnNewButton.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.gridwidth = 5;
-		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 1;
-		orderPanel.add(btnNewButton, gbc_btnNewButton);
+		btnChooseCustomer = new JButton("Choose customer");
+		btnChooseCustomer.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_btnChooseCustomer = new GridBagConstraints();
+		gbc_btnChooseCustomer.gridwidth = 5;
+		gbc_btnChooseCustomer.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnChooseCustomer.insets = new Insets(0, 0, 5, 0);
+		gbc_btnChooseCustomer.gridx = 1;
+		gbc_btnChooseCustomer.gridy = 1;
+		orderPanel.add(btnChooseCustomer, gbc_btnChooseCustomer);
 		
 		txtCustomerEmail = new JTextField();
 		txtCustomerEmail.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		txtCustomerEmail.setText("Customer email");
+		//txtCustomerEmail.setText("Customer email");
 		GridBagConstraints gbc_txtCustomerEmail = new GridBagConstraints();
 		gbc_txtCustomerEmail.gridwidth = 5;
 		gbc_txtCustomerEmail.insets = new Insets(0, 0, 5, 5);
@@ -209,13 +209,13 @@ public class Dashboard extends JFrame {
 		gbc_btnCreateOrder.gridy = 5;
 		orderPanel.add(btnCreateOrder, gbc_btnCreateOrder);
 		
-		btnShowOrders = new JButton("Show Customer Orders");
-		btnShowOrders.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_btnShowOrders = new GridBagConstraints();
-		gbc_btnShowOrders.insets = new Insets(0, 0, 5, 5);
-		gbc_btnShowOrders.gridx = 3;
-		gbc_btnShowOrders.gridy = 5;
-		orderPanel.add(btnShowOrders, gbc_btnShowOrders);
+		btnShowCustomerOrders = new JButton("Show Customer Orders");
+		btnShowCustomerOrders.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_btnShowCustomerOrders = new GridBagConstraints();
+		gbc_btnShowCustomerOrders.insets = new Insets(0, 0, 5, 5);
+		gbc_btnShowCustomerOrders.gridx = 3;
+		gbc_btnShowCustomerOrders.gridy = 5;
+		orderPanel.add(btnShowCustomerOrders, gbc_btnShowCustomerOrders);
 		
 		btnShowAllOrders = new JButton("Show All Orders");
 		GridBagConstraints gbc_btnShowAllOrders = new GridBagConstraints();
@@ -383,11 +383,28 @@ public class Dashboard extends JFrame {
 				}
 			}
 		});
+
+		btnChooseCustomer.addActionListener(e-> {
+			try {
+				ChooseCustomer frame;
+				frame = new ChooseCustomer(auth);
+				frame.setVisible(true);
+				if (frame.isCustomerSelected() == true) {
+					customer = frame.getSelectedCustomer();
+				}
+				txtCustomerEmail.setText(customer.getId() + " " + customer.getName());
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (NotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 		
 		//Create order button
 		btnCreateOrder.addActionListener(e-> {
 			
-
 			//TODO: Implement choose customer
 			try {
 				customer = customerCtrl.findById(1);
@@ -408,7 +425,7 @@ public class Dashboard extends JFrame {
 		});
 		
 		//Shows the orders for a specific customer
-		btnShowOrders.addActionListener(e -> {
+		btnShowCustomerOrders.addActionListener(e -> {
 			if(customer == null) {
 				Messages.error(this, "You need to choose a customer in order to open this window");
 			}else {
