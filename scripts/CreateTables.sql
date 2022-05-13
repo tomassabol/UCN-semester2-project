@@ -6,16 +6,16 @@ drop table if exists Customers;
 drop table if exists CustomerTypes;
 drop table if exists ShelfDetails
 drop table if exists Shelves;
-drop table if exists Departments;
 drop table if exists StorageLineDetails;
 drop table if exists StorageLines;
 drop table if exists OrderLineDetails;
 drop table if exists OrderLines;
-drop table if exists Items;
 drop table if exists SupplyOrders;
 drop table if exists Suppliers;
+drop table if exists Items;
 drop table if exists Products;
 drop table if exists ProductTypes;
+drop table if exists Departments;
 drop table if exists City;
 
 create table City(
@@ -61,10 +61,20 @@ create table SupplyOrders(
     Delivered bit
 );
 
+create table Departments(
+    Id int identity(1,1) primary key,
+    Name varchar(100) unique,
+    ZIP varchar(10),
+    foreign key (ZIP) references City(ZIP),
+    Address varchar(100)
+);
+
 create table Items(
     Id int identity(1,1) primary key,
     ProductId int,
     foreign key (ProductId) references Products(Id),
+    DepartmentId int,
+    foreign key (DepartmentId) references Departments(Id),
     Sold bit
 );
 
@@ -80,14 +90,6 @@ create table OrderLineDetails(
     foreign key (OrderLineId) references OrderLines(Id),
     ItemId int,
     foreign key (ItemId) references Items(Id)
-);
-
-create table Departments(
-    Id int identity(1,1) primary key,
-    Name varchar(100),
-    ZIP varchar(10),
-    foreign key (ZIP) references City(ZIP),
-    Address varchar(100)
 );
 
 create table CustomerTypes(
@@ -146,7 +148,7 @@ create table OrderDetails(
 
 create table Shelves(
     Id int identity(1,1) primary key,
-    Name varchar(10),
+    Name varchar(10) unique,
     ProductId int,
     foreign key (ProductId) references Products(Id),
     ItemQuantity int,
