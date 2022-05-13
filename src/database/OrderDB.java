@@ -22,7 +22,7 @@ public class OrderDB implements OrderDBIF {
     //PreparedStatments
     private static final String FIND_ALL = "select * from Orders";
     private static final String FIND_BY_ID = "select * from Orders where id = ?";
-    private static final String FIND_BY_CUSTOMER = "select * from Orders where customer = ?";
+    private static final String FIND_BY_CUSTOMER = "select * from Orders where CustomerId = ?";
     private static final String CREATE_ORDER = "insert into Orders values(?, ?, ?)";
     private static final String DELETE_ORDER = "delete from Orders where id = ?";
 

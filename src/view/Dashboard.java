@@ -47,7 +47,6 @@ public class Dashboard extends JFrame {
 	private JButton btnProduct; // product
 	private JButton btnCustomer; // customer
 	private JButton btnEmployee; // employee
-	private JLabel lblCustomerOrders;
 	private JButton btnShowCustomerOrders;
 	private JButton btnLogOut;
 	private JButton btnChooseCustomer;
@@ -175,14 +174,6 @@ public class Dashboard extends JFrame {
 		gbc_lblCreateOrder.gridx = 1;
 		gbc_lblCreateOrder.gridy = 4;
 		orderPanel.add(lblCreateOrder, gbc_lblCreateOrder);
-		
-		lblCustomerOrders = new JLabel("Show Customer Orders");
-		lblCustomerOrders.setFont(new Font("Open Sans", Font.PLAIN, 10));
-		GridBagConstraints gbc_lblCustomerOrders = new GridBagConstraints();
-		gbc_lblCustomerOrders.insets = new Insets(0, 0, 5, 5);
-		gbc_lblCustomerOrders.gridx = 3;
-		gbc_lblCustomerOrders.gridy = 4;
-		orderPanel.add(lblCustomerOrders, gbc_lblCustomerOrders);
 		
 		lblAllOrders = new JLabel("Show All Orders");
 		GridBagConstraints gbc_lblAllOrders = new GridBagConstraints();
@@ -405,23 +396,19 @@ public class Dashboard extends JFrame {
 		//Create order button
 		btnCreateOrder.addActionListener(e-> {
 			
-			//TODO: Implement choose customer
-			try {
-				customer = customerCtrl.findById(1);
-			} catch (SQLException | NotFoundException e2) {
-				// TODO Auto-generated catch block 
-				e2.printStackTrace();
+			if(customer == null) {
+				Messages.error(this, "You need to choose a customer in order to open this window");
+			}else {
+				try {
+					order = orderCtrl.createOrder(auth.getLoggedInUser(), customer);
+				} catch (SQLException e1) {
+					Messages.error(contentPane, "There was an error connecting to the database");
+				} catch (NotFoundException e1) {
+					Messages.error(contentPane, "The order was not created for some reason");
+				}
+				OrderUI frame = new OrderUI(auth, customer, order, OrderUI.Mode.CREATE);
+				frame.setVisible(true);
 			}
-				
-			try {
-				order = orderCtrl.createOrder(auth.getLoggedInUser(), customer);
-			} catch (SQLException e1) {
-				Messages.error(contentPane, "There was an error connecting to the database");
-			} catch (NotFoundException e1) {
-				Messages.error(contentPane, "The order was not created for some reason");
-			}
-			OrderUI frame = new OrderUI(auth, customer, order, OrderUI.Mode.CREATE);
-			frame.setVisible(true);
 		});
 		
 		//Shows the orders for a specific customer

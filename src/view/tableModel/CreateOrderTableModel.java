@@ -9,6 +9,7 @@ import javax.swing.table.AbstractTableModel;
 import controller.AuthenticationController;
 import controller.ItemController;
 import controller.OrderController;
+import controller.OrderDetailsController;
 import controller.OrderLineController;
 import exceptions.NotEnoughInStockException;
 import exceptions.NotFoundException;
@@ -50,6 +51,7 @@ public class CreateOrderTableModel extends AbstractTableModel{
 	private List<Column> columns;
 	private List<OrderLine> orderLines;
 	private OrderController orderCtrl;
+	private OrderDetailsController orderDetCtrl;
 	private OrderLineController orderLineCtrl;
 	private Order order;
 	AuthenticationController auth;
@@ -58,10 +60,11 @@ public class CreateOrderTableModel extends AbstractTableModel{
 	public CreateOrderTableModel(AuthenticationController authentication, Order order, List<Column> columns) throws SQLException, NotFoundException {
 		this.columns = new ArrayList<Column>(columns);
 		orderCtrl = new OrderController();
+		orderDetCtrl = new OrderDetailsController();
+		orderLineCtrl = new OrderLineController();
 		auth = authentication;
 		this.order = order;
-		orderLineCtrl = new OrderLineController();
-		this.orderLines = new ArrayList<OrderLine>(order.getOrderLines());
+		this.orderLines = new ArrayList<OrderLine>(orderDetCtrl.findByOrderId(this.order.getId()));
 		itemCtrl = new ItemController();
 	}
 	

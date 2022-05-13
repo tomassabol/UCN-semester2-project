@@ -138,7 +138,7 @@ public class OrderUI extends JFrame {
 		
 		// ***** Title *****
 		//JLabel lblTitle = new JLabel(String.format("%s's order", customer.getName()));
-		JLabel lblTitle = new JLabel("Title");
+		JLabel lblTitle = new JLabel("Order");
 		GridBagConstraints gbc_lblTitle = new GridBagConstraints();
 		gbc_lblTitle.gridwidth = 5;
 		gbc_lblTitle.insets = new Insets(0, 0, 5, 0);
@@ -248,7 +248,7 @@ public class OrderUI extends JFrame {
 		priceAndSubmitPanel.add(lblSubtotal, gbc_lblSubtotal);
 				
 		// ***** Subtotal value *****
-		lblSubtotalValue = new JLabel("N/A"); //TODO: Make it write out the correct value
+		lblSubtotalValue = new JLabel(String.format("%.2f EUR", order.getOrderPrice()));
 		lblSubtotalValue.setForeground(new Color(102, 102, 102));
 		GridBagConstraints gbc_lblSubtotalValue = new GridBagConstraints();
 		gbc_lblSubtotalValue.anchor = GridBagConstraints.WEST;
@@ -258,7 +258,7 @@ public class OrderUI extends JFrame {
 		priceAndSubmitPanel.add(lblSubtotalValue, gbc_lblSubtotalValue);
 						
 		// ***** Total price label *****
-		JLabel lblTotal = new JLabel("Total:");
+		JLabel lblTotal = new JLabel("Total: ");
 		GridBagConstraints gbc_lblTotal = new GridBagConstraints();
 		gbc_lblTotal.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTotal.anchor = GridBagConstraints.WEST;
@@ -267,7 +267,7 @@ public class OrderUI extends JFrame {
 		priceAndSubmitPanel.add(lblTotal, gbc_lblTotal);
 						
 		// ***** Total price value *****
-		lblTotalValue = new JLabel("N/A"); //TODO: Make it write out the correct value
+		lblTotalValue = new JLabel(String.format("%.2f EUR", order.getOrderPriceAfterDiscount()));
 		GridBagConstraints gbc_lblTotalValue = new GridBagConstraints();
 		gbc_lblTotalValue.anchor = GridBagConstraints.WEST;
 		gbc_lblTotalValue.insets = new Insets(0, 0, 5, 5);
@@ -286,6 +286,9 @@ public class OrderUI extends JFrame {
 		// Add filtering
 		rowSorter = new TableRowSorter<TableModel>(tableModel);
 		tableMain.setRowSorter(rowSorter);
+		
+		//Set the price
+		refreshPrice();
 		
 		//Attach event handlers
 		addEventHandlers();
@@ -307,6 +310,15 @@ public class OrderUI extends JFrame {
 	}
 	
 	/**
+	 * recalculates the subtotal and the total price of the order
+	 * and updates the labels
+	 */
+	private void refreshPrice() {
+		lblSubtotalValue.setText(String.format("%.2f EUR", order.getOrderPrice()));
+		lblTotalValue.setText(String.format("%.2f EUR", order.getOrderPriceAfterDiscount()));
+	}
+	
+	/**
 	 * The action performed when clicking the add item button
 	 */
 	private void addProduct() {
@@ -320,6 +332,8 @@ public class OrderUI extends JFrame {
 			e.printStackTrace();
 		}
 		frame.setVisible(true);
+		refreshPrice();
+		
 		if (frame.isProductSelected()) {
 			Product product = frame.getSelectedProduct();
 			int quantity = frame.getSelectedQuantity();
@@ -344,6 +358,7 @@ public class OrderUI extends JFrame {
 				// Repeat the whole thing again
 				this.addProduct();
 			}
+			
 		}
 	}
 	
@@ -353,6 +368,11 @@ public class OrderUI extends JFrame {
 	 * *******************************************************
 	 */
 	public void addEventHandlers() {
+		//Refreshes the price labels whenever there is a change in the table
+		tableMain.getModel().addTableModelListener(e -> {
+			this.refreshPrice();
+		});
+		
 		// toggle bottom table buttons depending on whether a table row is selected
 		tableMain.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -404,6 +424,7 @@ public class OrderUI extends JFrame {
 			if(Messages.confirm(contentPane, "Do you want to finalize the order?")) {
 				try {
 					orderCtrl.finishOrder(order);
+					this.dispose();
 				} catch (SQLException e1) {
 						Messages.error(contentPane, "There was an error connecting to the database");
 				} catch (NotFoundException e1) {

@@ -18,6 +18,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
+import controller.OrderController;
 import exceptions.NotFoundException;
 import model.Customer;
 import model.Order;
@@ -40,9 +41,11 @@ public class CRUDOrders extends JFrame {
 		ALL
 	}
 	
-	private OrdersTableModel tableModel;
 	private AuthenticationController auth;
+	private OrdersTableModel tableModel;
+	private OrderController orderCtrl;
 	private Customer customer;
+	private Mode mode;
 
 
 
@@ -52,6 +55,12 @@ public class CRUDOrders extends JFrame {
 	public CRUDOrders(AuthenticationController auth, Customer customer, Mode mode) {
 		this.auth = auth;
 		this.customer = customer;
+		this.mode = mode;
+		try {
+			orderCtrl = new OrderController();
+		} catch (SQLException e1) {
+			Messages.error(this, "There was an error with the database");
+		}
 		switch(mode) {
 			case CUSTOMER: {
 				try {
@@ -60,7 +69,8 @@ public class CRUDOrders extends JFrame {
 					Messages.error(this, "There was an error connecting to the database");
 				} catch (NotFoundException e) {
 					Messages.error(this, "There was an error finding the choosen customer in the database");
-				}			
+				}
+				break;
 			}
 			case ALL: {
 				try {
@@ -70,6 +80,7 @@ public class CRUDOrders extends JFrame {
 				} catch (NotFoundException e) {
 					Messages.error(this, "There was an error finding the customers");
 				}
+				break;
 			}
 		}
 		
@@ -202,6 +213,53 @@ public class CRUDOrders extends JFrame {
 			OrderUI frame;
 			frame = new OrderUI(auth, customer, order, OrderUI.Mode.VIEW);
 			frame.setVisible(true);
+		});
+		
+		btnAddOrder.addActionListener(e -> {
+			
+			switch(mode) {
+				case CUSTOMER: {
+					Order order = null;
+					try {
+						order = orderCtrl.createOrder(auth.getLoggedInUser(), customer);
+					} catch (SQLException e1) {
+						Messages.error(contentPane, "There was an error connecting to the database");
+					} catch (NotFoundException e1) {
+						Messages.error(contentPane, "The order was not created for some reason");
+					}
+					OrderUI frame = new OrderUI(auth, customer, order, OrderUI.Mode.CREATE);
+					frame.setVisible(true);
+					break;
+				}
+				case ALL: {
+					try {
+						ChooseCustomer frame;
+						frame = new ChooseCustomer(auth);
+						frame.setVisible(true);
+						if (frame.isCustomerSelected() == true) {
+							customer = frame.getSelectedCustomer();
+						}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (NotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					Order order = null;
+					try {
+						order = orderCtrl.createOrder(auth.getLoggedInUser(), customer);
+					} catch (SQLException e1) {
+						Messages.error(contentPane, "There was an error connecting to the database");
+					} catch (NotFoundException e1) {
+						Messages.error(contentPane, "The order was not created for some reason");
+					}
+					OrderUI frame = new OrderUI(auth, customer, order, OrderUI.Mode.CREATE);
+					frame.setVisible(true);
+					break;
+				}
+			}
 		});
 	}
 

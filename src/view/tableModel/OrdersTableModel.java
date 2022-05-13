@@ -98,27 +98,10 @@ public class OrdersTableModel extends AbstractTableModel{
     	return orders.get(row);
     }
     
-    /**
-     * Clears the table
-     */
-    public void clear() {
-    	// update this model's orderLine copies
-    	for(Order order : orders) {
-    		try {
-				orderCtrl.deleteOrder(order);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}    		
-    	}
-    	orders.clear();
-    	// Update the rendered table
-    	this.fireTableDataChanged();
-    }
+
 
     /**
      * Removes a row from the table model and the database
-     *
      * @param row the row
      * @throws SQLException 
      */
