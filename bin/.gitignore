@@ -1,2 +1,5 @@
 /controller/
 /view/
+/database/
+/exceptions/
+/model/
