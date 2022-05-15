@@ -18,7 +18,6 @@ import javax.swing.border.EmptyBorder;
 
 
 import controller.AuthenticationController;
-import controller.CustomerController;
 import controller.OrderController;
 import exceptions.NotFoundException;
 import model.Customer;
@@ -54,7 +53,6 @@ public class Dashboard extends JFrame {
 
 	// Fields for classes created by us
 	private AuthenticationController auth;
-	private CustomerController customerCtrl;
 	private Customer customer;
 	private OrderController orderCtrl;
 	private Order order;
@@ -69,7 +67,7 @@ public class Dashboard extends JFrame {
 	public Dashboard(AuthenticationController authentication) throws SQLException {
 		auth = authentication;
 		orderCtrl = new OrderController();
-		customerCtrl = new CustomerController();
+
 		//Window
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 550);
@@ -175,7 +173,9 @@ public class Dashboard extends JFrame {
 		gbc_lblCreateOrder.gridy = 4;
 		orderPanel.add(lblCreateOrder, gbc_lblCreateOrder);
 		
-		lblAllOrders = new JLabel("Show All Orders");
+		lblAllOrders = new JLabel();
+		ImageIcon allOrders = new ImageIcon("images/Orders.png");
+		lblAllOrders.setIcon(allOrders);
 		GridBagConstraints gbc_lblAllOrders = new GridBagConstraints();
 		gbc_lblAllOrders.insets = new Insets(0, 0, 5, 5);
 		gbc_lblAllOrders.gridx = 5;
@@ -183,8 +183,8 @@ public class Dashboard extends JFrame {
 		orderPanel.add(lblAllOrders, gbc_lblAllOrders);
 		
 		lblOrders = new JLabel();
-		ImageIcon showOrdersIcon = new ImageIcon("images/Orders.png");
-		lblOrders.setIcon(showOrdersIcon);
+		ImageIcon customerOrders = new ImageIcon("images/customerOrders.png");
+		lblOrders.setIcon(customerOrders);
 		lblOrders.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblOrders = new GridBagConstraints();
 		gbc_lblOrders.insets = new Insets(0, 0, 5, 5);
