@@ -8,24 +8,30 @@ import java.util.List;
 
 import org.junit.jupiter.api.*;
 
+import controller.DepartmentController;
 import database.ProductDB;
 import database.DBConnection;
 import database.ItemDB;
 import database.interfaces.ItemDBIF;
 import database.interfaces.ProductDBIF;
 import exceptions.NotFoundException;
+import model.Department;
 import model.Item;
 import model.Product;
 
 public class TestItemDB {
     private ItemDBIF itemDBIF;
     private ProductDBIF productDBIF;
+    private DepartmentController departmentCtrl;
+    private Department department;
     Item item;
 
     @BeforeEach
-    public void setUp() throws SQLException {
+    public void setUp() throws SQLException, NotFoundException {
         productDBIF = new ProductDB();
         itemDBIF = new ItemDB();
+        departmentCtrl = new DepartmentController();
+        department = departmentCtrl.findById(1);
     }
 
     public void findById5() throws SQLException, NotFoundException {
@@ -65,7 +71,7 @@ public class TestItemDB {
     public void testCreateItem() throws SQLException, NotFoundException {
         // Arrange
         Product product = productDBIF.findById(1);
-        Item item = new Item(product);
+        Item item = new Item(product, department);
         Item returnItem;
         // Act
         itemDBIF.createItem(item);
