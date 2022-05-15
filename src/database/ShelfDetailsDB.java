@@ -108,7 +108,6 @@ public class ShelfDetailsDB implements ShelfDetailsDBIF {
     @Override
     public void removeItemFromStock(Item item) throws SQLException {
         removeItem.setInt(1, item.getId());
-        removeItem.setBoolean(2, true);
         removeItem.execute();
     }
 

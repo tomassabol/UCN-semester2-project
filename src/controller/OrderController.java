@@ -20,6 +20,8 @@ public class OrderController {
 	private OrderDBIF orderDBIF;
 	private OrderLineController orderLineCtrl;
 	private OrderDetailsController orderDetailsCtrl;
+	private ShelfController shelfCtrl;
+	private OrderLineDetailsController orderLineDetailsCtrl;
 	
 	/**
 	 * Constructor for the OrderController class
@@ -29,6 +31,8 @@ public class OrderController {
 		orderDBIF = new OrderDB();
 		orderLineCtrl = new OrderLineController();
 		orderDetailsCtrl = new OrderDetailsController();
+		shelfCtrl = new ShelfController();
+		orderLineDetailsCtrl = new OrderLineDetailsController();
 	}
 	/**
 	 * Finds all orders
@@ -119,8 +123,12 @@ public class OrderController {
 		// create order details to know what orderLines are in the order
 		// inserts all orderlines in the order into DB
 		for(OrderLine orderLine : order.getOrderLines()) {
+			// create new orderline
 			OrderLine oLine = orderLineCtrl.createOrderLine(orderLine.getProduct(), orderLine.getQuantity(), department);
+			// create order details
 			orderDetailsCtrl.createOrderDetails(order, oLine);
+			// remove every item in orderline from stock
+			shelfCtrl.removeFromStock(orderLineDetailsCtrl.findByOrderLine(oLine.getId()));
 		}
 
 		return true;

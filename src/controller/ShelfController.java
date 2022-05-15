@@ -125,7 +125,7 @@ public class ShelfController {
     public void removeFromStock(List<Item> items) throws SQLException, NotFoundException {
         for (Item item : items) {
             Shelf shelf = shelfDetailsCtrl.findByShelfId(item.getId());
-            shelfDetailsCtrl.deleteShelfDetails(shelf, item);
+            shelfDetailsCtrl.removeItemFromStock(item);
             shelf.setProductQuantity(shelf.getProductQuantity()-1);
             zeroReset(shelf);
         }
