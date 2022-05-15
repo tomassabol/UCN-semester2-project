@@ -102,6 +102,12 @@ public class SupplyOrderController {
 		supplyOrderDBIF.setDelivered(supplyOrder);
 	}
 
+	/**
+	 * Add supplyOrder to stock
+	 * @param supplyOrder - supply order to be added to stock
+	 * @param shelf - shelf where the new items will be placed
+	 * @throws SQLException
+	 */
 	public void addToStock(SupplyOrder supplyOrder, Shelf shelf) throws SQLException {
 		Product product = supplyOrder.getProduct();
 		// create new items from supply order

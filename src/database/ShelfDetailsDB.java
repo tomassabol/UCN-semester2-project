@@ -19,7 +19,7 @@ public class ShelfDetailsDB implements ShelfDetailsDBIF {
     private static final String CREATE_SHELFDETAILS = "insert into ShelfDetails values(?, ?, ?)";
     private static final String DELETE_SHELFDETAILS = "update ShelfDetails set Disabled = ? where ItemId = ?";
     private static final String DELETE_ALL_SHELFDETAILS = "delete from ShelfDetails where ShelfId = ?";
-    private static final String REMOVE_ITEM = "update ShelfDetails set Disabled = ? where ItemId = ?";
+    private static final String REMOVE_ITEM = "update ShelfDetails set Disabled = 1 where ItemId = ?";
 
     private PreparedStatement findByShelf;
     private PreparedStatement findByItemid;
