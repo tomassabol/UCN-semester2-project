@@ -14,7 +14,7 @@ import model.Customer;
 import model.Order;
 
 public class OrdersTableModel extends AbstractTableModel{
-	
+
 	public enum Column {
 		ID("Order ID"),
 		CUSTOMER("Customer"),

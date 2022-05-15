@@ -93,6 +93,7 @@ public class OrderDB implements OrderDBIF {
         Customer customer = customerCtrl.findById(rs.getInt("CustomerId"));
         Order order = new Order(employee, customer);
         order.setId(rs.getInt("Id"));
+        order.setOrderDate(rs.getDate("Date").toLocalDate());
         return order;
     }
 
