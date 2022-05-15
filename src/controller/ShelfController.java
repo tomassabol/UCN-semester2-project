@@ -7,12 +7,14 @@ import database.ShelfDB;
 import database.interfaces.ShelfDBIF;
 import exceptions.NotFoundException;
 import model.Department;
+import model.Item;
 import model.Product;
 import model.Shelf;
 
 public class ShelfController {
     
     private ShelfDBIF shelfDBIF;
+    private ShelfDetailsController shelfDetailsCtrl;
 
     /**
      * Constructor for the ShelfController class
@@ -20,6 +22,7 @@ public class ShelfController {
      */
     public ShelfController() throws SQLException {
         shelfDBIF = new ShelfDB();
+        shelfDetailsCtrl = new ShelfDetailsController();
     }
 
     /**
@@ -50,11 +53,13 @@ public class ShelfController {
      * @param name - name if the new shelf
      * @param product - product
      * @param department - department where the shelf is
+     * @return 
      * @throws SQLException
      */
-    public void createShelf(String name, Product product, Department department) throws SQLException {
+    public Shelf createShelf(String name, Product product, Department department) throws SQLException {
         Shelf shelf = new Shelf(name, product, department);
         shelfDBIF.createShelf(shelf);
+        return shelf;
     }
 
     /**
@@ -65,10 +70,22 @@ public class ShelfController {
      * @param department - department where the shelf is
      * @throws SQLException
      */
-    public void updateShelf(Shelf shelf, String name, Product product, Department department) throws SQLException {
+    public void updateShelf(Shelf shelf, String name, Product product, int quantity, Department department) throws SQLException {
         shelf.setName(name);
         shelf.setProduct(product);
+        shelf.setProductQuantity(quantity);
         shelf.setDepartment(department);
+        shelfDBIF.updateShelf(shelf);
+    }
+
+    /**
+     * 
+     * @param shelf
+     * @param product
+     * @throws SQLException
+     */
+    public void updateShelfProduct(Shelf shelf, Product product) throws SQLException {
+        shelf.setProduct(product);
         shelfDBIF.updateShelf(shelf);
     }
 
@@ -82,11 +99,36 @@ public class ShelfController {
      */
     public int productQuantityPerDepartment(Department department, Product product) throws SQLException, NotFoundException {
         int count = 0;
-        List<Shelf> shelves = shelfDBIF.productQuantityPerDepartment(department, product);
+        List<Shelf> shelves = shelfDBIF.shelvesPerDepartmentIncludingProduct(department, product);
         for (Shelf shelf : shelves) {
-            count += shelf.getItems().size();
+            count += shelf.getProductQuantity();
         }
         return count;
+    }
+
+    /**
+     * if product quantity on shelf reaches 0, product it reset(set tu null)
+     * shelf becomes ready for a new product - items
+     * @param shelf - shelf
+     * @return true if the reset was performed
+     * @throws SQLException
+     */
+    public boolean zeroReset(Shelf shelf) throws SQLException {
+        boolean returnVal = false;
+        if (shelf.getProductQuantity() == 0) {
+            shelfDBIF.zeroReset(shelf);
+            returnVal = true;
+        }
+        return returnVal;
+    }
+
+    public void removeFromStock(List<Item> items) throws SQLException, NotFoundException {
+        for (Item item : items) {
+            Shelf shelf = shelfDetailsCtrl.findByShelfId(item.getId());
+            shelfDetailsCtrl.deleteShelfDetails(shelf, item);
+            shelf.setProductQuantity(shelf.getProductQuantity()-1);
+            zeroReset(shelf);
+        }
     }
 
 }

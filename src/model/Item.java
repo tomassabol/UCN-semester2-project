@@ -4,14 +4,16 @@ public class Item {
     
     private int id;
     private Product product;
+    private Department department;
     private boolean sold;
 
     /**
      * Constructor for the class Item
      * @param product
      */
-    public Item(Product product) {
+    public Item(Product product, Department department) {
         this.product = product;
+        this.department = department;
         this.sold = false;
     }
 
@@ -29,6 +31,14 @@ public class Item {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Department getDepartment() {
+        return this.department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     public boolean isSold() {

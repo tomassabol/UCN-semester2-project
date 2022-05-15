@@ -22,6 +22,16 @@ public class ShelfDetailsController {
         return items;
     }
 
+    public Item findByItemId(int id) throws SQLException, NotFoundException {
+        Item item = shelfDetailsDBIF.findByItemId(id);
+        return item;
+    }
+
+    public Shelf findByShelfId(int id) throws SQLException, NotFoundException {
+        Shelf shelf = shelfDetailsDBIF.findByShelfId(id);
+        return shelf;
+    }
+
     public void createShelfDetails(Shelf shelf, Item item) throws SQLException {
         shelfDetailsDBIF.createShelfDetails(shelf, item);
     }

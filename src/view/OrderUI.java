@@ -423,7 +423,7 @@ public class OrderUI extends JFrame {
 			btnCreateOrder.setText("Create Order");
 			if(Messages.confirm(contentPane, "Do you want to finalize the order?")) {
 				try {
-					orderCtrl.finishOrder(order);
+					orderCtrl.finishOrder(order, auth.getLoggedInUser().getDepartment());
 					this.dispose();
 				} catch (SQLException e1) {
 						Messages.error(contentPane, "There was an error connecting to the database");

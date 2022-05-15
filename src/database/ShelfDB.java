@@ -17,34 +17,37 @@ public class ShelfDB implements ShelfDBIF {
    
     //PreparedStatements 
     private static final String FIND_ALL = "select * from Shelves";
+    private static final String FIND_EMPTY = "select * from Shelves where ProductId is null";
     private static final String FIND_BY_ID = "select * from Shelves where Id = ?";
     private static final String CREATE_SHELF = "insert into Shelves values(?,?,?,?)";
-    private static final String UPDATE_SHELF = "update Shelves  set Name = ?,DepartmentId = ?";
+    private static final String UPDATE_SHELF = "update Shelves set Name = ?, ProductId = ?, ItemQuantity = ?, DepartmentId = ? where Id = ?";
     private static final String DISABLE_SHELF = "delete from Shelves where Id = ?";
     private static final String PRODUCT_QUANTITY_PER_DEPARTMENT = "select * from Shelves where DepartmentId = ? and ProductId = ?";
+    private static final String ZERO_RESET = "update Shelves set ProductId = null where Id = ?";
 
     private PreparedStatement findAll;
+    private PreparedStatement findEmpty;
     private PreparedStatement findById;
     private PreparedStatement createShelf;
     private PreparedStatement updateShelf;
     private PreparedStatement deleteShelf;
     private PreparedStatement productQuantityPerDepartment;
+    private PreparedStatement zeroReset;
 
     //Controllers
-    ProductController productController;
-    DepartmentController departmentController;
+    ProductController productController = new ProductController();
+    DepartmentController departmentController = new DepartmentController();
 
     //The constuctor for the selfDB classs
     public ShelfDB()throws SQLException{
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
+        findEmpty = DBConnection.getInstance().getConnection().prepareStatement(FIND_EMPTY);
         findById = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
         createShelf = DBConnection.getInstance().getConnection().prepareStatement(CREATE_SHELF, Statement.RETURN_GENERATED_KEYS);
         updateShelf = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_SHELF);
         deleteShelf = DBConnection.getInstance().getConnection().prepareStatement(DISABLE_SHELF);
         productQuantityPerDepartment = DBConnection.getInstance().getConnection().prepareStatement(PRODUCT_QUANTITY_PER_DEPARTMENT);
-
-        productController = new ProductController();
-        departmentController  =  new DepartmentController();
+        zeroReset = DBConnection.getInstance().getConnection().prepareStatement(ZERO_RESET);
     }
 
     /**
@@ -53,12 +56,26 @@ public class ShelfDB implements ShelfDBIF {
      * @throws SQLException, NotFoundException
      */
     @Override
-    public List<Shelf> findAll() throws SQLException, NotFoundException{
+    public List<Shelf> findAll() throws SQLException, NotFoundException {
         ResultSet rs;
         rs = findAll.executeQuery();
         List<Shelf> shelves = buildObjects(rs);
         return shelves;
 
+    }
+
+    /**
+     * return list of shelves where product is null
+     * @return list of shelves where product is null
+     * @throws SQLExceptio
+     * @throws NotFoundException
+     */
+    @Override
+    public List<Shelf> findEmpty() throws SQLException, NotFoundException {
+        ResultSet rs;
+        rs = findEmpty.executeQuery();
+        List<Shelf> shelves = buildObjects(rs);
+        return shelves;
     }
 
     /**
@@ -91,7 +108,7 @@ public class ShelfDB implements ShelfDBIF {
     public void createShelf(Shelf shelf) throws SQLException{
         createShelf.setString(1, shelf.getName());
         createShelf.setInt(2, shelf.getProduct().getId());
-        createShelf.setInt(3, shelf.getItems().size());
+        createShelf.setInt(3, shelf.getProductQuantity());
         createShelf.setInt(4, shelf.getDepartment().getId());
         shelf.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createShelf));
     };
@@ -105,8 +122,9 @@ public class ShelfDB implements ShelfDBIF {
     public void updateShelf(Shelf shelf) throws SQLException{
         updateShelf.setString(1, shelf.getName());
         updateShelf.setInt(2, shelf.getProduct().getId());
-        updateShelf.setInt(3, shelf.getItems().size());
+        updateShelf.setInt(3, shelf.getProductQuantity());
         updateShelf.setInt(4, shelf.getDepartment().getId());
+        updateShelf.setInt(5, shelf.getId());
         updateShelf.executeUpdate();
     }
 
@@ -122,13 +140,19 @@ public class ShelfDB implements ShelfDBIF {
     }
 
     @Override
-    public List<Shelf> productQuantityPerDepartment(Department department, Product product) throws SQLException, NotFoundException {
+    public List<Shelf> shelvesPerDepartmentIncludingProduct(Department department, Product product) throws SQLException, NotFoundException {
         ResultSet rs;
         productQuantityPerDepartment.setInt(1, department.getId());
         productQuantityPerDepartment.setInt(2, product.getId());
         rs = productQuantityPerDepartment.executeQuery();
         List<Shelf> shelves = buildObjects(rs);
         return shelves;
+    }
+
+    @Override
+    public void zeroReset(Shelf shelf) throws SQLException {
+        zeroReset.setInt(1, shelf.getId());
+        zeroReset.executeUpdate();
     }
 
     // Local methodes
@@ -145,6 +169,7 @@ public class ShelfDB implements ShelfDBIF {
         Department department = departmentController.findById(rs.getInt("DepartmentId"));
         Shelf shelf = new Shelf(rs.getString("Name"), product, department);
         shelf.setId(rs.getInt("Id"));
+        shelf.setProductQuantity(rs.getInt("ItemQuantity"));
         return shelf;
     }
 

@@ -7,13 +7,18 @@ import java.util.List;
 import database.SupplyOrderDB;
 import database.interfaces.SupplyOrderDBIF;
 import exceptions.NotFoundException;
+import model.Item;
 import model.Product;
+import model.Shelf;
 import model.Supplier;
 import model.SupplyOrder;
 
 public class SupplyOrderController {
 
 	private SupplyOrderDBIF supplyOrderDBIF;
+	private ItemController itemCtrl;
+	private ShelfDetailsController shelfDetailsCtrl;
+	private ShelfController shelfCtrl;
 	
 	/**
 	 * Constructor for the SupplyOrder class
@@ -21,6 +26,9 @@ public class SupplyOrderController {
 	 */
 	public SupplyOrderController() throws SQLException {
 		supplyOrderDBIF = new SupplyOrderDB();
+		itemCtrl = new ItemController();
+		shelfDetailsCtrl = new ShelfDetailsController();
+		shelfCtrl = new ShelfController();
 	}
 	
 	/**
@@ -65,7 +73,11 @@ public class SupplyOrderController {
 	 * @param supplyorder
 	 * @throws SQLException
 	 */
-	public void updateSupplyOrder(SupplyOrder supplyOrder) throws SQLException {
+	public void updateSupplyOrder(SupplyOrder supplyOrder, Product product, int quantity, LocalDate orderDate, Supplier supplier) throws SQLException {
+		supplyOrder.setProduct(product);
+		supplyOrder.setQuantity(quantity);
+		supplyOrder.setOrderDate(orderDate);
+		supplyOrder.setSupplier(supplier);
 		supplyOrderDBIF.updateSupplyOrder(supplyOrder);
 	}
 	
@@ -86,7 +98,27 @@ public class SupplyOrderController {
 	 * @throws SQLException
 	 */
 	public void setDelivered(SupplyOrder supplyOrder) throws SQLException {
+		supplyOrder.setIsDelivered(true);
 		supplyOrderDBIF.setDelivered(supplyOrder);
+	}
+
+	public void addToStock(SupplyOrder supplyOrder, Shelf shelf) throws SQLException {
+		Product product = supplyOrder.getProduct();
+		// create new items from supply order
+		for (int i = 0; i < supplyOrder.getQuantity(); i++) {
+			Item item = itemCtrl.createItem(product, shelf.getDepartment());
+			shelfDetailsCtrl.createShelfDetails(shelf, item);
+		}
+
+		// if shelf doesn't have a product assigned, set product
+		if (shelf.getProduct() == null) { shelf.setProduct(product); }
+		// update product quantity on she shelf
+		int newQuantity = shelf.getProductQuantity() + supplyOrder.getQuantity();
+
+		// update shelf in db
+		shelfCtrl.updateShelf(shelf, shelf.getName(), product, newQuantity, shelf.getDepartment());
+		// update supply order - mark delivered
+		setDelivered(supplyOrder);
 	}
 	
 }

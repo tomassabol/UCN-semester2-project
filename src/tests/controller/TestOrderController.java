@@ -54,7 +54,7 @@ public class TestOrderController {
         order = orderCtrl.createOrder(employee, customer);
         product = productCtrl.findById(1);
         orderCtrl.addProduct(order, product, quantity);
-        orderCtrl.finishOrder(order);
+        orderCtrl.finishOrder(order, employee.getDepartment());
 
         returnOrder = orderCtrl.findById(4);
         List<OrderLine> orderLines = orderDetailsCtrl.findByOrderId(returnOrder.getId());

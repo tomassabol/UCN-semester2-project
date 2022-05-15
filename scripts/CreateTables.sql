@@ -160,5 +160,6 @@ create table ShelfDetails(
     ShelfId int,
     foreign key (ShelfId) references Shelves(Id),
     ItemId int,
-    foreign key (ItemId) references Items(Id)
+    foreign key (ItemId) references Items(Id),
+    Disabled bit
 );

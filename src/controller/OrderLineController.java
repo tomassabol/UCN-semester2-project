@@ -9,6 +9,7 @@ import java.util.List;
 import database.OrderLineDB;
 import database.interfaces.OrderLineDBIF;
 import exceptions.NotFoundException;
+import model.Department;
 import model.Item;
 import model.Order;
 import model.OrderLine;
@@ -79,13 +80,13 @@ public class OrderLineController {
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
-	public OrderLine createOrderLine(Product product, int quantity) throws SQLException, NotFoundException {
+	public OrderLine createOrderLine(Product product, int quantity, Department department) throws SQLException, NotFoundException {
 		// create new OrderLine object
 		OrderLine orderLine = new OrderLine(product, quantity);
 		// insert OrderLine into DB
 		orderLineDBIF.createOrderLine(orderLine);
 		// select
-		List<Item> items = itemCtrl.selectItems(quantity, product);
+		List<Item> items = itemCtrl.selectItems(quantity, product, department);
 		// create order line details
 		for(int i = 0; i < quantity; i++) {
 			Item item = items.get(i);

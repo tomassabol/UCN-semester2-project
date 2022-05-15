@@ -6,6 +6,7 @@ import java.util.List;
 import database.ItemDB;
 import database.interfaces.ItemDBIF;
 import exceptions.NotFoundException;
+import model.Department;
 import model.Item;
 import model.Product;
 
@@ -48,11 +49,14 @@ public class ItemController {
     /**
      * Creates an Item
      * @param product - product for which the Item will be created
+     * @return 
      * @throws SQLException
      */
-    public void createItem(Product product) throws SQLException {
-        Item item = new Item(product);
+    public Item createItem(Product product, Department department) throws SQLException {
+        Item item = new Item(product, department);
+        item.setSold(false);
         itemDBIF.createItem(item);
+        return item;
     }
 
     /**
@@ -72,8 +76,8 @@ public class ItemController {
      * @throws SQLException
      * @throws NotFoundException
      */
-    public List<Item> selectItems(int amount, Product product) throws SQLException, NotFoundException {
-        List<Item> items = itemDBIF.selectItems(amount, product);
+    public List<Item> selectItems(int amount, Product product, Department department) throws SQLException, NotFoundException {
+        List<Item> items = itemDBIF.selectItems(amount, product, department);
         return items;
     }
 

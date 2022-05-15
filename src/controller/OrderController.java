@@ -13,11 +13,11 @@ import model.OrderLine;
 import model.Product;
 import model.Employee;
 import model.Customer;
+import model.Department;
 
 public class OrderController {
 	
 	private OrderDBIF orderDBIF;
-	private ItemController itemCtrl;
 	private OrderLineController orderLineCtrl;
 	private OrderDetailsController orderDetailsCtrl;
 	
@@ -27,7 +27,6 @@ public class OrderController {
 	 */	
 	public OrderController() throws SQLException {
 		orderDBIF = new OrderDB();
-		itemCtrl = new ItemController();
 		orderLineCtrl = new OrderLineController();
 		orderDetailsCtrl = new OrderDetailsController();
 	}
@@ -110,7 +109,7 @@ public class OrderController {
 	 * @throws SQLException
 	 * @throws NotFoundException
 	 */
-	public boolean finishOrder(Order order) throws SQLException, NotFoundException {
+	public boolean finishOrder(Order order, Department department) throws SQLException, NotFoundException {
 		// sets the date to the order
 		order.setOrderDate(LocalDate.now());
 		// insert order into DB
@@ -119,7 +118,7 @@ public class OrderController {
 		// create order details to know what orderLines are in the order
 		// inserts all orderlines in the order into DB
 		for(OrderLine orderLine : order.getOrderLines()) {
-			OrderLine oLine = orderLineCtrl.createOrderLine(orderLine.getProduct(), orderLine.getQuantity());
+			OrderLine oLine = orderLineCtrl.createOrderLine(orderLine.getProduct(), orderLine.getQuantity(), department);
 			orderDetailsCtrl.createOrderDetails(order, oLine);
 		}
 
