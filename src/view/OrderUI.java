@@ -429,6 +429,8 @@ public class OrderUI extends JFrame {
 						Messages.error(contentPane, "There was an error connecting to the database");
 				} catch (NotFoundException e1) {
 					Messages.error(contentPane, "There was an error finding the created order");
+				} catch (NotEnoughInStockException e1) {
+					Messages.error(contentPane, "There is not enough items in stock");
 				}
 			}					
 		});

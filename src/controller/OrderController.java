@@ -108,8 +108,9 @@ public class OrderController {
 	 * @return true if all good
 	 * @throws SQLException
 	 * @throws NotFoundException
+	 * @throws NotEnoughInStockException 
 	 */
-	public boolean finishOrder(Order order, Department department) throws SQLException, NotFoundException {
+	public boolean finishOrder(Order order, Department department) throws SQLException, NotFoundException, NotEnoughInStockException {
 		// sets the date to the order
 		order.setOrderDate(LocalDate.now());
 		// insert order into DB

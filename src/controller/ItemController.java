@@ -5,6 +5,7 @@ import java.util.List;
 
 import database.ItemDB;
 import database.interfaces.ItemDBIF;
+import exceptions.NotEnoughInStockException;
 import exceptions.NotFoundException;
 import model.Department;
 import model.Item;
@@ -75,8 +76,9 @@ public class ItemController {
      * @return list of the items
      * @throws SQLException
      * @throws NotFoundException
+     * @throws NotEnoughInStockException 
      */
-    public List<Item> selectItems(int amount, Product product, Department department) throws SQLException, NotFoundException {
+    public List<Item> selectItems(int amount, Product product, Department department) throws SQLException, NotFoundException, NotEnoughInStockException {
         List<Item> items = itemDBIF.selectItems(amount, product, department);
         return items;
     }

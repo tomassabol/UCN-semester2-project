@@ -7,6 +7,7 @@ import java.util.List;
 import controller.DepartmentController;
 import controller.ProductController;
 import database.interfaces.ItemDBIF;
+import exceptions.NotEnoughInStockException;
 import exceptions.NotFoundException;
 import model.Department;
 import model.Item;
@@ -104,15 +105,20 @@ public class ItemDB implements ItemDBIF {
     }
 
     @Override
-    public List<Item> selectItems(int amount, Product product, Department department) throws SQLException, NotFoundException {
+    public List<Item> selectItems(int amount, Product product, Department department) throws SQLException, NotFoundException, NotEnoughInStockException {
         ResultSet rs;
         selectItems.setInt(1, amount);
         selectItems.setInt(2, product.getId());
         selectItems.setInt(3, department.getId());
         rs = selectItems.executeQuery();
         List<Item> items = buildObjects(rs);
+        
         if(items.size() == 0) {
             throw new NotFoundException("Items for a product", product.getId());
+        }
+
+        if (items.size() < amount) {
+            throw new NotEnoughInStockException(amount, findAllPerProduct(product).size());
         }
 
         return items;

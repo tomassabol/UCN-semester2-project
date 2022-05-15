@@ -8,6 +8,7 @@ import java.util.List;
 
 import database.OrderLineDB;
 import database.interfaces.OrderLineDBIF;
+import exceptions.NotEnoughInStockException;
 import exceptions.NotFoundException;
 import model.Department;
 import model.Item;
@@ -79,8 +80,9 @@ public class OrderLineController {
 	 * @param id
 	 * @throws SQLException
 	 * @throws NotFoundException
+	 * @throws NotEnoughInStockException 
 	 */
-	public OrderLine createOrderLine(Product product, int quantity, Department department) throws SQLException, NotFoundException {
+	public OrderLine createOrderLine(Product product, int quantity, Department department) throws SQLException, NotFoundException, NotEnoughInStockException {
 		// create new OrderLine object
 		OrderLine orderLine = new OrderLine(product, quantity);
 		// insert OrderLine into DB
