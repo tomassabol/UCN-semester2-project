@@ -13,11 +13,11 @@ import model.Product.ProductType;
 public class ProductDB implements ProductDBIF {
     // PreparedStatements for the ProductDB class
     private static final String FIND_ALL = "select * from Products";
-    private static final String FIND_ALL_ACTIVE = "select * from Products where Enabled = 1";
+    private static final String FIND_ALL_ACTIVE = "select * from Products where Active = 1";
     private static final String FIND_BY_ID = "select * from Products where Id = ?";
     private static final String CREATE_PRODUCT = "insert into Products values(?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_PRODUCTS = "update Products set Name = ?, Description = ?, ProductTypeId = ?, Price = ?, Discount = ?, Active = ? from Products where Id = ?";
-    private static final String DELETE_PRODUCTS = "update Products set Enabled = ? where Id = ?";
+    private static final String DELETE_PRODUCTS = "update Products set Active = ? where Id = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement findAllActive;

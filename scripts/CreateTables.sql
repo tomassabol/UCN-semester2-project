@@ -49,7 +49,7 @@ create table Products(
     foreign key (ProductTypeId) references ProductTypes(Id),
     Price smallmoney,
     Discount int,
-    Enabled bit
+    Active bit
 );
 
 create table SupplyOrders(
