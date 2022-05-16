@@ -20,11 +20,11 @@ import model.Order;
 public class OrderDB implements OrderDBIF {
 
     //PreparedStatments
-    private static final String FIND_ALL = "select * from Orders";
-    private static final String FIND_BY_ID = "select * from Orders where id = ?";
+    private static final String FIND_ALL = "select * from Orders where Enabled = 1";
+    private static final String FIND_BY_ID = "select * from Orders where Id = ?";
     private static final String FIND_BY_CUSTOMER = "select * from Orders where CustomerId = ?";
-    private static final String CREATE_ORDER = "insert into Orders values(?, ?, ?)";
-    private static final String DELETE_ORDER = "delete from Orders where id = ?";
+    private static final String CREATE_ORDER = "insert into Orders values(?, ?, ?, ?)";
+    private static final String DELETE_ORDER = "update Orders set Enabled = 1 where Id = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement findById;
@@ -79,6 +79,7 @@ public class OrderDB implements OrderDBIF {
         createOrder.setInt(1, order.getCustomer().getId());
         createOrder.setInt(2, order.getEmployee().getId());
         createOrder.setDate(3, Date.valueOf(order.getOrderDate()));
+        createOrder.setBoolean(4, true);
         order.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createOrder));
     }
 

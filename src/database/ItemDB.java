@@ -19,8 +19,8 @@ public class ItemDB implements ItemDBIF {
     private static final String FIND_ALL = "select * from Items where ProductId = ?";
     private static final String FIND_BY_ID = "select * from Items where Id = ?";
     private static final String CREATE_ITEM = "insert into Items values(?, ?, ?)";
-    private static final String DELETE_ITEM = "delete from Items where Id = ?";
-    private static final String SELECT_ITEMS = "select top (?) * from Items where ProductId = ?, DepartmendId = 1 and Sold = 0";
+    private static final String DELETE_ITEM = "update Items set Sold = 1 where Id = ?";
+    private static final String SELECT_ITEMS = "select top (?) * from Items where ProductId = ? and DepartmentId = ? and Sold = 0";
 
     private PreparedStatement findAll;
     private PreparedStatement findById;
@@ -90,7 +90,7 @@ public class ItemDB implements ItemDBIF {
     public void createItem(Item item) throws SQLException {
         createItem.setInt(1, item.getProduct().getId());
         createItem.setInt(2, item.getDepartment().getId());
-        createItem.setBoolean(3, item.isSold());
+        createItem.setBoolean(3, false);
         item.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createItem));
     }
 

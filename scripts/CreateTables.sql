@@ -21,7 +21,8 @@ drop table if exists City;
 create table City(
     Id int identity(1,1) unique not null,
     ZIP varchar(10) primary key,
-    Name varchar(100)
+    Name varchar(100),
+    Enabled bit
 );
 
 create table Suppliers(
@@ -31,7 +32,8 @@ create table Suppliers(
     Phone varchar(20),
     ZIP varchar(10),
     foreign key (ZIP) references City(ZIP),
-    Address varchar(100)
+    Address varchar(100),
+    Enabled bit
 );
 
 create table ProductTypes(
@@ -47,7 +49,7 @@ create table Products(
     foreign key (ProductTypeId) references ProductTypes(Id),
     Price smallmoney,
     Discount int,
-    Active bit
+    Enabled bit
 );
 
 create table SupplyOrders(
@@ -58,7 +60,8 @@ create table SupplyOrders(
     OrderDate date,
     SupplierId int,
     foreign key (SupplierId) references Suppliers(Id),
-    Delivered bit
+    Delivered bit,
+    Enabled bit
 );
 
 create table Departments(
@@ -66,7 +69,8 @@ create table Departments(
     Name varchar(100) unique,
     ZIP varchar(10),
     foreign key (ZIP) references City(ZIP),
-    Address varchar(100)
+    Address varchar(100),
+    Enabled bit
 );
 
 create table Items(
@@ -83,6 +87,7 @@ create table OrderLines(
     ProductId int,
     foreign key (ProductId) references Products(Id),
     Quantity int,
+    Enabled bit
 );
 
 create table OrderLineDetails(
@@ -106,7 +111,8 @@ create table Customers(
     foreign key (ZIP) references City(ZIP),
     Address varchar(100),
     CustomerTypeId int,
-    foreign key (CustomerTypeId) references CustomerTypes(Id)
+    foreign key (CustomerTypeId) references CustomerTypes(Id),
+    Enabled bit
 );
 
 create table EmployeeTypes(
@@ -127,7 +133,8 @@ create table Employees(
     Password varchar(20),
     CPR varchar(10) unique,
     DepartmentId int,
-    foreign key (DepartmentId) references Departments(Id)
+    foreign key (DepartmentId) references Departments(Id),
+    Enabled bit
 );
 
 create table Orders(
@@ -136,7 +143,8 @@ create table Orders(
     foreign key (CustomerId) references Customers(Id),
     EmployeeId int,
     foreign key (EmployeeId) references Employees(Id),
-    [Date] date
+    [Date] date,
+    Enabled bit
 );
 
 create table OrderDetails(
@@ -154,6 +162,7 @@ create table Shelves(
     ItemQuantity int,
     DepartmentId int,
     foreign key (DepartmentId) references Departments(Id),
+    Enabled bit
 );
 
 create table ShelfDetails(
@@ -161,5 +170,5 @@ create table ShelfDetails(
     foreign key (ShelfId) references Shelves(Id),
     ItemId int,
     foreign key (ItemId) references Items(Id),
-    Disabled bit
+    Enabled bit
 );

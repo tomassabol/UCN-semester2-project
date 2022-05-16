@@ -10,11 +10,11 @@ import model.*;
 
 public class DepartmentDB implements DepartmentDBIF {
     // PreparedStatements for DepartmentDB class
-    private static final String FIND_ALL = "select * from Departments";
+    private static final String FIND_ALL = "select * from Departments where Enabled = 1";
     private static final String FIND_BY_ID = "select * from Departments where Id = ?";
-    private static final String CREATE_DEPARTMENT = "insert into Departments values(?, ?, ?)";
-    private static final String UPDATE_DEPARTMENT = "update Departments set Name = ?, ZIP = ?, Address = ? from Departments where Id = ?";
-    private static final String DELETE_DEPARTMENT = "delete from Departments where Id = ?";
+    private static final String CREATE_DEPARTMENT = "insert into Departments values(?, ?, ?, ?)";
+    private static final String UPDATE_DEPARTMENT = "update Departments set Name = ?, ZIP = ?, Address = ? where Id = ?";
+    private static final String DELETE_DEPARTMENT = "update Departments set Enabled = 0 where Id = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement findById;
@@ -64,6 +64,7 @@ public class DepartmentDB implements DepartmentDBIF {
         createDepartment.setString(1, department.getName());
         createDepartment.setString(2, department.getZipCode().getZipCode());
         createDepartment.setString(3, department.getAddress());
+        createDepartment.setBoolean(4, true);
         department.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createDepartment));
     }
 

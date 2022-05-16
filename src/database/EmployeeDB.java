@@ -17,12 +17,12 @@ import model.Employee.EmployeeType;
 public class EmployeeDB implements EmployeeDBIF {
 
     // PreparedStatements for the EmployeeDB class
-    private static final String FIND_ALL = "select * from Employees";
+    private static final String FIND_ALL = "select * from Employees where Enabled = 1";
     private static final String FIND_BY_ID = "select * from Employees where Id = ?";
     private static final String FIND_BY_EMAIL = "select * from Employees where Email = ? and Password = ?";
-    private static final String CREATE_EMPLOYEE = "insert into Employees values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_EMPLOYEE = "update Employees set Name = ?, Email = ?, Phone = ?, ZIP = ?, Address = ?, EmployeeTypeId = ?, Password = ?, CPR = ?, DepartmentId = ? from Employees where Id = ?";
-    private static final String DELETE_EMPLOYEE = "delete from Employees where Id = ?";
+    private static final String CREATE_EMPLOYEE = "insert into Employees values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_EMPLOYEE = "update Employees set Name = ?, Email = ?, Phone = ?, ZIP = ?, Address = ?, EmployeeTypeId = ?, Password = ?, CPR = ?, DepartmentId = ? where Id = ?";
+    private static final String DELETE_EMPLOYEE = "update Employees set Enabled = 0 where Id = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement findById;
@@ -117,6 +117,7 @@ public class EmployeeDB implements EmployeeDBIF {
         createEmployee.setString(7, employee.getPassword());
         createEmployee.setString(8, employee.getCPR());
         createEmployee.setInt(9, employee.getDepartment().getId());
+        createEmployee.setBoolean(10, true);
         employee.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createEmployee));
     }
 

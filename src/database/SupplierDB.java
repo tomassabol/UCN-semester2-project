@@ -15,11 +15,11 @@ import model.Supplier;
 public class SupplierDB implements SupplierDBIF {
 	
 	// PreparedStatements for the SupplierDB class
-	private static final String FIND_ALL = "select * from Suppliers";
+	private static final String FIND_ALL = "select * from Suppliers where Enabled = 1";
 	private static final String FIND_BY_ID = "select * from Suppliers where Id = ?";
-	private static final String CREATE_SUPPLIER = "insert into Suppliers values(?, ?, ?, ?, ?)";
+	private static final String CREATE_SUPPLIER = "insert into Suppliers values(?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE_SUPPLIER = "update Suppliers set Name = ?, Email = ?, Phone = ?, Zipcode = ?, Adress = ? from Suppliers where Id = ?";
-	private static final String DELETE_SUPPLIER = "delete from Suppliers where Id = ?";
+	private static final String DELETE_SUPPLIER = "update Suppliers set Enabled = 0 where Id = ?";
 	
 	private PreparedStatement findAll;
 	private PreparedStatement findById;
@@ -79,6 +79,7 @@ public class SupplierDB implements SupplierDBIF {
 		createSupplier.setString(3, supplier.getPhone());
 		createSupplier.setString(4, supplier.getZipCode().getZipCode());
 		createSupplier.setString(5, supplier.getAddress());
+		createSupplier.setBoolean(6, true);
 		supplier.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createSupplier));
 	}
 	

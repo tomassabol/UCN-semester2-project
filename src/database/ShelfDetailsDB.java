@@ -19,7 +19,7 @@ public class ShelfDetailsDB implements ShelfDetailsDBIF {
     private static final String CREATE_SHELFDETAILS = "insert into ShelfDetails values(?, ?, ?)";
     private static final String DELETE_SHELFDETAILS = "update ShelfDetails set Disabled = ? where ItemId = ?";
     private static final String DELETE_ALL_SHELFDETAILS = "delete from ShelfDetails where ShelfId = ?";
-    private static final String REMOVE_ITEM = "update ShelfDetails set Disabled = 1 where ItemId = ?";
+    private static final String REMOVE_ITEM = "update ShelfDetails set Enabled = 0 where ItemId = ?";
 
     private PreparedStatement findByShelf;
     private PreparedStatement findByItemid;
@@ -87,7 +87,7 @@ public class ShelfDetailsDB implements ShelfDetailsDBIF {
     public void createShelfDetails(Shelf shelf, Item item) throws SQLException {
         createShelfDetails.setInt(1, shelf.getId());
         createShelfDetails.setInt(2, item.getId());
-        createShelfDetails.setBoolean(3, false);
+        createShelfDetails.setBoolean(3, true);
         createShelfDetails.execute();
     }
 

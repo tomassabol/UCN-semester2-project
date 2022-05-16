@@ -18,12 +18,12 @@ import model.SupplyOrder;
 
 public class SupplyOrderDB implements SupplyOrderDBIF {
 	// PreparedStatements for the SupplyOrderDB class
-	private static final String FIND_ALL = "select * from SupplyOrders";
+	private static final String FIND_ALL = "select * from SupplyOrders where Enabled = 1";
 	private static final String FIND_ALL_PER_PRODUCT = "select * from SupplyOrders where ProductId = ?";
 	private static final String FIND_BY_ID = "select * from SupplyOrders where Id = ?";
 	private static final String CREATE_SUPPLYORDER = "insert into SupplyOrders values(?, ?, ?, ?, ?)";
 	private static final String UPDATE_SUPPLYORDER = "update SupplyOrders set Quantity = ? from SupplyOrders where Id = ?";
-	private static final String DISABLE_SUPPLYORDER = "delete from SupplyOrders where Id = ?";
+	private static final String DELETE_SUPPLYORDER = "update SupplyOrders set Enabled = 0 where Id = ?";
 	private static final String SET_DELIVERED = "update SupplyOrders set Delivered = ? where Id = ?";
 	
 	private PreparedStatement findAll;
@@ -48,7 +48,7 @@ public class SupplyOrderDB implements SupplyOrderDBIF {
 		findById = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
 		createSupplyOrder = DBConnection.getInstance().getConnection().prepareStatement(CREATE_SUPPLYORDER, Statement.RETURN_GENERATED_KEYS);
 		updateSupplyOrder = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_SUPPLYORDER);
-		disableSupplyOrder = DBConnection.getInstance().getConnection().prepareStatement(DISABLE_SUPPLYORDER);
+		disableSupplyOrder = DBConnection.getInstance().getConnection().prepareStatement(DELETE_SUPPLYORDER);
 		setDelivered = DBConnection.getInstance().getConnection().prepareStatement(SET_DELIVERED);
 	}
 	
@@ -99,6 +99,7 @@ public class SupplyOrderDB implements SupplyOrderDBIF {
 		createSupplyOrder.setDate(3, Date.valueOf(supplyOrder.getOrderDate()));
 		createSupplyOrder.setInt(4, supplyOrder.getSupplier().getId());
 		createSupplyOrder.setBoolean(5, false);
+		createSupplyOrder.setBoolean(6, true);
 		supplyOrder.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createSupplyOrder));
 	}
 

@@ -16,12 +16,12 @@ import model.Shelf;
 public class ShelfDB implements ShelfDBIF {
    
     //PreparedStatements 
-    private static final String FIND_ALL = "select * from Shelves";
+    private static final String FIND_ALL = "select * from Shelves where Enabled = 1";
     private static final String FIND_EMPTY = "select * from Shelves where ProductId is null";
     private static final String FIND_BY_ID = "select * from Shelves where Id = ?";
-    private static final String CREATE_SHELF = "insert into Shelves values(?,?,?,?)";
+    private static final String CREATE_SHELF = "insert into Shelves values(?,?,?,?,?)";
     private static final String UPDATE_SHELF = "update Shelves set Name = ?, ProductId = ?, ItemQuantity = ?, DepartmentId = ? where Id = ?";
-    private static final String DISABLE_SHELF = "delete from Shelves where Id = ?";
+    private static final String DELETE_SHELF = "update Shelves set Enabled = 0 where Id = ?";
     private static final String PRODUCT_QUANTITY_PER_DEPARTMENT = "select * from Shelves where DepartmentId = ? and ProductId = ?";
     private static final String ZERO_RESET = "update Shelves set ProductId = null where Id = ?";
 
@@ -45,7 +45,7 @@ public class ShelfDB implements ShelfDBIF {
         findById = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
         createShelf = DBConnection.getInstance().getConnection().prepareStatement(CREATE_SHELF, Statement.RETURN_GENERATED_KEYS);
         updateShelf = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_SHELF);
-        deleteShelf = DBConnection.getInstance().getConnection().prepareStatement(DISABLE_SHELF);
+        deleteShelf = DBConnection.getInstance().getConnection().prepareStatement(DELETE_SHELF);
         productQuantityPerDepartment = DBConnection.getInstance().getConnection().prepareStatement(PRODUCT_QUANTITY_PER_DEPARTMENT);
         zeroReset = DBConnection.getInstance().getConnection().prepareStatement(ZERO_RESET);
     }
@@ -110,6 +110,7 @@ public class ShelfDB implements ShelfDBIF {
         createShelf.setInt(2, shelf.getProduct().getId());
         createShelf.setInt(3, shelf.getProductQuantity());
         createShelf.setInt(4, shelf.getDepartment().getId());
+        createShelf.setBoolean(5, true);
         shelf.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createShelf));
     };
 

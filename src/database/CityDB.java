@@ -11,12 +11,12 @@ import model.City;
 public class CityDB implements CityDBIF {
 
     // PreparedStatements for CityDB class
-    private static final String FIND_ALL = "select * FROM City";
+    private static final String FIND_ALL = "select * FROM City where Enabled = 1";
     private static final String FIND_BY_ID = "select * FROM City where Id = ?";
     private static final String FIND_BY_ZIP = "select * FROM City where ZIP = ?";
-    private static final String CREATE_CITY = "insert into City values(?, ?)";
-    private static final String UPDATE_CITY = "update City set Name = ? from City where Id = ?";
-    private static final String DELETE_CITY = "delete from City where Id = ?";
+    private static final String CREATE_CITY = "insert into City values(?, ?, ?)";
+    private static final String UPDATE_CITY = "update City set Name = ? where Id = ?";
+    private static final String DELETE_CITY = "update City set Enabled = 0 where Id = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement findById;
@@ -90,6 +90,7 @@ public class CityDB implements CityDBIF {
     public void createCity(City city) throws SQLException {
         createCity.setString(1, city.getZipCode());
         createCity.setString(2, city.getName());
+        createCity.setBoolean(3, true);
         city.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createCity));
     }
 

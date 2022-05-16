@@ -13,11 +13,11 @@ import model.Product;
 
 public class OrderLineDB implements OrderLineDBIF{
     //Prepared statments
-    private static final String FIND_ALL = "select * from OrderLines";
+    private static final String FIND_ALL = "select * from OrderLines where Enabled = 1";
     private static final String FIND_BY_ID = "select * from OrderLines where id = ?";
-    private static final String CREATE_ORDER_LINE = "insert into OrderLines values (?, ?)";
+    private static final String CREATE_ORDER_LINE = "insert into OrderLines values (?, ?, ?)";
     private static final String UPDATE_ORDER_LINE = "update OrderLines set Quantity = ?";
-    private static final String DELETE_ORDER_LINE = "delete from OrderLines where id = ?";
+    private static final String DELETE_ORDER_LINE = "update OrderLines set Enabled = 1 where Id = ?";
 
     private PreparedStatement findAll;
     private PreparedStatement findById;
@@ -65,6 +65,7 @@ public class OrderLineDB implements OrderLineDBIF{
     public void createOrderLine(OrderLine orderLine)  throws SQLException {
         createOrderLine.setInt(1,orderLine.getProduct().getId());
         createOrderLine.setInt(2,orderLine.getQuantity());
+        createOrderLine.setBoolean(3, true);
         orderLine.setId(DBConnection.getInstance().executeSqlInsertWithIdentity(createOrderLine));
     }
 
