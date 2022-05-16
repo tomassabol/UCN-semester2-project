@@ -22,14 +22,14 @@ public class ShelfDetailsController {
         return items;
     }
 
-    public Item findByItemId(int id) throws SQLException, NotFoundException {
-        Item item = shelfDetailsDBIF.findByItemId(id);
-        return item;
+    public Shelf findByItemId(int id) throws SQLException, NotFoundException {
+        Shelf shelf = shelfDetailsDBIF.findByItemId(id);
+        return shelf;
     }
 
-    public Shelf findByShelfId(int id) throws SQLException, NotFoundException {
-        Shelf shelf = shelfDetailsDBIF.findByShelfId(id);
-        return shelf;
+    public Item findByShelfId(int id) throws SQLException, NotFoundException {
+    	Item item = shelfDetailsDBIF.findByShelfId(id);
+        return item;
     }
 
     public void createShelfDetails(Shelf shelf, Item item) throws SQLException {

@@ -54,22 +54,7 @@ public class ShelfDetailsDB implements ShelfDetailsDBIF {
     }
 
     @Override
-    public Item findByItemId(int id) throws SQLException, NotFoundException {
-        Item item = null;
-        ResultSet rs;
-        findByItemid.setInt(1, id);
-        rs = findByItemid.executeQuery();
-        while (rs.next()) {
-            item = buildObject(rs);
-        }
-
-        if (item == null) { throw new NotFoundException("Item", id); }
-
-        return item;
-    }
-
-    @Override
-    public Shelf findByShelfId(int id) throws SQLException, NotFoundException {
+    public Shelf findByItemId(int id) throws SQLException, NotFoundException {
         Shelf shelf = null;
         ResultSet rs;
         findByItemid.setInt(1, id);
@@ -81,6 +66,21 @@ public class ShelfDetailsDB implements ShelfDetailsDBIF {
         if (shelf == null) { throw new NotFoundException("Shelf", id); }
 
         return shelf;
+    }
+
+    @Override
+    public Item findByShelfId(int id) throws SQLException, NotFoundException {
+    	Item item = null;
+        ResultSet rs;
+        findByItemid.setInt(1, id);
+        rs = findByItemid.executeQuery();
+        while (rs.next()) {
+            item = buildObject(rs);
+        }
+
+        if (item == null) { throw new NotFoundException("Item", id); }
+
+        return item;
     }
 
     @Override

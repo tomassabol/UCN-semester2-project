@@ -6,6 +6,7 @@ import java.util.List;
 
 import controller.OrderLineController;
 import database.interfaces.OrderDetailsDBIF;
+import database.interfaces.OrderLineDBIF;
 import exceptions.NotFoundException;
 import model.Order;
 import model.OrderLine;
@@ -23,7 +24,7 @@ public class OrderDetailsDB implements OrderDetailsDBIF {
     private PreparedStatement deleteOrderDetails;
     private PreparedStatement deleteAllOrderDetails;
 
-    OrderLineController orderLineCtrl = new OrderLineController();
+    OrderLineDBIF orderLineDBIF = new OrderLineDB();
 
     public OrderDetailsDB() throws SQLException {
         findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
@@ -65,7 +66,7 @@ public class OrderDetailsDB implements OrderDetailsDBIF {
     // local methods
 
     private OrderLine buildObject(ResultSet rs) throws SQLException, NotFoundException {
-        OrderLine orderLine = orderLineCtrl.findById(rs.getInt("OrderLineId"));
+        OrderLine orderLine = orderLineDBIF.findById(rs.getInt("OrderLineId"));
         return orderLine;
     }
 

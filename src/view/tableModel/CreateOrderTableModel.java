@@ -78,10 +78,14 @@ public class CreateOrderTableModel extends AbstractTableModel{
 	public int getColumnCount() {
 		return columns.size();
 	}
-
+	
 	@Override
 	public String getColumnName(int column) {
 		return this.columns.get(column).toString();
+	}
+	
+	public List<OrderLine> getOrderLines() {
+		return orderLines;
 	}
 	
 	

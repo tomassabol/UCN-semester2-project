@@ -35,11 +35,16 @@ public class TestOrderDetails {
         Order order;
         // Act
         order = orderCtrl.findById(id);
+        System.out.println(order.getId());
         orderLines = orderDetailsCtrl.findByOrderId(order.getId());
+        for(OrderLine orderLine : orderLines) {
+        	System.out.println(orderLine.getId());
+        }
 
         // Assert
         System.out.println(orderLines.size());
         assertNotNull(orderLines);
+        assertEquals(1, orderLines.size());
     }
 
     @Test

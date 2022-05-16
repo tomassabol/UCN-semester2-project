@@ -7,7 +7,12 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import controller.DepartmentController;
+import controller.ShelfController;
+import exceptions.NotFoundException;
+import model.Department;
 import model.Product;
+import view.Messages;
 
 public class ProductTableModel extends AbstractTableModel {
 	
@@ -20,7 +25,9 @@ public class ProductTableModel extends AbstractTableModel {
 		PRODUCT_TYPE("Product Type"),
 		PRICE("Price"),
 		DISCOUNT("Discount"),
-		ACTIVE("Active");
+		ACTIVE("Active"),
+		DEP1QUANTITY("Dep1 quantity"),
+		DEP2QUANTITY("Dep2 quantity");
 
 		private String value;
 		
@@ -41,6 +48,10 @@ public class ProductTableModel extends AbstractTableModel {
 
     private List<Product> products;
     private List<Column> columns;
+    private ShelfController shelfCtrl;
+    private DepartmentController depCtrl;
+    private Department dep1;
+    private Department dep2;
 
     /**
      * Instantiates a new product table model.
@@ -49,24 +60,19 @@ public class ProductTableModel extends AbstractTableModel {
      * @param products the products
      * @param columns the columns to be displayed
      * @throws SQLException
+     * @throws NotFoundException 
      */
-    public ProductTableModel(List<Product> products, List<Column> columns) {
+    public ProductTableModel(List<Product> products, List<Column> columns) throws SQLException, NotFoundException {
         this.columns = new ArrayList<Column>(columns);
         // Prevent possible external mutation
         this.products = new ArrayList<>(products);
+        shelfCtrl = new ShelfController();
+        depCtrl = new DepartmentController();
+        dep1 = depCtrl.findById(1);
+        dep2 = depCtrl.findById(2);
+        
     }
     
-    /**
-     * Instantiates a new product table model.
-     * Note: This constructor shows all columns
-     *
-     * @param products the products
-     */
-    public ProductTableModel(List<Product> products) {
-    	this.columns = new ArrayList<Column>(Arrays.asList(Column.class.getEnumConstants()));
-        // Prevent possible external mutation
-        this.products = new ArrayList<>(products);
-    }
 
     @Override
     public int getRowCount() {
@@ -104,6 +110,21 @@ public class ProductTableModel extends AbstractTableModel {
 		case PRICE: return product.getPrice() + "EUR";
 		case DISCOUNT: return product.getDiscount();
 		case ACTIVE: return product.isActive();
+		case DEP1QUANTITY: try {
+				return shelfCtrl.productQuantityPerDepartment(dep1, product);
+			} catch (SQLException e) {
+				Messages.error(null, "Error connecting to database");
+			} catch (NotFoundException e) {
+				Messages.error(null, "Internal system error");
+			}
+		case DEP2QUANTITY: try {
+				return shelfCtrl.productQuantityPerDepartment(dep2, product);
+			} catch (SQLException e) {
+				Messages.error(null, "Error connecting to database");
+			} catch (NotFoundException e) {
+				Messages.error(null, "Internal system error");
+			}
+		
 		default: return "Error retrieving column name";
     	}
     }
