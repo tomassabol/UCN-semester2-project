@@ -28,7 +28,7 @@ public class ManageShelf extends JDialog {
 	 */
 	public ManageShelf(AuthenticationController auth) throws SQLException, NotFoundException {
 		this.auth = auth;
-		this.setTitle("Manage Departments");
+		this.setTitle("Manage Shelves");
 		setModal(true);
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 450);

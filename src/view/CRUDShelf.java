@@ -64,7 +64,7 @@ public class CRUDShelf extends JPanel {
  		Arrays.asList(
  			    Column.ID,
  			    Column.NAME,
-				Column.ITEMS,
+				Column.PRODUCTID,
 				Column.ITEMQUANTITY,
 				Column.DEPARTMENT 			    
  				)

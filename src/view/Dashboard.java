@@ -41,6 +41,7 @@ public class Dashboard extends JFrame {
 	private JLabel lblCustomer; // customer
 	private JLabel lblEmployee; // employee
 	private JLabel lblSupplier;
+	private JLabel lblShelf;//Shelf
 	private JButton btnCreateOrder;
 	private JButton btnDepartment; // department
 	private JButton btnCities; // cities
@@ -62,6 +63,7 @@ public class Dashboard extends JFrame {
 	private JButton btnShowAllOrders;
 	private JLabel lblOrders;
 	private JButton btnReportBug;
+	private JButton btnShelf;
 	
 	/**
 	 * Create the frame.
@@ -308,6 +310,24 @@ public class Dashboard extends JFrame {
 		gbc_btnProduct.gridx = 1;
 		gbc_btnProduct.gridy = 5;
 		storagePanel.add(btnProduct, gbc_btnProduct);
+		
+		lblShelf = new JLabel();
+		ImageIcon shelfIcon = new ImageIcon("images/shelf.png");
+		lblShelf.setIcon(shelfIcon);
+		lblShelf.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_lblShelf = new GridBagConstraints();
+		gbc_lblShelf.insets = new Insets(0, 0, 5, 5);
+		gbc_lblShelf.gridx = 3;
+		gbc_lblShelf.gridy = 4;
+		storagePanel.add(lblShelf, gbc_lblShelf);
+		
+		btnShelf = new JButton("Shelf");
+		btnShelf.setFont(new Font("Dialog", Font.PLAIN, 10));
+		GridBagConstraints gbc_btnShelf = new GridBagConstraints();
+		gbc_btnShelf.insets = new Insets(0, 0, 5, 5);
+		gbc_btnShelf.gridx = 3;
+		gbc_btnShelf.gridy = 5;
+		storagePanel.add(btnShelf, gbc_btnShelf);
 	}
 
 	// people
@@ -521,6 +541,18 @@ public class Dashboard extends JFrame {
 			ReportBugUI frame;
 			frame = new ReportBugUI(auth);
 			frame.setVisible(true);
+		});
+		
+		btnShelf.addActionListener(e -> {
+			ManageShelf frame;
+			try {
+				frame = new ManageShelf(auth);
+				frame.setVisible(true);
+			} catch (SQLException |NotFoundException e1) {
+				
+				e1.printStackTrace();
+			}
+			
 		});
 	}
 

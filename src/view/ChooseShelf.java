@@ -8,6 +8,7 @@ import controller.AuthenticationController;
 import exceptions.NotFoundException;
 import view.tableModel.*;
 
+import model.Shelf;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -19,10 +20,10 @@ public class ChooseShelf extends JDialog {
 
 	private static final long serialVersionUID = 2968937672159813565L;
 	private final JPanel contentPane;
-	private CRUDDepartments CRUDPanel;
+	private CRUDShelf CRUDPanel;
 	private JButtonPrimary btnChoose;
 	
-	private Department selectedDepartment = null;
+	private Shelf  selectedShelf = null;
 	
 	AuthenticationController auth;
 	private JPanel panel;
@@ -34,7 +35,7 @@ public class ChooseShelf extends JDialog {
 	 */
 	public ChooseShelf(AuthenticationController auth) throws SQLException, NotFoundException {
 		this.auth = auth;
-		this.setTitle("Choose a Department...");
+		this.setTitle("Choose a Shelf...");
 		setModal(true);
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 450);
@@ -48,7 +49,7 @@ public class ChooseShelf extends JDialog {
 		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		CRUDPanel = new CRUDDepartments(this.auth);
+		CRUDPanel = new CRUDShelf(this.auth);
 		
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.fill = GridBagConstraints.BOTH;
@@ -86,11 +87,11 @@ public class ChooseShelf extends JDialog {
 	 * *******************************************************
 	 */
 		public boolean isDepartmentSelected() {
-			return selectedDepartment != null;
+			return selectedShelf != null;
 		}
 	
-		public Department getSelectedDepartment() {
-			return selectedDepartment;
+		public Shelf getSelectedDepartment() {
+			return selectedShelf;
 		}
 	
 	/*
@@ -120,8 +121,8 @@ public class ChooseShelf extends JDialog {
 			JTable table = CRUDPanel.getTable();
 			if (!table.getSelectionModel().isSelectionEmpty()) {
 				ShelfTableModel tableModel = CRUDPanel.getTableModel();
-				Department department = tableModel.getObj(table.getSelectedRow());
-				selectedDepartment = department;
+				Shelf shelf = tableModel.getObj(table.getSelectedRow());
+				selectedShelf = shelf;
 				this.dispose();
 			}
 		});

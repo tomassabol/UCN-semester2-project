@@ -256,9 +256,9 @@ public class ShelfUi extends JDialog {
 	private void fillFields(Shelf shelf) {
 		txtId.setText(String.valueOf(shelf.getId()));
 		txtName.setText(shelf.getName());
-		txtProductId.setText(shelf.getProduct().getName());
+		txtProductId.setText(shelf.getProduct().getId()+"");
 		textQuantity.setText(shelf.getProductQuantity()+"");
-		txtDepartment.setText(shelf.getDepartment().getName());
+		txtDepartment.setText(shelf.getDepartment().getId()+"");
 	}
 	
 	/*
@@ -298,17 +298,12 @@ public class ShelfUi extends JDialog {
 					Messages.error(this, "Department name cannot be empty");
 					return;
 				}
-
-				int quantity = Integer.parseInt(textQuantity.getText().strip());
-
-
-				
-				
 			
 				// if mode == view, update data
 				if (mode == Mode.EDIT) {
 			
                     try {
+                    	int quantity = Integer.parseInt(textQuantity.getText().strip());
 						Department dep = dController.findById(Integer.parseInt(department));
 						Product prod = prodController.findById(Integer.parseInt(productId));
                         shelfCtrl.updateShelf(shelf, name ,prod, quantity,dep);
@@ -332,7 +327,7 @@ public class ShelfUi extends JDialog {
 					}
 				}
 
-
+				//todo delete
 				
 			}
 			// Dispose of the window

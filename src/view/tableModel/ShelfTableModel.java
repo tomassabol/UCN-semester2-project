@@ -18,7 +18,6 @@ import model.Shelf;
  		ID("ID"),
  		NAME("Name"),
  		PRODUCTID("ProductId"),
-        ITEMS("Items"),
         ITEMQUANTITY("Item quantity"),
         DEPARTMENT("Department");
 
