@@ -210,7 +210,7 @@ public class EmployeeUI extends JDialog {
 		gbc_lblEmployeeType.gridy = 6;
 		contentPane.add(lblEmployeeType, gbc_lblEmployeeType);
 		
-		boxEmployeeType = new JComboBox<>(EmployeeType.values());
+		boxEmployeeType = new JComboBox(EmployeeType.values());
 		GridBagConstraints gbc_boxEmployeeType = new GridBagConstraints();
 		gbc_boxEmployeeType.anchor = GridBagConstraints.WEST;
 		gbc_boxEmployeeType.insets = new Insets(0, 0, 5, 5);

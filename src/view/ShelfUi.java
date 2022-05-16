@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
-import controller.DepartmentController;
 import controller.ProductController;
 import controller.ShelfController;
 import exceptions.NotFoundException;
@@ -24,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.sql.SQLException;
 
+
 public class ShelfUi extends JDialog {
 	
 	public enum Mode {
@@ -33,7 +33,6 @@ public class ShelfUi extends JDialog {
 	}
 
 	private ProductController prodController;
-	private DepartmentController dController;
 	private JPanel contentPane;
 	private JTextField txtId;
 	private JTextField txtName;
@@ -46,6 +45,8 @@ public class ShelfUi extends JDialog {
 	AuthenticationController auth;
 	private JTextField textQuantity;
 	private JLabel lblItemQuantity;
+	private JButton btnSelect;
+	private Department departmentob;
 	/**
 	 * Constructor: create new DepartmentUI
 	 *
@@ -68,7 +69,6 @@ public class ShelfUi extends JDialog {
 		this.shelf = shelf;
 		
 		shelfCtrl = new ShelfController();
-		dController = new DepartmentController();
 		prodController = new ProductController();
 		
 		setModal(true);
@@ -164,6 +164,7 @@ public class ShelfUi extends JDialog {
 		contentPane.add(lblDepartment, gbc_lblDepartment);
 		
 		txtDepartment = new JTextField();
+		txtDepartment.setEditable(false);
 		txtDepartment.setColumns(10);
 		GridBagConstraints gbc_txtDepartment = new GridBagConstraints();
 		gbc_txtDepartment.insets = new Insets(0, 0, 5, 5);
@@ -171,6 +172,13 @@ public class ShelfUi extends JDialog {
 		gbc_txtDepartment.gridx = 0;
 		gbc_txtDepartment.gridy = 5;
 		contentPane.add(txtDepartment, gbc_txtDepartment);
+		
+		btnSelect = new JButton("Select");
+		GridBagConstraints gbc_btnSelect = new GridBagConstraints();
+		gbc_btnSelect.insets = new Insets(0, 0, 5, 0);
+		gbc_btnSelect.gridx = 1;
+		gbc_btnSelect.gridy = 5;
+		contentPane.add(btnSelect, gbc_btnSelect);
 		
 		
 		btnSubmit = new JButton("Submit");
@@ -258,7 +266,7 @@ public class ShelfUi extends JDialog {
 		txtName.setText(shelf.getName());
 		txtProductId.setText(shelf.getProduct().getId()+"");
 		textQuantity.setText(shelf.getProductQuantity()+"");
-		txtDepartment.setText(shelf.getDepartment().getId()+"");
+		txtDepartment.setText(shelf.getDepartment().getName());
 	}
 	
 	/*
@@ -274,7 +282,7 @@ public class ShelfUi extends JDialog {
 			if (mode == Mode.EDIT) {
 				message = "Are you sure you want to update the changes to Department?";
 			} else if (mode == Mode.CREATE) {
-				message = "Create Department?";
+				message = "Create Shelf?";
 			}
 			if (Messages.confirm(ShelfUi.this, message)) {
 				
@@ -295,7 +303,7 @@ public class ShelfUi extends JDialog {
 
 				String department = txtDepartment.getText().strip();
 				if (department.isEmpty()) {
-					Messages.error(this, "Department name cannot be empty");
+					Messages.error(this, "Department cannot be empty");
 					return;
 				}
 			
@@ -304,9 +312,8 @@ public class ShelfUi extends JDialog {
 			
                     try {
                     	int quantity = Integer.parseInt(textQuantity.getText().strip());
-						Department dep = dController.findById(Integer.parseInt(department));
 						Product prod = prodController.findById(Integer.parseInt(productId));
-                        shelfCtrl.updateShelf(shelf, name ,prod, quantity,dep);
+                        shelfCtrl.updateShelf(shelf, name ,prod, quantity,departmentob);
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }catch(NotFoundException e1){
@@ -316,15 +323,12 @@ public class ShelfUi extends JDialog {
 				} else if (mode == Mode.CREATE) {
 					// if mode == Create, create a new department
 					try {
-						Department dep = dController.findById(Integer.parseInt(department));
 						Product prod = prodController.findById(Integer.parseInt(productId));
-						Shelf shelf =  ( shelfCtrl.createShelf(name, prod, dep));
+						Shelf shelf =  ( shelfCtrl.createShelf(name, prod, departmentob));
 						this.shelf = shelf;
-                    } catch (SQLException e1) {
+                    } catch (SQLException | NotFoundException e1) {
                         e1.printStackTrace();
-                    }catch(NotFoundException e1){
-						e1.printStackTrace();
-					}
+                    }
 				}
 
 				//todo delete
@@ -332,6 +336,20 @@ public class ShelfUi extends JDialog {
 			}
 			// Dispose of the window
 			this.dispose();
+		});
+		
+		btnSelect.addActionListener(e -> {
+		ChooseDepartment frame;
+			try {
+					frame = new ChooseDepartment(auth);
+					frame.setVisible(true);
+					if (frame.getSelectedDepartment() != null) {
+					this.departmentob = frame.getSelectedDepartment();
+					txtDepartment.setText(departmentob.getName());
+					}
+				} catch (SQLException|NotFoundException e1) {
+				e1.printStackTrace();
+				}
 		});
 	}
 }

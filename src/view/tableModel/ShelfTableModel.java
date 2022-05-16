@@ -1,6 +1,5 @@
 package view.tableModel;
 
- import java.sql.SQLException;
  import java.util.ArrayList;
  import java.util.Arrays;
  import java.util.List;
@@ -86,7 +85,7 @@ import model.Shelf;
             case NAME: return shelf.getName();
             case PRODUCTID: return shelf.getProduct().getId();
             case ITEMQUANTITY: return shelf.getProductQuantity();
-            case DEPARTMENT: return shelf.getDepartment().getId();
+            case DEPARTMENT: return shelf.getDepartment().getName();
 
             default: return "Error retrieving column name";
      	}
