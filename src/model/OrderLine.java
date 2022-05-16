@@ -1,15 +1,15 @@
 package model;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderLine {
     
     private int id;
     private Product product;
     private int quantity;
-    private Set<Item> items;
+    private List<Item> items;
     private BigDecimal price;
 
     /**
@@ -20,7 +20,7 @@ public class OrderLine {
     public OrderLine(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
-        this.items = new HashSet<>();
+        this.items = new ArrayList<>();
     }
 
     // add and remove methods for items Set<Item>
@@ -85,7 +85,7 @@ public class OrderLine {
         this.quantity = quantity;
     }
 
-    public Set<Item> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
