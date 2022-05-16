@@ -89,6 +89,10 @@ public class ShelfController {
         shelfDBIF.updateShelf(shelf);
     }
 
+    public void deleteShelf(Shelf shelf) throws SQLException {
+        shelfDBIF.deleteShelf(shelf);
+    }
+
     /**
      * Add quantity of the product in department
      * @param department - department

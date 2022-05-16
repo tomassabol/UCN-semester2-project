@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 import controller.AuthenticationController;
 import controller.ShelfController;
 import exceptions.NotFoundException;
-
 import model.Shelf;
 
 import javax.swing.ListSelectionModel;
@@ -29,6 +28,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import view.ShelfUI.Mode;
 import view.JLink.COLORS;
 import view.tableModel.ShelfTableModel;
 import view.tableModel.ShelfTableModel.Column;
@@ -37,7 +37,7 @@ import javax.swing.JTextField;
 
 public class CRUDShelf extends JPanel {
 
-	private JButton btnAddshelf;
+	private JButton btnAddDShelf;
 	private ShelfController shelfCtrl;
  	private TableRowSorter<TableModel> rowSorter;
 
@@ -64,10 +64,10 @@ public class CRUDShelf extends JPanel {
  		Arrays.asList(
  			    Column.ID,
  			    Column.NAME,
-				Column.ITEMS,
-				Column.ITEMQUANTITY,
-				Column.DEPARTMENT 			    
- 				)
+ 			    Column.PRODUCT,
+ 			    Column.QUANTITY,
+				Column.DEPARTMENT
+ 			    )
  	        );
 
  		// ***** TOP PANEL *****
@@ -97,12 +97,13 @@ public class CRUDShelf extends JPanel {
  		topPanel.add(txtSearch, gbc_txtSearch);
  		txtSearch.setColumns(10);
 
- 		btnAddshelf = new JButton("Add shelf");
- 		GridBagConstraints gbc_btnAddShelf = new GridBagConstraints();
- 		gbc_btnAddShelf.insets = new Insets(0, 0, 5, 0);
- 		gbc_btnAddShelf.gridx = 2;
- 		gbc_btnAddShelf.gridy = 1;
- 		topPanel.add(btnAddshelf, gbc_btnAddShelf);
+ 		// ***** button: Add department  *****
+ 		btnAddDShelf = new JButton("Add Shelf");
+ 		GridBagConstraints gbc_btnAddDShelf = new GridBagConstraints();
+ 		gbc_btnAddDShelf.insets = new Insets(0, 0, 5, 0);
+ 		gbc_btnAddDShelf.gridx = 2;
+ 		gbc_btnAddDShelf.gridy = 1;
+ 		topPanel.add(btnAddDShelf, gbc_btnAddDShelf);
 
  		// ***** Middle panel: Scroll panel *****
  		JScrollPane scrollPanel = new JScrollPane();
@@ -183,12 +184,12 @@ public class CRUDShelf extends JPanel {
  	}
 
  	/**
- 	 * Select a shelf in the CRUD table.
+ 	 * Select a department in the CRUD table.
  	 *
- 	 * @param shelf the shelf
+ 	 * @param department the department
  	 * @return true, if successful
  	 */
- 	public boolean selectshelf(Shelf shelf) {
+ 	public boolean selectdepartment(Shelf shelf) {
  		int rows = tableModel.getRowCount();
  		for (int i = 0; i < rows; i++) {
  			Shelf foundShelf = tableModel.getObj(i);
@@ -209,11 +210,13 @@ public class CRUDShelf extends JPanel {
  		// Table row selection
  		tableMain.getSelectionModel().addListSelectionListener(e -> {
  			if (tableMain.getSelectionModel().isSelectionEmpty()) {
- 			
+ 				// Not selected
  				btnView.setEnabled(false);
  				btnEdit.setEnabled(false);
  			} else {
- 				
+ 				// Selected
+ 				//int row = tableMain.getSelectedRow();
+ 				// Department department = tableModel.getObj(row);
  				btnView.setEnabled(true);
  				btnEdit.setEnabled(true);
  				btnDelete.setEnabled(false);
@@ -221,14 +224,13 @@ public class CRUDShelf extends JPanel {
  		});
 
  		// Delete department
-		 /*
  		btnDelete.addActionListener(e -> {
  			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
  			Shelf shelf = tableModel.getObj(row);
- 			if (Messages.confirm(this, String.format("Are you sure you wish to delete the Department '%s'?",
+ 			if (Messages.confirm(this, String.format("Are you sure you wish to delete the Shelf '%s'?",
  					shelf.getName()))) {
                      try {
-						shelfCtrl.de(shelf);
+						shelfCtrl.deleteShelf(shelf);
                      } catch (SQLException e1) {
 						e1.printStackTrace();
                      } 
@@ -238,27 +240,27 @@ public class CRUDShelf extends JPanel {
  				tableMain.getSelectionModel().clearSelection();
  			}
  		);
-		*/
- 		// View shelf
+
+ 		// View department
  		btnView.addActionListener(e -> {
  			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
  			Shelf shelf = tableModel.getObj(row);
- 			ShelfUi frame;
+ 			ShelfUI frame;
              try {
-                 frame = new ShelfUi(auth, shelf, ShelfUi.Mode.VIEW);
+                 frame = new ShelfUI(auth, shelf, ShelfUI.Mode.VIEW);
                  frame.setVisible(true);
              } catch (SQLException e1) {
                  e1.printStackTrace();
              }
  		});
 
- 		// Edit shelf
+ 		// Edit department
  		btnEdit.addActionListener(e -> {
  			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
  			Shelf shelf = tableModel.getObj(row);
- 			ShelfUi frame;
+ 			ShelfUI frame;
              try {
-                 frame = new ShelfUi(auth, shelf, ShelfUi.Mode.EDIT);
+                 frame = new ShelfUI(auth, shelf, ShelfUI.Mode.EDIT);
                  frame.setVisible(true);
              } catch (SQLException e1) {
                  e1.printStackTrace();
@@ -270,13 +272,13 @@ public class CRUDShelf extends JPanel {
  		});
 
  		// Create department
- 		btnAddshelf.addActionListener(e -> {
- 			ShelfUi frame;
+ 		btnAddDShelf.addActionListener(e -> {
+ 			ShelfUI frame;
              try {
-                 frame = new ShelfUi(auth, ShelfUi.Mode.CREATE);
+                 frame = new ShelfUI(auth, Mode.CREATE);
                  frame.setVisible(true);
-                 if (frame.getsShelf() != null) {
-                     tableModel.add(frame.getsShelf());
+                 if (frame.getShelf() != null) {
+                     tableModel.add(frame.getShelf());
 					 setTableModel(tableModel);
                  }
              } catch (SQLException e1) {

@@ -14,7 +14,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.sql.SQLException;
-import java.text.ParseException;
 
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
@@ -31,7 +30,6 @@ public class ChooseProduct extends JDialog {
 	
 	private Product selectedProduct = null;
 	private int selectedQuantity;
-	private int quantity;
 	
 	AuthenticationController auth;
 	private JPanel panel;

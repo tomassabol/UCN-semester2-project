@@ -86,7 +86,7 @@ public class ChooseCity extends JDialog {
 	 * *******************  Methods *******************
 	 * *******************************************************
 	 */
-		public boolean isProductSelected() {
+		public boolean isCitySelected() {
 			return selectedCity != null;
 		}
 	

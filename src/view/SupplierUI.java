@@ -19,7 +19,6 @@ import controller.AuthenticationController;
 import controller.SupplierController;
 import exceptions.NotFoundException;
 import model.City;
-import model.Customer.CustomerType;
 import model.Supplier;
 
 public class SupplierUI extends JDialog{
