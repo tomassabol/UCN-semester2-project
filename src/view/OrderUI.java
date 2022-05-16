@@ -276,7 +276,11 @@ public class OrderUI extends JFrame {
 		priceAndSubmitPanel.add(lblTotalValue, gbc_lblTotalValue);
 		
 		// ***** Create order button *****
-		btnCreateOrder = new JButton("Create order");
+		btnCreateOrder = new JButton();
+		switch(mode) {
+		case CREATE: btnCreateOrder.setText("Create order"); break;
+		case VIEW: btnCreateOrder.setText("View Details");
+		}
 		GridBagConstraints gbc_btnCreateOrder = new GridBagConstraints();
 		gbc_btnCreateOrder.anchor = GridBagConstraints.EAST;
 		gbc_btnCreateOrder.gridx = 3;
@@ -314,8 +318,8 @@ public class OrderUI extends JFrame {
 	 * and updates the labels
 	 */
 	private void refreshPrice() {
-		lblSubtotalValue.setText(String.format("%.2f EUR", order.getOrderPrice()));
-		lblTotalValue.setText(String.format("%.2f EUR", order.getOrderPriceAfterDiscount()));
+		lblSubtotalValue.setText(String.valueOf(order.getOrderPrice()));
+		lblTotalValue.setText(String.valueOf(order.getOrderPriceAfterDiscount()));
 	}
 	
 	/**
@@ -358,7 +362,7 @@ public class OrderUI extends JFrame {
 				// Repeat the whole thing again
 				this.addProduct();
 			}
-			
+			refreshPrice();
 		}
 	}
 	
@@ -393,7 +397,7 @@ public class OrderUI extends JFrame {
 					case VIEW: {
 						btnEditQuantity.setEnabled(false);
 						btnRemove.setEnabled(false);
-						btnCreateOrder.setEnabled(false);
+						btnCreateOrder.setEnabled(true);
 						btnAddItem.setEnabled(false);
 						btnClear.setEnabled(false);
 					}
@@ -419,20 +423,29 @@ public class OrderUI extends JFrame {
 		
 		// Action for createOrder button
 		btnCreateOrder.addActionListener(e -> {
-				
-			btnCreateOrder.setText("Create Order");
-			if(Messages.confirm(contentPane, "Do you want to finalize the order?")) {
-				try {
-					orderCtrl.finishOrder(order, auth.getLoggedInUser().getDepartment());
-					this.dispose();
-				} catch (SQLException e1) {
-						Messages.error(contentPane, "There was an error connecting to the database");
-				} catch (NotFoundException e1) {
-					Messages.error(contentPane, "There was an error finding the created order");
-				} catch (NotEnoughInStockException e1) {
-					Messages.error(contentPane, "There is not enough items in stock");
+			
+			switch(mode) {
+				case CREATE: {
+					if(Messages.confirm(contentPane, "Do you want to finalize the order?")) {
+						try {
+							orderCtrl.finishOrder(order, auth.getLoggedInUser().getDepartment());
+							this.dispose();
+						} catch (SQLException e1) {
+							Messages.error(contentPane, "There was an error connecting to the database");
+						} catch (NotFoundException e1) {
+							Messages.error(contentPane, "There was an error finding the created order");
+						} catch (NotEnoughInStockException e1) {
+							Messages.error(contentPane, "There is not enough items in stock");
+						}
+					}					
+					break;
 				}
-			}					
+				case VIEW: {
+					ViewOrderDetails frame = new ViewOrderDetails(auth, order);
+					frame.setVisible(true);
+					break;
+				}
+			}
 		});
 		
 		/**

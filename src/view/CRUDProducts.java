@@ -68,7 +68,9 @@ public class CRUDProducts extends JPanel {
 			    Column.PRODUCT_TYPE,
 			    Column.PRICE,
 			    Column.DISCOUNT,
-                Column.ACTIVE
+                Column.ACTIVE,
+                Column.DEP1QUANTITY,
+                Column.DEP2QUANTITY
 			    )
 	        );
 		
