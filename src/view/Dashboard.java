@@ -516,6 +516,12 @@ public class Dashboard extends JFrame {
 				e1.printStackTrace();
 			}
 		});
+
+		btnReportBug.addActionListener(e -> {
+			ReportBugUI frame;
+			frame = new ReportBugUI(auth);
+			frame.setVisible(true);
+		});
 	}
 
 }

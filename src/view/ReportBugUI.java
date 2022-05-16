@@ -11,14 +11,14 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
+import java.net.UnknownHostException;
 
-import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.MessagingException;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.sql.SQLException;
-import java.util.*;
 
+import model.Mail;
 public class ReportBugUI extends JDialog {
 
 	private JPanel contentPane;
@@ -32,7 +32,7 @@ public class ReportBugUI extends JDialog {
 	 * @throws SQLException
 	 * @wbp.parser.constructor
 	 */
-	public ReportBugUI(AuthenticationController auth) throws SQLException {
+	public ReportBugUI(AuthenticationController auth) {
 		this.auth = auth;
 		
 		setModal(true);
@@ -101,48 +101,6 @@ public class ReportBugUI extends JDialog {
 	 * *******************************************************
 	 */
 	
-	 private void reportIssue() {
-		 // Recipient's email ID needs to be mentioned.
-		 String to = "djl60625@jeoce.com";
-
-		 // Sender's email ID needs to be mentioned
-		 String from = "test@gmail.com";
-   
-		 // Assuming you are sending email from localhost
-		 String host = "localhost";
-   
-		 // Get system properties
-		 Properties properties = System.getProperties();
-   
-		 // Setup mail server
-		 properties.setProperty("mail.smtp.host", host);
-   
-		 // Get the default Session object.
-		 Session session = Session.getDefaultInstance(properties);
-   
-		 try {
-			// Create a default MimeMessage object.
-			MimeMessage message = new MimeMessage(session);
-   
-			// Set From: header field of the header.
-			message.setFrom(new InternetAddress(from));
-   
-			// Set To: header field of the header.
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-   
-			// Set Subject: header field
-			message.setSubject("This is the Subject Line!");
-   
-			// Now set the actual message
-			message.setText("First bug report xdd");
-   
-			// Send message
-			Transport.send(message);
-			System.out.println("Sent message successfully....");
-		 } catch (MessagingException mex) {
-			mex.printStackTrace();
-		 }
-	 }
 	
 	
 	/*
@@ -156,8 +114,8 @@ public class ReportBugUI extends JDialog {
 		btnSubmit.addActionListener(e -> {
 
 			// Validate name
-			String name = txtTitle.getText().strip();
-			if (name.isEmpty()) {
+			String title = txtTitle.getText().strip();
+			if (title.isEmpty()) {
 				Messages.error(this, "Product name cannot be empty!");
 				return;
 			}
@@ -168,6 +126,14 @@ public class ReportBugUI extends JDialog {
 				Messages.error(this, "Product description cannot be empty!");
 				return;
             }
+
+			try {
+				Mail.sendMail(title, description);
+			} catch (MessagingException e1) {
+				Messages.error(this, "Error occured when trying to send an email. Try again later");
+			} catch (UnknownHostException e1) {
+				Messages.error(this, "Error with collecting system information");
+			}
 
 
             Messages.info(null, "Problem has been reported");
