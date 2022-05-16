@@ -248,7 +248,7 @@ public class OrderUI extends JFrame {
 		priceAndSubmitPanel.add(lblSubtotal, gbc_lblSubtotal);
 				
 		// ***** Subtotal value *****
-		lblSubtotalValue = new JLabel(String.format("%.2f EUR", order.getOrderPrice()));
+		lblSubtotalValue = new JLabel();
 		lblSubtotalValue.setForeground(new Color(102, 102, 102));
 		GridBagConstraints gbc_lblSubtotalValue = new GridBagConstraints();
 		gbc_lblSubtotalValue.anchor = GridBagConstraints.WEST;
@@ -267,7 +267,7 @@ public class OrderUI extends JFrame {
 		priceAndSubmitPanel.add(lblTotal, gbc_lblTotal);
 						
 		// ***** Total price value *****
-		lblTotalValue = new JLabel(String.format("%.2f EUR", order.getOrderPriceAfterDiscount()));
+		lblTotalValue = new JLabel();
 		GridBagConstraints gbc_lblTotalValue = new GridBagConstraints();
 		gbc_lblTotalValue.anchor = GridBagConstraints.WEST;
 		gbc_lblTotalValue.insets = new Insets(0, 0, 5, 5);
@@ -318,8 +318,50 @@ public class OrderUI extends JFrame {
 	 * and updates the labels
 	 */
 	private void refreshPrice() {
-		lblSubtotalValue.setText(String.valueOf(order.getOrderPrice()));
-		lblTotalValue.setText(String.valueOf(order.getOrderPriceAfterDiscount()));
+		switch(mode) {
+			case CREATE: {
+				try {
+					lblSubtotalValue.setText(String.format("%.2f EUR", orderCtrl.getOrderPrice(order, true)));
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					lblTotalValue.setText(String.format("%.2f EUR", orderCtrl.getOrderPriceAfterDiscount(order, true)));
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			}
+			case VIEW: {
+				try {
+					lblSubtotalValue.setText(String.format("%.2f EUR", orderCtrl.getOrderPrice(order, false)));
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					lblTotalValue.setText(String.format("%.2f EUR", orderCtrl.getOrderPriceAfterDiscount(order, false)));
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			}
+		}
 	}
 	
 	/**
@@ -332,8 +374,7 @@ public class OrderUI extends JFrame {
 		} catch (SQLException e) {
 			Messages.error(frame, "There was an error connecting to the database");
 		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Messages.error(frame, "Ok");
 		}
 		frame.setVisible(true);
 		refreshPrice();
@@ -500,7 +541,7 @@ public class OrderUI extends JFrame {
 						Messages.error(contentPane, "There was an error connecting to the database");
 					}
 				}
-				
+				refreshPrice();
 			}
 		});
 		

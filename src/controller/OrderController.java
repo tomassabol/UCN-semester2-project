@@ -1,5 +1,6 @@
 package controller;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -133,5 +134,33 @@ public class OrderController {
 
 		return true;
 	}
+	
+	public BigDecimal getOrderPrice(Order order, boolean creating) throws SQLException, NotFoundException {
+		BigDecimal price = BigDecimal.valueOf(0);
+		if(creating == false) {
+			for(OrderLine orderLine : orderDetailsCtrl.findByOrderId(order.getId())) {
+				price = price.add(orderLine.getPrice());
+			}			
+		}else {
+			for(OrderLine orderLine : order.getOrderLines()) {
+				price = price.add(orderLine.getPrice());
+			}
+		}
+	    return price;
+	}
+	
+	 public BigDecimal getOrderPriceAfterDiscount(Order order, boolean creating) throws SQLException, NotFoundException {
+		 BigDecimal price = BigDecimal.valueOf(0);
+		 if(creating == false) {
+			 for(OrderLine orderLine : orderDetailsCtrl.findByOrderId(order.getId())) {
+				 price = price.add(orderLine.getPriceAfterDiscount());
+			 }			 
+		 }else {
+			 for(OrderLine orderLine : order.getOrderLines()) {
+				 price = price.add(orderLine.getPriceAfterDiscount());
+			 }
+		 }
+		 return price;
+	 }
 	
 }

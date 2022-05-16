@@ -1,6 +1,3 @@
-/view/
-/database/
-/model/
 /controller/
+/view/
 /tests/
-/exceptions/

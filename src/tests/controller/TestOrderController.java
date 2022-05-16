@@ -2,6 +2,7 @@ package tests.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import model.Employee;
 import model.Order;
 import model.OrderLine;
 import model.Product;
+import model.Product.ProductType;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestOrderController {
@@ -61,6 +63,16 @@ public class TestOrderController {
         // Assert
         assertNotNull(returnOrder);
         assertEquals(1, orderLines.size());
+    }
+    
+    @Test
+    public void testGetOrderPrice() throws SQLException, NotFoundException {
+    	BigDecimal price = BigDecimal.valueOf(0);
+    	Order order = orderCtrl.findById(1);
+    	price = orderCtrl.getOrderPrice(order, false);
+    	
+    	assertNotNull(price);
+    	assertEquals(2000.00, price);
     }
 
     @AfterAll
