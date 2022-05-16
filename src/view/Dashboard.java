@@ -40,12 +40,14 @@ public class Dashboard extends JFrame {
 	private JLabel lblProduct; // product
 	private JLabel lblCustomer; // customer
 	private JLabel lblEmployee; // employee
+	private JLabel lblSupplier;
 	private JButton btnCreateOrder;
 	private JButton btnDepartment; // department
 	private JButton btnCities; // cities
 	private JButton btnProduct; // product
 	private JButton btnCustomer; // customer
 	private JButton btnEmployee; // employee
+	private JButton btnSupplier;
 	private JButton btnShowCustomerOrders;
 	private JButton btnLogOut;
 	private JButton btnChooseCustomer;
@@ -344,7 +346,7 @@ public class Dashboard extends JFrame {
 		lblEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblEmployee = new GridBagConstraints();
 		gbc_lblEmployee.insets = new Insets(0, 1, 5, 5);
-		gbc_lblEmployee.gridx = 3;
+		gbc_lblEmployee.gridx = 2;
 		gbc_lblEmployee.gridy = 4;
 		peoplePanel.add(lblEmployee, gbc_lblEmployee);
 		
@@ -352,9 +354,27 @@ public class Dashboard extends JFrame {
 		btnEmployee.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_btnEmployee = new GridBagConstraints();
 		gbc_btnEmployee.insets = new Insets(0, 1, 5, 5);
-		gbc_btnEmployee.gridx = 3;
+		gbc_btnEmployee.gridx = 2;
 		gbc_btnEmployee.gridy = 5;
 		peoplePanel.add(btnEmployee, gbc_btnEmployee);
+		
+		lblSupplier = new JLabel();
+		ImageIcon supplierIcon = new ImageIcon("images/supplier.png");
+		lblSupplier.setIcon(supplierIcon);
+		lblSupplier.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_lblSupplier = new GridBagConstraints();
+		gbc_lblSupplier.insets = new Insets(0, 1, 5, 5);
+		gbc_lblSupplier.gridx = 3;
+		gbc_lblSupplier.gridy = 4;
+		peoplePanel.add(lblSupplier, gbc_lblSupplier);
+		
+		btnSupplier = new JButton("Suppliers");
+		btnSupplier.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_btnSupplier = new GridBagConstraints();
+		gbc_btnSupplier.insets = new Insets(0, 1, 5, 5);
+		gbc_btnSupplier.gridx = 3;
+		gbc_btnSupplier.gridy = 5;
+		peoplePanel.add(btnSupplier, gbc_btnSupplier);
 	}
 	
 	/*
@@ -483,6 +503,16 @@ public class Dashboard extends JFrame {
 				frame = new ManageEmployees(auth);
 				frame.setVisible(true);
 			} catch (SQLException | NotFoundException e1) {
+				e1.printStackTrace();
+			}
+		});
+		
+		btnSupplier.addActionListener(e -> {
+			ManageSupplier frame;
+			try {
+				frame = new ManageSupplier(auth);
+				frame.setVisible(true);
+			} catch(SQLException | NotFoundException e1) {
 				e1.printStackTrace();
 			}
 		});
