@@ -59,6 +59,7 @@ public class Dashboard extends JFrame {
 	private JLabel lblAllOrders;
 	private JButton btnShowAllOrders;
 	private JLabel lblOrders;
+	private JButton btnReportBug;
 	
 	/**
 	 * Create the frame.
@@ -83,9 +84,9 @@ public class Dashboard extends JFrame {
 			
 		// ***** TOP PANEL *****
 		GridBagLayout gbl_topPanel = new GridBagLayout();
-		gbl_topPanel.columnWidths = new int[]{143, 0, 0, 0};
+		gbl_topPanel.columnWidths = new int[]{143, 0, 0, 0, 0};
 		gbl_topPanel.rowHeights = new int[]{0, 0};
-		gbl_topPanel.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_topPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_topPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		topPanel.setLayout(gbl_topPanel);
 				
@@ -98,10 +99,18 @@ public class Dashboard extends JFrame {
 		gbc_lblGreeting.gridy = 0;
 		topPanel.add(lblGreeting, gbc_lblGreeting);
 		
+		btnReportBug = new JButton("Report issue");
+		btnReportBug.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_btnReportBug = new GridBagConstraints();
+		gbc_btnReportBug.insets = new Insets(0, 0, 0, 5);
+		gbc_btnReportBug.gridx = 2;
+		gbc_btnReportBug.gridy = 0;
+		topPanel.add(btnReportBug, gbc_btnReportBug);
+		
 		btnLogOut = new JButton("Log out");
 		btnLogOut.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_btnLogOut = new GridBagConstraints();
-		gbc_btnLogOut.gridx = 2;
+		gbc_btnLogOut.gridx = 3;
 		gbc_btnLogOut.gridy = 0;
 		topPanel.add(btnLogOut, gbc_btnLogOut);
 			
@@ -209,6 +218,7 @@ public class Dashboard extends JFrame {
 		orderPanel.add(btnShowCustomerOrders, gbc_btnShowCustomerOrders);
 		
 		btnShowAllOrders = new JButton("Show All Orders");
+		btnShowAllOrders.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_btnShowAllOrders = new GridBagConstraints();
 		gbc_btnShowAllOrders.insets = new Insets(0, 0, 5, 5);
 		gbc_btnShowAllOrders.gridx = 5;
