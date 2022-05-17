@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
 import controller.EmployeeController;
+import controller.EmployeeTypeController;
 import exceptions.NotFoundException;
 import model.City;
 import model.Department;
@@ -45,6 +46,7 @@ public class EmployeeUI extends JDialog {
 	private JComboBox<EmployeeType> boxEmployeeType;
 	private Employee employee;
 	private EmployeeController employeeCtrl;
+	private EmployeeTypeController employeeTypeCtrl;
 	private Mode mode;
 	AuthenticationController auth;
 	private JButton btnSelectCity;
@@ -57,9 +59,10 @@ public class EmployeeUI extends JDialog {
 	 *
 	 * @param auth the auth controller 
 	 * @throws SQLException
+	 * @throws NotFoundException
 	 * @wbp.parser.constructor
 	 */
-	public EmployeeUI(AuthenticationController auth) throws SQLException {
+	public EmployeeUI(AuthenticationController auth) throws SQLException, NotFoundException {
 		this(auth, null, Mode.CREATE);
 		this.employee = null;
 	}
@@ -67,13 +70,15 @@ public class EmployeeUI extends JDialog {
 	/**
 	 * Create the frame.
 	 * @throws SQLException
+	 * @throws NotFoundException
 	 */
-	public EmployeeUI(AuthenticationController auth, Employee employee, Mode mode) throws SQLException {
+	public EmployeeUI(AuthenticationController auth, Employee employee, Mode mode) throws SQLException, NotFoundException {
 		this.auth = auth;
 		this.mode = mode;
 		this.employee = employee;
 		
 		employeeCtrl = new EmployeeController();
+		employeeTypeCtrl = new EmployeeTypeController();
 		
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -210,7 +215,10 @@ public class EmployeeUI extends JDialog {
 		gbc_lblEmployeeType.gridy = 6;
 		contentPane.add(lblEmployeeType, gbc_lblEmployeeType);
 		
-		boxEmployeeType = new JComboBox(EmployeeType.values());
+		boxEmployeeType = new JComboBox<>();
+		for(EmployeeType employeeType : employeeTypeCtrl.findAll()) {
+			boxEmployeeType.addItem(employeeType);
+		}
 		GridBagConstraints gbc_boxEmployeeType = new GridBagConstraints();
 		gbc_boxEmployeeType.anchor = GridBagConstraints.WEST;
 		gbc_boxEmployeeType.insets = new Insets(0, 0, 5, 5);
