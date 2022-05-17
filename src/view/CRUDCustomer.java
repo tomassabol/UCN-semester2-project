@@ -233,7 +233,10 @@ public class CRUDCustomer extends JPanel {
                 frame.setVisible(true);
             } catch (SQLException e1) {
                 e1.printStackTrace();
-            }
+            } catch (NotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		});
 		
 		// Edit customer
@@ -246,7 +249,10 @@ public class CRUDCustomer extends JPanel {
                 frame.setVisible(true);
             } catch (SQLException e1) {
                 e1.printStackTrace();
-            }
+            } catch (NotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			tableModel.fireTableRowsUpdated(row, row);
 			// Refresh selection (e.g. in case sell price is now set to nothing)
 			tableMain.clearSelection();
@@ -265,7 +271,10 @@ public class CRUDCustomer extends JPanel {
                 }
             } catch (SQLException e1) {
                 e1.printStackTrace();
-            }
+            } catch (NotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		});
 		
 		// Search implementation

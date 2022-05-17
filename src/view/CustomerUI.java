@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
 import controller.CustomerController;
+import controller.CustomerTypeController;
 import exceptions.NotFoundException;
 import model.City;
 import model.Customer;
@@ -39,6 +40,7 @@ public class CustomerUI extends JDialog {
 	private JButton btnSubmit;
 	private Customer customer;
 	private CustomerController customerCtrl;
+	private CustomerTypeController customerTypeCtrl;
 	private Mode mode;
 	AuthenticationController auth;
 	private JPanel panel;
@@ -54,19 +56,21 @@ public class CustomerUI extends JDialog {
 	 * Constructor: create new customer
 	 *@wbp.parser.constructor
 	 * @throws SQLException
+	 * @throws NotFoundException
 	 */
-	public CustomerUI(AuthenticationController auth) throws SQLException {
+	public CustomerUI(AuthenticationController auth) throws SQLException, NotFoundException {
 		this(auth, null, Mode.CREATE);
 		this.customer = null;
 	}
 	
 	
-	public CustomerUI(AuthenticationController auth, Customer customer, Mode mode) throws SQLException {
+	public CustomerUI(AuthenticationController auth, Customer customer, Mode mode) throws SQLException, NotFoundException {
 		this.auth = auth;
 		this.mode = mode;
 		this.customer = customer;
 		//SAD
 		customerCtrl = new CustomerController();
+		customerTypeCtrl = new CustomerTypeController();
 		
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -205,7 +209,10 @@ public class CustomerUI extends JDialog {
 		gbc_lblAddress.gridy = 9;
 		contentPane.add(lblAddress, gbc_lblAddress);
 		
-		boxCustomerType = new JComboBox<>(CustomerType.values());
+		boxCustomerType = new JComboBox<>();
+		for(CustomerType customerType : customerTypeCtrl.findAll()) {
+			boxCustomerType.addItem(customerType);
+		}
 		GridBagConstraints gbc_boxCustomerType = new GridBagConstraints();
 		gbc_boxCustomerType.insets = new Insets(0, 0, 5, 5);
 		gbc_boxCustomerType.fill = GridBagConstraints.HORIZONTAL;
