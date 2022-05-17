@@ -287,24 +287,26 @@ public class CustomerUI extends JDialog {
 	// Makes the text fields 
 	private void disableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox || c instanceof JButton) {
 				      c.setEnabled(false);
 				   }
 			}
 		txtId.setEnabled(false);
 		boxCustomerType.setEnabled(false);
+		txtZip.setEnabled(false);
 	}
 	
 	
 	// Makes the text fields editable except ID field
 	private void enableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox || c instanceof JButton) {
 			      c.setEnabled(true);
 			   }
 			}
 		txtId.setEnabled(false);
 		boxCustomerType.setEnabled(true);
+		txtZip.setEnabled(true);
 	}
 	
 	// FIll in the fields
