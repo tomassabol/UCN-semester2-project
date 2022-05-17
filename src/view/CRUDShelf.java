@@ -20,6 +20,7 @@ import controller.AuthenticationController;
 import controller.ShelfController;
 import exceptions.NotFoundException;
 import model.Shelf;
+import model.SupplyOrder;
 
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
@@ -37,11 +38,6 @@ import javax.swing.JTextField;
 
 public class CRUDShelf extends JPanel {
 
-	public enum CRUDMode {
-		ALL,
-		AVAILABLE
-	}
-
 	private JButton btnAddDShelf;
 	private ShelfController shelfCtrl;
  	private TableRowSorter<TableModel> rowSorter;
@@ -54,19 +50,20 @@ public class CRUDShelf extends JPanel {
  	private JLink btnDelete;
  	private AuthenticationController auth;
  	private JTextField txtSearch;
+	SupplyOrder supplyOrder;
 
  	/**
  	 * Create the dialog.
  	 * @throws SQLException
  	 * @throws NotFoundException
  	 */
-	public CRUDShelf(AuthenticationController auth, CRUDMode mode) throws SQLException, NotFoundException {
+	public CRUDShelf(AuthenticationController auth, SupplyOrder supplyOrder) throws SQLException, NotFoundException {
  		this.auth = auth;
  		shelfCtrl = new ShelfController();
  		setLayout(new BorderLayout(0, 0));
+		this.supplyOrder = supplyOrder;
 
-		switch (mode) {
-		case ALL: 
+		if (supplyOrder == null) {
  		tableModel = new ShelfTableModel(shelfCtrl.findAll(auth.getLoggedInUser().getDepartment()), 
  		Arrays.asList(
  			    Column.ID,
@@ -76,8 +73,8 @@ public class CRUDShelf extends JPanel {
 				Column.DEPARTMENT
  			    )
  	        ); 
-		case AVAILABLE: 
-		tableModel = new ShelfTableModel(shelfCtrl.findEmpty(auth.getLoggedInUser().getDepartment()), 
+		} else {
+		tableModel = new ShelfTableModel(shelfCtrl.findAvailable(auth.getLoggedInUser().getDepartment(), supplyOrder.getProduct()), 
  		Arrays.asList(
  			    Column.ID,
  			    Column.NAME,

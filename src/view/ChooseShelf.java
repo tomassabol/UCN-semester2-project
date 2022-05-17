@@ -6,9 +6,9 @@ import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
 import exceptions.NotFoundException;
-import view.CRUDShelf.CRUDMode;
 import view.tableModel.*;
 import model.Shelf;
+import model.SupplyOrder;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -34,7 +34,7 @@ public class ChooseShelf extends JDialog {
 	 * @throws NotFoundException
 	 * @throws SQLException
 	 */
-	public ChooseShelf(AuthenticationController auth) throws SQLException, NotFoundException {
+	public ChooseShelf(AuthenticationController auth, SupplyOrder supplyOrder) throws SQLException, NotFoundException {
 		this.auth = auth;
 		this.setTitle("Choose a Shelf...");
 		setModal(true);
@@ -50,7 +50,7 @@ public class ChooseShelf extends JDialog {
 		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		CRUDPanel = new CRUDShelf(this.auth, CRUDMode.AVAILABLE);
+		CRUDPanel = new CRUDShelf(this.auth, supplyOrder);
 		
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.fill = GridBagConstraints.BOTH;

@@ -36,8 +36,8 @@ public class ShelfController {
         return shelfs;
     }
 
-    public List<Shelf> findEmpty(Department department) throws SQLException, NotFoundException {
-        List<Shelf> shelfs = shelfDBIF.findEmpty(department);
+    public List<Shelf> findAvailable(Department department, Product product) throws SQLException, NotFoundException {
+        List<Shelf> shelfs = shelfDBIF.findAvailable(department, product);
         return shelfs;
     }
 

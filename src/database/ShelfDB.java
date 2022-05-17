@@ -17,7 +17,7 @@ public class ShelfDB implements ShelfDBIF {
    
     //PreparedStatements 
     private static final String FIND_ALL = "select * from Shelves where Enabled = 1 and ProductId is not null and DepartmentId = ?";
-    private static final String FIND_EMPTY = "select * from Shelves where ProductId is null and Enabled = 1 and DepartmentId = ?";
+    private static final String FIND_EMPTY = "select * from Shelves where ProductId is null or ProductId = ? and Enabled = 1 and DepartmentId = ?";
     private static final String FIND_BY_ID = "select * from Shelves where Id = ?";
     private static final String CREATE_SHELF = "insert into Shelves values(?,?,?,?,?)";
     private static final String UPDATE_SHELF = "update Shelves set Name = ?, ProductId = ?, ItemQuantity = ?, DepartmentId = ? where Id = ?";
@@ -72,9 +72,10 @@ public class ShelfDB implements ShelfDBIF {
      * @throws NotFoundException
      */
     @Override
-    public List<Shelf> findEmpty(Department department) throws SQLException, NotFoundException {
+    public List<Shelf> findAvailable(Department department, Product product) throws SQLException, NotFoundException {
         ResultSet rs;
-        findEmpty.setInt(1, department.getId());
+        findEmpty.setInt(1, product.getId());
+        findEmpty.setInt(2, department.getId());
         rs = findEmpty.executeQuery();
         List<Shelf> shelves = buildObjects(rs);
         return shelves;
