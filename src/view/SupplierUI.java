@@ -19,7 +19,6 @@ import controller.AuthenticationController;
 import controller.SupplierController;
 import exceptions.NotFoundException;
 import model.City;
-import model.Customer.CustomerType;
 import model.Supplier;
 
 public class SupplierUI extends JDialog{
@@ -165,21 +164,21 @@ public class SupplierUI extends JDialog{
 		gbc_txtZip.gridx = 0;
 		gbc_txtZip.gridy = 7;
 		contentPane.add(txtZip, gbc_txtZip);
-
+		
 		btnSelect = new JButton("Select");
 		GridBagConstraints gbc_btnSelect = new GridBagConstraints();
 		gbc_btnSelect.anchor = GridBagConstraints.WEST;
 		gbc_btnSelect.insets = new Insets(0, 0, 5, 0);
 		gbc_btnSelect.gridx = 1;
-		gbc_btnSelect.gridy = 8;
+		gbc_btnSelect.gridy = 7;
 		contentPane.add(btnSelect, gbc_btnSelect);
 		
 		JLabel lblAddress = new JLabel("Address");
 		GridBagConstraints gbc_lblAddress = new GridBagConstraints();
 		gbc_lblAddress.anchor = GridBagConstraints.WEST;
 		gbc_lblAddress.insets = new Insets(0, 0, 5, 5);
-		gbc_lblAddress.gridx = 1;
-		gbc_lblAddress.gridy = 6;
+		gbc_lblAddress.gridx = 0;
+		gbc_lblAddress.gridy = 8;
 		contentPane.add(lblAddress, gbc_lblAddress);
 		
 		txtAddress = new JTextField();
@@ -187,8 +186,8 @@ public class SupplierUI extends JDialog{
 		GridBagConstraints gbc_txtAddress = new GridBagConstraints();
 		gbc_txtAddress.insets = new Insets(0, 0, 5, 5);
 		gbc_txtAddress.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtAddress.gridx = 1;
-		gbc_txtAddress.gridy = 7;
+		gbc_txtAddress.gridx = 0;
+		gbc_txtAddress.gridy = 9;
 		contentPane.add(txtAddress, gbc_txtAddress);
 		
 		btnSubmit = new JButton("Submit");
@@ -255,22 +254,24 @@ public class SupplierUI extends JDialog{
 	// Makes the text fields 
 	private void disableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox || c instanceof JButton) {
 				      c.setEnabled(false);
 				   }
 			}
 		txtId.setEnabled(false);
+		txtZip.setEnabled(false);
 	}
 	
 	
 	// Makes the text fields editable except ID field
 	private void enableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JComboBox || c instanceof JButton) {
 			      c.setEnabled(true);
 			   }
 			}
 		txtId.setEnabled(false);
+		txtZip.setEnabled(true);
 	}
 	
 	// FIll in the fields

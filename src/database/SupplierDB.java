@@ -3,6 +3,7 @@ package database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class SupplierDB implements SupplierDBIF {
 	public SupplierDB() throws SQLException {
 		findAll = DBConnection.getInstance().getConnection().prepareStatement(FIND_ALL);
 		findById = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_ID);
-		createSupplier = DBConnection.getInstance().getConnection().prepareStatement(CREATE_SUPPLIER);
+		createSupplier = DBConnection.getInstance().getConnection().prepareStatement(CREATE_SUPPLIER, Statement.RETURN_GENERATED_KEYS);
 		updateSupplier = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_SUPPLIER);
 		deleteSupplier = DBConnection.getInstance().getConnection().prepareStatement(DELETE_SUPPLIER);
 	}
