@@ -42,7 +42,7 @@ public class ManageShelf extends JDialog {
 		gbl_contentPane.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		CRUDPanel = new CRUDShelf(auth);
+		CRUDPanel = new CRUDShelf(auth, null);
 		GridBagConstraints gbc_CRUDPanel = new GridBagConstraints();
 		gbc_CRUDPanel.fill = GridBagConstraints.BOTH;
 		gbc_CRUDPanel.gridx = 0;

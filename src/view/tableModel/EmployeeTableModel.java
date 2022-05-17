@@ -107,7 +107,7 @@ import model.Employee;
             case EMPLOYEE_TYPE: return employee.getEmployeeType();
             case PASSWORD: return employee.getPassword();
             case CPR: return employee.getCPR();
-            case DEPARTMENT: return employee.getDepartment();
+            case DEPARTMENT: return employee.getDepartment().getName();
             default: return "Error retrieving column name";
      	}
      }
