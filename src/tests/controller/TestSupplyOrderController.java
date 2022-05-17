@@ -38,9 +38,10 @@ public class TestSupplyOrderController {
         auth.logIn("admin", "admin");
     }
 
+    // test again with update shelf
     @Test
     public void testAddToStock() throws SQLException, NotFoundException {
-    	shelf = shelfCtrl.createShelf("test", productCtrl.findById(1), auth.getLoggedInUser().getDepartment());
+    	shelf = shelfCtrl.createShelf("test", auth.getLoggedInUser().getDepartment());
         supplyOrder = supplyOrderCtrl.createSupplyOrder(productCtrl.findById(1), 3, LocalDate.now(), supplierCtrl.findById(1));
         
         // Act

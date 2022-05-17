@@ -67,8 +67,7 @@ public class TestShelfDB {
         //String name, Product product, Department department
         // Arrange
         Department department = departmentDBIF.findById(1);
-        Product product = productDBIF.findById(1);
-        newShelf = new Shelf("TestShelf",product,department );
+        newShelf = new Shelf("TestShelf",department);
         // Act
         int size = shelfDBIF.findAll().size();
         shelfDBIF.createShelf(newShelf);
@@ -76,18 +75,23 @@ public class TestShelfDB {
         assertEquals(newShelf.getId(), size+1);
     }
 
-    public void testUpdateCity() throws SQLException, NotFoundException {
+    @Test
+    public void testUpdateShelf() throws SQLException, NotFoundException {
         // Arrange
-        shelf = shelfDBIF.findById(1);
+        shelf = shelfDBIF.findById(5);
+        Product product;
         // Act
-        shelf.setName("changedName");
+        shelf.setName("test");
+        product = productDBIF.findById(1);
+        shelf.setProduct(product);
         shelfDBIF.updateShelf(shelf);
         // Assert
-        assertEquals(shelf.getName(), shelfDBIF.findById(1).getName());
+        assertEquals(shelf.getName(), shelfDBIF.findById(5).getName());
+        assertEquals(1, shelfDBIF.findById(5).getProduct().getId());
     }
 
     @Test
-    public void testDeleteCity() throws SQLException, NotFoundException {
+    public void testDeleteShelf() throws SQLException, NotFoundException {
         // Act
         int size = shelfDBIF.findAll().size();
         shelf = shelfDBIF.findById(1);

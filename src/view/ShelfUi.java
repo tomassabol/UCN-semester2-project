@@ -313,7 +313,7 @@ public class ShelfUi extends JDialog {
                     try {
                     	int quantity = Integer.parseInt(textQuantity.getText().strip());
 						Product prod = prodController.findById(Integer.parseInt(productId));
-                        shelfCtrl.updateShelf(shelf, name ,prod, quantity,departmentob);
+                        shelfCtrl.updateShelf(shelf, name, quantity);
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }catch(NotFoundException e1){
@@ -324,7 +324,7 @@ public class ShelfUi extends JDialog {
 					// if mode == Create, create a new department
 					try {
 						Product prod = prodController.findById(Integer.parseInt(productId));
-						Shelf shelf =  ( shelfCtrl.createShelf(name, prod, departmentob));
+						Shelf shelf =  ( shelfCtrl.createShelf(name, departmentob));
 						this.shelf = shelf;
                     } catch (SQLException | NotFoundException e1) {
                         e1.printStackTrace();

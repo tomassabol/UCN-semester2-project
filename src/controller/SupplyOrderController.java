@@ -122,7 +122,7 @@ public class SupplyOrderController {
 		int newQuantity = shelf.getProductQuantity() + supplyOrder.getQuantity();
 
 		// update shelf in db
-		shelfCtrl.updateShelf(shelf, shelf.getName(), product, newQuantity, shelf.getDepartment());
+		shelfCtrl.updateShelfProduct(shelf, product, newQuantity);
 		// update supply order - mark delivered
 		setDelivered(supplyOrder);
 	}

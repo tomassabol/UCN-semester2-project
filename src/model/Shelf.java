@@ -11,12 +11,23 @@ public class Shelf {
     /**
      * Constructor for the Shelf class
      * @param name
-     * @param product
      * @param department
-     */
+     */ /*
     public Shelf(String name, Product product, Department department) {
         this.name = name;
         this.product = product;
+        this.department = department;
+        this.productQuantity = 0;
+    } */
+
+    /**
+     * Constructor for the Shelf class
+     * @param name
+     * @param department
+     */
+    public Shelf(String name, Department department) {
+        this.name = name;
+        this.product = null;
         this.department = department;
         this.productQuantity = 0;
     }

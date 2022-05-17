@@ -56,8 +56,8 @@ public class ShelfController {
      * @return 
      * @throws SQLException
      */
-    public Shelf createShelf(String name, Product product, Department department) throws SQLException {
-        Shelf shelf = new Shelf(name, product, department);
+    public Shelf createShelf(String name, Department department) throws SQLException {
+        Shelf shelf = new Shelf(name, department);
         shelfDBIF.createShelf(shelf);
         return shelf;
     }
@@ -70,11 +70,10 @@ public class ShelfController {
      * @param department - department where the shelf is
      * @throws SQLException
      */
-    public void updateShelf(Shelf shelf, String name, Product product, int quantity, Department department) throws SQLException {
+    public void updateShelf(Shelf shelf, String name, int quantity) throws SQLException {
         shelf.setName(name);
-        shelf.setProduct(product);
         shelf.setProductQuantity(quantity);
-        shelf.setDepartment(department);
+        shelf.setDepartment(shelf.getDepartment());
         shelfDBIF.updateShelf(shelf);
     }
 
@@ -84,8 +83,9 @@ public class ShelfController {
      * @param product
      * @throws SQLException
      */
-    public void updateShelfProduct(Shelf shelf, Product product) throws SQLException {
+    public void updateShelfProduct(Shelf shelf, Product product, int quantity) throws SQLException {
         shelf.setProduct(product);
+        shelf.setProductQuantity(quantity);
         shelfDBIF.updateShelf(shelf);
     }
 
