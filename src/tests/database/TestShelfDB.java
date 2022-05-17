@@ -55,8 +55,10 @@ public class TestShelfDB {
     public void testFindAllReturnListSize() throws SQLException,NotFoundException {
     	// Arrange
     	int size;
+    	Department department;
         // Act
-        size = shelfDBIF.findAll().size();
+    	department = departmentDBIF.findById(1);
+        size = shelfDBIF.findAll(department).size();
 
         // Assert
         assertNotNull(size);
@@ -69,7 +71,7 @@ public class TestShelfDB {
         Department department = departmentDBIF.findById(1);
         newShelf = new Shelf("TestShelf",department);
         // Act
-        int size = shelfDBIF.findAll().size();
+        int size = shelfDBIF.findAll(department).size();
         shelfDBIF.createShelf(newShelf);
         // Assert
         assertEquals(newShelf.getId(), size+1);
@@ -93,11 +95,12 @@ public class TestShelfDB {
     @Test
     public void testDeleteShelf() throws SQLException, NotFoundException {
         // Act
-        int size = shelfDBIF.findAll().size();
+    	Department department = departmentDBIF.findById(1);
+        int size = shelfDBIF.findAll(department).size();
         shelf = shelfDBIF.findById(1);
         shelfDBIF.deleteShelf(shelf);
         // Assert
-        assertEquals(size, shelfDBIF.findAll().size()+1);
+        assertEquals(size, shelfDBIF.findAll(department).size()+1);
     }
 
     @AfterEach

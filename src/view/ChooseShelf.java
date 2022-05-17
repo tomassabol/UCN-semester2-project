@@ -6,9 +6,10 @@ import javax.swing.border.EmptyBorder;
 
 import controller.AuthenticationController;
 import exceptions.NotFoundException;
+import view.CRUDShelf.CRUDMode;
 import view.tableModel.*;
-
 import model.Shelf;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -23,7 +24,7 @@ public class ChooseShelf extends JDialog {
 	private CRUDShelf CRUDPanel;
 	private JButtonPrimary btnChoose;
 	
-	private Shelf  selectedShelf = null;
+	private Shelf selectedShelf = null;
 	
 	AuthenticationController auth;
 	private JPanel panel;
@@ -49,7 +50,7 @@ public class ChooseShelf extends JDialog {
 		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		CRUDPanel = new CRUDShelf(this.auth);
+		CRUDPanel = new CRUDShelf(this.auth, CRUDMode.AVAILABLE);
 		
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.fill = GridBagConstraints.BOTH;
@@ -86,11 +87,11 @@ public class ChooseShelf extends JDialog {
 	 * *******************  Methods *******************
 	 * *******************************************************
 	 */
-		public boolean isDepartmentSelected() {
+		public boolean isShelfSelected() {
 			return selectedShelf != null;
 		}
 	
-		public Shelf getSelectedDepartment() {
+		public Shelf getSelectedShelf() {
 			return selectedShelf;
 		}
 	
@@ -129,5 +130,4 @@ public class ChooseShelf extends JDialog {
 	}
 	
 }
-
 

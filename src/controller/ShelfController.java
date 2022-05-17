@@ -31,8 +31,13 @@ public class ShelfController {
      * @throws SQLException
      * @throws NotFoundException
      */
-    public List<Shelf> findAll() throws SQLException, NotFoundException {
-        List<Shelf> shelfs = shelfDBIF.findAll();
+    public List<Shelf> findAll(Department department) throws SQLException, NotFoundException {
+        List<Shelf> shelfs = shelfDBIF.findAll(department);
+        return shelfs;
+    }
+
+    public List<Shelf> findEmpty(Department department) throws SQLException, NotFoundException {
+        List<Shelf> shelfs = shelfDBIF.findEmpty(department);
         return shelfs;
     }
 
@@ -87,6 +92,15 @@ public class ShelfController {
         shelf.setProduct(product);
         shelf.setProductQuantity(quantity);
         shelfDBIF.updateShelf(shelf);
+    }
+
+    /**
+     * soft delete shelf from db
+     * @param shelf - shelf to be deleted
+     * @throws SQLException
+     */
+    public void deleteShelf(Shelf shelf) throws SQLException {
+        shelfDBIF.deleteShelf(shelf);
     }
 
     /**
