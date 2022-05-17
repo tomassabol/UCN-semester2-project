@@ -18,6 +18,7 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.sql.SQLException;
+import javax.swing.JRadioButton;
 
 public class SupplyOrderUI extends JDialog {
 	
@@ -28,15 +29,29 @@ public class SupplyOrderUI extends JDialog {
 	}
 
 	private JPanel contentPane;
-	private JTextField txtProduct;
+	private JTextField txtId;
+	private JTextField txtProductId;
 	private JTextField txtQuantity;
-	private JTextField txtSupplier;
 	private JTextField txtOrderDate;
-	private JButton btnSubmit;
 	private SupplyOrder supplyOrder;
 	private SupplyOrderController supplyOrderCtrl;
 	private Mode mode;
 	AuthenticationController auth;
+	private JLabel lblQuantity_2;
+	private JLabel lblSupplierid;
+	private JTextField textSupplierId;
+	private JPanel panel;
+	private JRadioButton rdbtnYesActive;
+	private JRadioButton rdbtnNoActive;
+	private JLabel lblActive;
+	private JButton btnSubmit;
+	private JLabel lblDelivered;
+	private JPanel panelDelivered;
+	private JRadioButton rdbtnDelivered;
+	private JRadioButton rdbtnNoDelivered;
+	private JTextField textField;
+	private JLabel lblQuantity;
+	private JButton btnSearch;
 	
 	/**
 	 * Constructor: Create a Supply Order
@@ -69,12 +84,12 @@ public class SupplyOrderUI extends JDialog {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{208, 208, 0};
-		gbl_contentPane.rowHeights = new int[]{19, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		JLabel lblProduct = new JLabel("Product");
+		JLabel lblProduct = new JLabel("Id");
 		GridBagConstraints gbc_lblProduct = new GridBagConstraints();
 		gbc_lblProduct.anchor = GridBagConstraints.WEST;
 		gbc_lblProduct.insets = new Insets(0, 0, 5, 5);
@@ -82,41 +97,42 @@ public class SupplyOrderUI extends JDialog {
 		gbc_lblProduct.gridy = 0;
 		contentPane.add(lblProduct, gbc_lblProduct);
 		
-		txtProduct = new JTextField();
-		txtProduct.setColumns(10);
-		GridBagConstraints gbc_txtProduct = new GridBagConstraints();
-		gbc_txtProduct.anchor = GridBagConstraints.WEST;
-		gbc_txtProduct.insets = new Insets(0, 0, 5, 5);
-		gbc_txtProduct.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtProduct.gridx = 0;
-		gbc_txtProduct.gridy = 1;
-		contentPane.add(txtProduct, gbc_txtProduct);
+		txtId = new JTextField();
+		txtId.setEditable(false);
+		txtId.setColumns(10);
+		GridBagConstraints gbc_txtId = new GridBagConstraints();
+		gbc_txtId.anchor = GridBagConstraints.WEST;
+		gbc_txtId.insets = new Insets(0, 0, 5, 5);
+		gbc_txtId.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtId.gridx = 0;
+		gbc_txtId.gridy = 1;
+		contentPane.add(txtId, gbc_txtId);
 		
-		JLabel lblQuantity = new JLabel("Quantity: ");
-		GridBagConstraints gbc_lblQuantity = new GridBagConstraints();
-		gbc_lblQuantity.anchor = GridBagConstraints.WEST;
-		gbc_lblQuantity.insets = new Insets(0, 0, 5, 0);
-		gbc_lblQuantity.gridx = 1;
-		gbc_lblQuantity.gridy = 0;
-		contentPane.add(lblQuantity, gbc_lblQuantity);
+		JLabel lblProductID = new JLabel("ProductId: ");
+		GridBagConstraints gbc_lblProductID = new GridBagConstraints();
+		gbc_lblProductID.anchor = GridBagConstraints.WEST;
+		gbc_lblProductID.insets = new Insets(0, 0, 5, 0);
+		gbc_lblProductID.gridx = 1;
+		gbc_lblProductID.gridy = 0;
+		contentPane.add(lblProductID, gbc_lblProductID);
 		
-		txtQuantity = new JTextField();
-		txtQuantity.setColumns(10);
-		GridBagConstraints gbc_txtQuantity = new GridBagConstraints();
-		gbc_txtQuantity.anchor = GridBagConstraints.WEST;
-		gbc_txtQuantity.insets = new Insets(0, 0, 5, 0);
-		gbc_txtQuantity.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtQuantity.gridx = 1;
-		gbc_txtQuantity.gridy = 1;
-		contentPane.add(txtQuantity, gbc_txtQuantity);
+		txtProductId = new JTextField();
+		txtProductId.setColumns(10);
+		GridBagConstraints gbc_txtProductId = new GridBagConstraints();
+		gbc_txtProductId.anchor = GridBagConstraints.WEST;
+		gbc_txtProductId.insets = new Insets(0, 0, 5, 0);
+		gbc_txtProductId.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtProductId.gridx = 1;
+		gbc_txtProductId.gridy = 1;
+		contentPane.add(txtProductId, gbc_txtProductId);
 		
-		JLabel lblSupplier = new JLabel("Supplier: ");
-		GridBagConstraints gbc_Supplier = new GridBagConstraints();
-		gbc_Supplier.anchor = GridBagConstraints.WEST;
-		gbc_Supplier.insets = new Insets(0, 0, 5, 5);
-		gbc_Supplier.gridx = 0;
-		gbc_Supplier.gridy = 2;
-		contentPane.add(lblSupplier, gbc_Supplier);
+		lblQuantity_2 = new JLabel("Quantity: ");
+		GridBagConstraints gbc_lblQuantity_2 = new GridBagConstraints();
+		gbc_lblQuantity_2.anchor = GridBagConstraints.WEST;
+		gbc_lblQuantity_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblQuantity_2.gridx = 0;
+		gbc_lblQuantity_2.gridy = 2;
+		contentPane.add(lblQuantity_2, gbc_lblQuantity_2);
 		
 		JLabel lblOrderDate = new JLabel("Order date: ");
 		GridBagConstraints gbc_OrderDate = new GridBagConstraints();
@@ -126,15 +142,15 @@ public class SupplyOrderUI extends JDialog {
 		gbc_OrderDate.gridy = 2;
 		contentPane.add(lblOrderDate, gbc_OrderDate);
 		
-		txtSupplier = new JTextField();
-		txtSupplier.setColumns(10);
-		GridBagConstraints gbc_txtSupplier = new GridBagConstraints();
-		gbc_txtSupplier.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtSupplier.insets = new Insets(0, 0, 5, 5);
-		gbc_txtSupplier.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtSupplier.gridx = 0;
-		gbc_txtSupplier.gridy = 3;
-		contentPane.add(txtSupplier, gbc_txtSupplier);
+		txtQuantity = new JTextField();
+		txtQuantity.setColumns(10);
+		GridBagConstraints gbc_txtQuantity = new GridBagConstraints();
+		gbc_txtQuantity.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtQuantity.insets = new Insets(0, 0, 5, 5);
+		gbc_txtQuantity.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtQuantity.gridx = 0;
+		gbc_txtQuantity.gridy = 3;
+		contentPane.add(txtQuantity, gbc_txtQuantity);
 		
 		txtOrderDate = new JTextField();
 		txtOrderDate.setColumns(10);
@@ -145,13 +161,126 @@ public class SupplyOrderUI extends JDialog {
 		gbc_txtOrderDate.gridx = 1;
 		gbc_txtOrderDate.gridy = 3;
 		contentPane.add(txtOrderDate, gbc_txtOrderDate);
-				
+		
+		lblSupplierid = new JLabel("SupplierId: ");
+		GridBagConstraints gbc_lblSupplierid = new GridBagConstraints();
+		gbc_lblSupplierid.anchor = GridBagConstraints.WEST;
+		gbc_lblSupplierid.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSupplierid.gridx = 0;
+		gbc_lblSupplierid.gridy = 4;
+		contentPane.add(lblSupplierid, gbc_lblSupplierid);
+		
+		textSupplierId = new JTextField();
+		textSupplierId.setEditable(false);
+		textSupplierId.setColumns(10);
+		GridBagConstraints gbc_textSupplierId = new GridBagConstraints();
+		gbc_textSupplierId.insets = new Insets(0, 0, 5, 5);
+		gbc_textSupplierId.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textSupplierId.gridx = 0;
+		gbc_textSupplierId.gridy = 5;
+		contentPane.add(textSupplierId, gbc_textSupplierId);
+		
+		btnSearch = new JButton("Search");
+		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
+		gbc_btnSearch.anchor = GridBagConstraints.WEST;
+		gbc_btnSearch.insets = new Insets(0, 0, 5, 0);
+		gbc_btnSearch.gridx = 1;
+		gbc_btnSearch.gridy = 5;
+		contentPane.add(btnSearch, gbc_btnSearch);
+		
+		lblQuantity = new JLabel("Quantity: ");
+		GridBagConstraints gbc_lblQuantity = new GridBagConstraints();
+		gbc_lblQuantity.insets = new Insets(0, 0, 5, 5);
+		gbc_lblQuantity.gridx = 0;
+		gbc_lblQuantity.gridy = 6;
+		contentPane.add(lblQuantity, gbc_lblQuantity);
+		
+		lblActive = new JLabel("Active:");
+		GridBagConstraints gbc_lblActive = new GridBagConstraints();
+		gbc_lblActive.anchor = GridBagConstraints.WEST;
+		gbc_lblActive.insets = new Insets(0, 0, 5, 0);
+		gbc_lblActive.gridx = 1;
+		gbc_lblActive.gridy = 6;
+		contentPane.add(lblActive, gbc_lblActive);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.insets = new Insets(0, 0, 5, 5);
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.gridx = 0;
+		gbc_textField.gridy = 7;
+		contentPane.add(textField, gbc_textField);
+		
+		panel = new JPanel();
+		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.insets = new Insets(0, 0, 5, 0);
+		gbc_panel.fill = GridBagConstraints.BOTH;
+		gbc_panel.gridx = 1;
+		gbc_panel.gridy = 7;
+		contentPane.add(panel, gbc_panel);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0};
+		gbl_panel.rowHeights = new int[]{0, 0};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panel.setLayout(gbl_panel);
+		
+		rdbtnYesActive = new JRadioButton("Yes");
+		GridBagConstraints gbc_rdbtnYesActive = new GridBagConstraints();
+		gbc_rdbtnYesActive.insets = new Insets(0, 0, 0, 5);
+		gbc_rdbtnYesActive.gridx = 0;
+		gbc_rdbtnYesActive.gridy = 0;
+		panel.add(rdbtnYesActive, gbc_rdbtnYesActive);
+		
+		rdbtnNoActive = new JRadioButton("No");
+		GridBagConstraints gbc_rdbtnNoActive = new GridBagConstraints();
+		gbc_rdbtnNoActive.insets = new Insets(0, 0, 0, 5);
+		gbc_rdbtnNoActive.gridx = 1;
+		gbc_rdbtnNoActive.gridy = 0;
+		panel.add(rdbtnNoActive, gbc_rdbtnNoActive);
+		
+		lblDelivered = new JLabel("Delivered:");
+		GridBagConstraints gbc_lblDelivered = new GridBagConstraints();
+		gbc_lblDelivered.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDelivered.gridx = 0;
+		gbc_lblDelivered.gridy = 8;
+		contentPane.add(lblDelivered, gbc_lblDelivered);
+		
 		btnSubmit = new JButton("Submit");
-		GridBagConstraints gbc_btnOk = new GridBagConstraints();
-		gbc_btnOk.anchor = GridBagConstraints.EAST;
-		gbc_btnOk.gridx = 1;
-		gbc_btnOk.gridy = 5;
-		contentPane.add(btnSubmit, gbc_btnOk);
+		GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
+		gbc_btnSubmit.insets = new Insets(0, 0, 5, 0);
+		gbc_btnSubmit.gridx = 1;
+		gbc_btnSubmit.gridy = 8;
+		contentPane.add(btnSubmit, gbc_btnSubmit);
+		
+		panelDelivered = new JPanel();
+		GridBagConstraints gbc_panelDelivered = new GridBagConstraints();
+		gbc_panelDelivered.insets = new Insets(0, 0, 5, 5);
+		gbc_panelDelivered.fill = GridBagConstraints.BOTH;
+		gbc_panelDelivered.gridx = 0;
+		gbc_panelDelivered.gridy = 9;
+		contentPane.add(panelDelivered, gbc_panelDelivered);
+		GridBagLayout gbl_panelDelivered = new GridBagLayout();
+		gbl_panelDelivered.columnWidths = new int[]{0, 0, 0, 0, 0};
+		gbl_panelDelivered.rowHeights = new int[]{0, 0};
+		gbl_panelDelivered.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelDelivered.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panelDelivered.setLayout(gbl_panelDelivered);
+		
+		rdbtnDelivered = new JRadioButton("Yes");
+		GridBagConstraints gbc_rdbtnDelivered = new GridBagConstraints();
+		gbc_rdbtnDelivered.insets = new Insets(0, 0, 0, 5);
+		gbc_rdbtnDelivered.gridx = 0;
+		gbc_rdbtnDelivered.gridy = 0;
+		panelDelivered.add(rdbtnDelivered, gbc_rdbtnDelivered);
+		
+		rdbtnNoDelivered = new JRadioButton("No");
+		GridBagConstraints gbc_rdbtnNoDelivered = new GridBagConstraints();
+		gbc_rdbtnNoDelivered.insets = new Insets(0, 0, 0, 5);
+		gbc_rdbtnNoDelivered.gridx = 1;
+		gbc_rdbtnNoDelivered.gridy = 0;
+		panelDelivered.add(rdbtnNoDelivered, gbc_rdbtnNoDelivered);
 		
 		switch (mode) {
 			case VIEW:
@@ -221,14 +350,14 @@ public class SupplyOrderUI extends JDialog {
 			      c.setEnabled(true);
 			   }
 			}
-		txtProduct.setEnabled(false);
+		txtId.setEnabled(false);
 	}
 	
 	// FIll in the fields
 	private void fillFields(SupplyOrder supplyOrder) {
-		txtProduct.setText(String.valueOf(supplyOrder.getId()));
-		txtQuantity.setText(String.valueOf(supplyOrder.getQuantity()));
-		txtSupplier.setText(String.valueOf(supplyOrder.getSupplier()));
+		txtId.setText(String.valueOf(supplyOrder.getId()));
+		txtProductId.setText(String.valueOf(supplyOrder.getQuantity()));
+		txtQuantity.setText(String.valueOf(supplyOrder.getSupplier()));
 		txtOrderDate.setText(String.valueOf(supplyOrder.getOrderDate()));
 	}
 	
@@ -249,12 +378,8 @@ public class SupplyOrderUI extends JDialog {
 			}
 			if (Messages.confirm(SupplyOrderUI.this, message)) {
 				
-				// Validate product
-				String product = txtProduct.getText().strip();
-				if (product.isEmpty()) {
-					Messages.error(this, "Supply order product cannot be empty!");
-					return;
-				}
+				// Validate ProductId
+				int productId 
 				
 				// Validate quantity
 				String quantity = txtQuantity.getText().strip();
@@ -271,17 +396,14 @@ public class SupplyOrderUI extends JDialog {
 				}
 					
 				//Validate supplier
-				String supplier = txtSupplier.getText().strip();
-				if (supplier.isEmpty()) {
-					Messages.error(this, "Supplier cannot be empty!");
-					return;
-				}
-			
+				
+				////Validate deliverd
+
 				// if mode == view, update data
 				if (mode == Mode.EDIT) {
 			
                     try {
-                        supplyOrderCtrl.updateSupplyOrder(supplyOrder, product, quantity, orderDate, supplier)
+                        supplyOrderCtrl.updateSupplyOrder(supplyOrder, )
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
@@ -289,7 +411,7 @@ public class SupplyOrderUI extends JDialog {
 				} else if (mode == Mode.CREATE) {
 					// if mode == Create, create a new product
 					try {
-                        SupplyOrder supplyOrder = supplyOrderCtrl.createSupplyOrder(supplyOrder,product,quantity,orderDate,supplier)
+                        SupplyOrder supplyOrder = supplyOrderCtrl.createSupplyOrder(supplyOrder,)
 						this.supplyOrder=supplyOrder;
                     } catch (SQLException e1) {
                         e1.printStackTrace();
