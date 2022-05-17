@@ -218,21 +218,24 @@ public class DepartmentUI extends JDialog {
 	// Makes the text fields uneditable
 	private void disableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JButton) {
 				      c.setEnabled(false);
 				   }
 			}
+		txtZip.setEnabled(false);
+		txtId.setEnabled(false);
 	}
 	
 	
 	// Makes the text fields editable except ID field
 	private void enableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JButton) {
 			      c.setEnabled(true);
 			   }
 			}
 		txtId.setEnabled(false);
+		txtZip.setEnabled(true);
 	}
 	
 	// FIll in the fields
