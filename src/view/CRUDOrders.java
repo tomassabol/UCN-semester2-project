@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,7 +16,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import controller.AuthenticationController;
 import controller.OrderController;
@@ -41,6 +47,7 @@ public class CRUDOrders extends JFrame {
 		ALL
 	}
 	
+	private TableRowSorter<TableModel> rowSorter;
 	private AuthenticationController auth;
 	private OrdersTableModel tableModel;
 	private OrderController orderCtrl;
@@ -174,6 +181,10 @@ public class CRUDOrders extends JFrame {
 		btnView.setEnabled(false);
 		btnRemove.setEnabled(false);
 		
+		// Add filtering
+		rowSorter = new TableRowSorter<TableModel>(tableModel);
+		tableMain.setRowSorter(rowSorter);
+		
 		//Attach event handlers
 		addEventHandlers();
 	}
@@ -183,6 +194,14 @@ public class CRUDOrders extends JFrame {
 	 * *******************  Methods *******************
 	 * *******************************************************
 	 */
+	public void setTableModel(OrdersTableModel tableModel) {
+		this.tableMain.setModel(tableModel);
+		this.tableModel = tableModel;
+		// Update table row sorter
+		rowSorter = new TableRowSorter<>(tableMain.getModel());
+		tableMain.setRowSorter(rowSorter);
+		
+	}
 	
 	
 	/*
@@ -261,6 +280,31 @@ public class CRUDOrders extends JFrame {
 				}
 			}
 		});
+		
+		// Search implementation
+		txtSearch.getDocument().addDocumentListener(new DocumentListener(){
+			
+			private void search() {
+				String text = txtSearch.getText();
+				if(text.trim().length() == 0) {
+					rowSorter.setRowFilter(null);
+				} else {
+					rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(text)));
+				}
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				search();
+			}
+			
+			@Override
+			public void  removeUpdate(DocumentEvent e) {
+				search();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {}
+		});
 	}
-
 }

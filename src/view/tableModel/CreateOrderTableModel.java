@@ -11,11 +11,13 @@ import controller.ItemController;
 import controller.OrderController;
 import controller.OrderDetailsController;
 import controller.OrderLineController;
+import controller.OrderLineDetailsController;
 import exceptions.NotEnoughInStockException;
 import exceptions.NotFoundException;
 import model.Order;
 import model.OrderLine;
 import model.Product;
+import view.Messages;
 
 /**
  * @author ttomy
@@ -53,6 +55,7 @@ public class CreateOrderTableModel extends AbstractTableModel{
 	private OrderController orderCtrl;
 	private OrderDetailsController orderDetCtrl;
 	private OrderLineController orderLineCtrl;
+	private OrderLineDetailsController orderLineDetCtrl;
 	private Order order;
 	AuthenticationController auth;
 	private ItemController itemCtrl;
@@ -62,6 +65,7 @@ public class CreateOrderTableModel extends AbstractTableModel{
 		orderCtrl = new OrderController();
 		orderDetCtrl = new OrderDetailsController();
 		orderLineCtrl = new OrderLineController();
+		orderLineDetCtrl = new OrderLineDetailsController();
 		auth = authentication;
 		this.order = order;
 		this.orderLines = new ArrayList<OrderLine>(orderDetCtrl.findByOrderId(this.order.getId()));
@@ -111,16 +115,13 @@ public class CreateOrderTableModel extends AbstractTableModel{
     
     /**
      * Clears the table
+     * @throws SQLException 
+     * @throws NotFoundException 
      */
-    public void clear() {
+    public void clear(Order order) throws SQLException, NotFoundException {
     	// update this model's orderLine copies
     	for(OrderLine orderLine : orderLines) {
-    		try {
-				orderLineCtrl.deleteOrderLine(orderLine);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}    		
+			order.removeOrderLine(orderLine);
     	}
     	orderLines.clear();
     	// Update the rendered table
@@ -138,7 +139,7 @@ public class CreateOrderTableModel extends AbstractTableModel{
     		if(orderLine.getId() == row && orderLine != null) {
     			// update this model's itemLine copies
             	orderLines.remove(orderLine);
-            	orderLineCtrl.deleteOrderLine(orderLine);
+            	order.removeOrderLine(orderLine);
             	// Update the rendered table
             	this.fireTableRowsDeleted(row, row);
     		}

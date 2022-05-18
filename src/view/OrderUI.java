@@ -291,6 +291,9 @@ public class OrderUI extends JFrame {
 		rowSorter = new TableRowSorter<TableModel>(tableModel);
 		tableMain.setRowSorter(rowSorter);
 		
+		//Set the buttons to enabled or disabled
+		setEnabled();
+		
 		//Set the price
 		refreshPrice();
 		
@@ -313,6 +316,24 @@ public class OrderUI extends JFrame {
 		
 	}
 	
+	public void setEnabled() {
+		switch(mode) {
+			case CREATE: {
+				btnEditQuantity.setEnabled(false);
+				btnRemove.setEnabled(false);
+				break;
+			}
+			case VIEW: {
+				btnEditQuantity.setEnabled(false);
+				btnRemove.setEnabled(false);
+				btnCreateOrder.setEnabled(true);
+				btnAddItem.setEnabled(false);
+				btnClear.setEnabled(false);
+				break;
+			}
+		}
+	}
+	
 	/**
 	 * recalculates the subtotal and the total price of the order
 	 * and updates the labels
@@ -323,8 +344,7 @@ public class OrderUI extends JFrame {
 				try {
 					lblSubtotalValue.setText(String.format("%.2f EUR", orderCtrl.getOrderPrice(order, true)));
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Messages.error(this, "There was an error connecting to the database");
 				} catch (NotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -332,8 +352,7 @@ public class OrderUI extends JFrame {
 				try {
 					lblTotalValue.setText(String.format("%.2f EUR", orderCtrl.getOrderPriceAfterDiscount(order, true)));
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Messages.error(this, "There was an error connecting to the database");
 				} catch (NotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -344,8 +363,7 @@ public class OrderUI extends JFrame {
 				try {
 					lblSubtotalValue.setText(String.format("%.2f EUR", orderCtrl.getOrderPrice(order, false)));
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Messages.error(this, "There was an error connecting to the database");
 				} catch (NotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -353,8 +371,7 @@ public class OrderUI extends JFrame {
 				try {
 					lblTotalValue.setText(String.format("%.2f EUR", orderCtrl.getOrderPriceAfterDiscount(order, false)));
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Messages.error(this, "There was an error connecting to the database");
 				} catch (NotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -453,15 +470,6 @@ public class OrderUI extends JFrame {
 			}
 		});
 		
-		// Action for clear button
-		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(Messages.confirm(contentPane, "Are you sure you want to clear the order?")); {
-					tableModel.clear();
-				}
-			}
-		});
-		
 		// Action for createOrder button
 		btnCreateOrder.addActionListener(e -> {
 			
@@ -554,13 +562,22 @@ public class OrderUI extends JFrame {
 				} catch (SQLException e1) {
 					Messages.error(contentPane, "There was an error connecting to the database");
 				}
+				refreshPrice();
 			}
 		});
 		
 		//Action for clear button
-		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tableModel.clear();
+		btnClear.addActionListener(e -> {
+			if(Messages.confirm(this, "Do you want to clear the order?")) {
+				try {
+					tableModel.clear(order);
+				} catch (SQLException e1) {
+					Messages.error(this, "There was an error connecting to the database");
+				} catch (NotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}	
+				refreshPrice();
 			}
 		});
 		
