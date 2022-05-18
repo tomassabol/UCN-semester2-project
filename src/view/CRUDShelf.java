@@ -63,7 +63,7 @@ public class CRUDShelf extends JPanel {
  		setLayout(new BorderLayout(0, 0));
 		this.supplyOrder = supplyOrder;
 
-		if (supplyOrder == null) {
+		if (this.supplyOrder == null) {
  		tableModel = new ShelfTableModel(shelfCtrl.findAll(auth.getLoggedInUser().getDepartment()), 
  		Arrays.asList(
  			    Column.ID,
@@ -73,7 +73,7 @@ public class CRUDShelf extends JPanel {
 				Column.DEPARTMENT
  			    )
  	        ); 
-		} else {
+ 		} else {
 		tableModel = new ShelfTableModel(shelfCtrl.findAvailable(auth.getLoggedInUser().getDepartment(), supplyOrder.getProduct()), 
  		Arrays.asList(
  			    Column.ID,
@@ -234,27 +234,25 @@ public class CRUDShelf extends JPanel {
  				// Department department = tableModel.getObj(row);
  				btnView.setEnabled(true);
  				btnEdit.setEnabled(true);
- 				btnDelete.setEnabled(false);
+ 				btnDelete.setEnabled(true);
  			}
  		});
 
- 		// Delete department
- 		btnDelete.addActionListener(e -> {
- 			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
- 			Shelf shelf = tableModel.getObj(row);
- 			if (Messages.confirm(this, String.format("Are you sure you wish to delete the Shelf '%s'?",
- 					shelf.getName()))) {
-                     try {
-						shelfCtrl.deleteShelf(shelf);
-                     } catch (SQLException e1) {
-						e1.printStackTrace();
-                     } 
-                 }
+ 		// Delete shelf
+		btnDelete.addActionListener(e -> {
+			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
+			Shelf shelf = tableModel.getObj(row);
+            if (Messages.confirm(this, String.format("Are you sure you wish to delete the Shelf '%s'?", shelf.getName()))) {
+				try {
+					shelfCtrl.deleteShelf(shelf);
+					tableModel.remove(row);
+					setTableModel(tableModel);
+				} catch (SQLException e1) {
+					Messages.error(this, "Server error occured");
+				}
+			}
 
- 				tableModel.fireTableRowsUpdated(row, row);
- 				tableMain.getSelectionModel().clearSelection();
- 			}
- 		);
+		});
 
  		// View department
  		btnView.addActionListener(e -> {

@@ -227,22 +227,20 @@ public class CRUDEmployees extends JPanel {
  		});
 
  		// Disable employee
- 		btnDisable.addActionListener(e -> {
- 			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
- 			Employee employee = tableModel.getObj(row);
- 			if (Messages.confirm(this, String.format("Are you sure you wish to delete the Employee '%s'?",
- 					employee.getName()))) {
-                     try {
-                        employeeCtrl.deleteEmployee(employee);
-                     } catch (SQLException e1) {
-                         e1.printStackTrace();
-                     } 
-                 }
+		btnDisable.addActionListener(e -> {
+			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
+			Employee employee = tableModel.getObj(row);
+            if (Messages.confirm(this, String.format("Are you sure you wish to delete the Employee '%s'?", employee.getName()))) {
+				try {
+					employeeCtrl.deleteEmployee(employee);
+					tableModel.remove(row);
+					setTableModel(tableModel);
+				} catch (SQLException e1) {
+					Messages.error(this, "Server error occured");
+				}
+			}
 
- 				tableModel.fireTableRowsUpdated(row, row);
- 				tableMain.getSelectionModel().clearSelection();
- 			}
- 		);
+		});
 
  		// View employee
  		btnView.addActionListener(e -> {

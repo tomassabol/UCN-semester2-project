@@ -258,6 +258,22 @@ public class CRUDCustomer extends JPanel {
 			tableMain.clearSelection();
 			tableMain.getSelectionModel().setSelectionInterval(0, row);
 		});
+
+		// delete customer
+		btnDisable.addActionListener(e -> {
+			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
+			Customer customer = tableModel.getObj(row);
+            if (Messages.confirm(this, String.format("Are you sure you wish to delete the Customer '%s'?", customer.getName()))) {
+				try {
+					customertCtrl.deleteCustomer(customer);
+					tableModel.remove(row);
+					setTableModel(tableModel);
+				} catch (SQLException e1) {
+					Messages.error(this, "Server error occured");
+				}
+			}
+
+		});
 		
 		// Create customer
 		btnAddCustomer.addActionListener(e -> {
