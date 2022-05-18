@@ -221,22 +221,20 @@ public class CRUDSuppliers extends JPanel{
  		});
 
  		// Disable supplier
- 		btnDisable.addActionListener(e -> {
- 			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
- 			Supplier supplier = tableModel.getObj(row);
- 			if (Messages.confirm(this, String.format("Are you sure you wish to delete the Supplier '%s'?",
- 					supplier.getName()))) {
-                     try {
-                        supplierCtrl.deleteSupplier(supplier);
-                     } catch (SQLException e1) {
-                         e1.printStackTrace();
-                     } 
-                 }
+		btnDisable.addActionListener(e -> {
+			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
+			Supplier supplier = tableModel.getObj(row);
+            if (Messages.confirm(this, String.format("Are you sure you wish to delete the Supplier '%s'?", supplier.getName()))) {
+				try {
+					supplierCtrl.deleteSupplier(supplier);
+					tableModel.remove(row);
+					setTableModel(tableModel);
+				} catch (SQLException e1) {
+					Messages.error(this, "Server error occured");
+				}
+			}
 
- 				tableModel.fireTableRowsUpdated(row, row);
- 				tableMain.getSelectionModel().clearSelection();
- 			}
- 		);
+		});
 
  		// View supplier
  		btnView.addActionListener(e -> {

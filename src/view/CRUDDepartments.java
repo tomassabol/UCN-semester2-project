@@ -218,27 +218,25 @@ public class CRUDDepartments extends JPanel {
  				// Department department = tableModel.getObj(row);
  				btnView.setEnabled(true);
  				btnEdit.setEnabled(true);
- 				btnDelete.setEnabled(false);
+ 				btnDelete.setEnabled(true);
  			}
  		});
 
  		// Delete department
- 		btnDelete.addActionListener(e -> {
- 			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
- 			Department department = tableModel.getObj(row);
- 			if (Messages.confirm(this, String.format("Are you sure you wish to delete the Department '%s'?",
- 					department.getName()))) {
-                     try {
-						departmentCtrl.deleteDepartment(department);
-                     } catch (SQLException e1) {
-						e1.printStackTrace();
-                     } 
-                 }
+		btnDelete.addActionListener(e -> {
+			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
+			Department department = tableModel.getObj(row);
+            if (Messages.confirm(this, String.format("Are you sure you wish to delete the Department '%s'?", department.getName()))) {
+				try {
+					departmentCtrl.deleteDepartment(department);
+					tableModel.remove(row);
+					setTableModel(tableModel);
+				} catch (SQLException e1) {
+					Messages.error(this, "Server error occured");
+				}
+			}
 
- 				tableModel.fireTableRowsUpdated(row, row);
- 				tableMain.getSelectionModel().clearSelection();
- 			}
- 		);
+		});
 
  		// View department
  		btnView.addActionListener(e -> {

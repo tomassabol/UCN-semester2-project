@@ -221,7 +221,7 @@ public class CRUDOrders extends JFrame {
 				int row = tableMain.getSelectedRow();
 				tableModel.getObj(row);
 				btnView.setEnabled(true);
-				btnRemove.setEnabled(false);
+				btnRemove.setEnabled(true);
 			}
 		});
 		
@@ -232,6 +232,22 @@ public class CRUDOrders extends JFrame {
 			OrderUI frame;
 			frame = new OrderUI(auth, customer, order, OrderUI.Mode.VIEW);
 			frame.setVisible(true);
+		});
+
+		// delete customer
+		btnRemove.addActionListener(e -> {
+			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
+			Order order = tableModel.getObj(row);
+            if (Messages.confirm(this, String.format("Are you sure you wish to delete the Order '%s'?", order.getId()))) {
+				try {
+					orderCtrl.deleteOrder(order);
+					tableModel.remove(row);
+					setTableModel(tableModel);
+				} catch (SQLException e1) {
+					Messages.error(this, "Server error occured");
+				}
+			}
+
 		});
 		
 		btnAddOrder.addActionListener(e -> {

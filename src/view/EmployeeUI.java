@@ -305,6 +305,8 @@ public class EmployeeUI extends JDialog {
 				this.fillFields(employee);
 				break;
 			case EDIT: 
+				// disable cpr txt field
+				txtCPR.setEnabled(false);
 				// Set title
 				setTitle("Edit Employee");
 				// Change submit button text to 'Update'
@@ -353,6 +355,8 @@ public class EmployeeUI extends JDialog {
 				      c.setEnabled(false);
 				   }
 			}
+		txtId.setEnabled(false);
+		txtCPR.setEnabled(false);
 	}
 	
 	

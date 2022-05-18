@@ -4,8 +4,6 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -32,7 +30,6 @@ import javax.swing.JTextField;
 public class CRUDCity extends JPanel {
 	
 	private JButton btnAddCity;
-	private JPanel contentPane;
 	private CityController cityCtrl;
 	private TableRowSorter<TableModel> rowSorter;
 	private static final long serialVersionUID = -8329527605114016878L;
@@ -215,28 +212,15 @@ public class CRUDCity extends JPanel {
 				// Not selected
 				btnView.setEnabled(false);
 				btnEdit.setEnabled(false);
-				btnRemove.setEnabled(false);
+				btnRemove.setEnabled(true);
 			} else {
 				// Selected
 				int row = tableMain.getSelectedRow();
 				tableModel.getObj(row);
 				btnView.setEnabled(true);
-				btnEdit.setEnabled(true);
-				btnRemove.setEnabled(false);
+				btnEdit.setEnabled(false);
+				btnRemove.setEnabled(true);
 			}});
-					
-		// Remove city
-		btnRemove.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int row = tableMain.getSelectedRow();
-				City city = tableModel.getObj(row);
-				try {
-					cityCtrl.deleteCity(city);
-				} catch (SQLException e1) {
-					Messages.error(contentPane, "There was an error connecting to the database");
-				}
-			}
-		});
 		
 		// View city
 		btnView.addActionListener(e -> {
@@ -265,6 +249,22 @@ public class CRUDCity extends JPanel {
 			tableModel.fireTableRowsUpdated(row, row);
 			tableMain.clearSelection();
 			tableMain.getSelectionModel().setSelectionInterval(0, row);
+		});
+
+		// delete city
+		btnRemove.addActionListener(e -> {
+			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
+			City city = tableModel.getObj(row);
+            if (Messages.confirm(this, String.format("Are you sure you wish to delete the City '%s'?", city.getName()))) {
+				try {
+					cityCtrl.deleteCity(city);
+					tableModel.remove(row);
+					setTableModel(tableModel);
+				} catch (SQLException e1) {
+					Messages.error(this, "Server error occured");
+				}
+			}
+
 		});
 		
 		// Create city
