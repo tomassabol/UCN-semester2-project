@@ -66,8 +66,7 @@ public class CRUDSupplyOrder extends JPanel {
 				 Column.QUANTITY,
 				 Column.ORDERDATE,
 				 Column.SUPPLIERID,
-				 Column.DELIVERED,
-				 Column.ENABLED
+				 Column.DELIVERED
  			    )
  	        );
 
@@ -238,7 +237,7 @@ public class CRUDSupplyOrder extends JPanel {
  			}
  		);
 
- 		// View department
+ 		// View supplyOrder
  		btnView.addActionListener(e -> {
  			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
  			SupplyOrder supplyOrder = tableModel.getObj(row);
@@ -257,7 +256,7 @@ public class CRUDSupplyOrder extends JPanel {
  			SupplyOrder supplyOrder = tableModel.getObj(row);
  			SupplyOrderUI frame;
              try {
-                 frame = new SupplyOrderUI(auth, supplyOrder, SupplierUI.Mode.EDIT);
+                 frame = new SupplyOrderUI(auth, supplyOrder, SupplyOrderUI.Mode.EDIT);
                  frame.setVisible(true);
              } catch (SQLException e1) {
                  e1.printStackTrace();
@@ -272,7 +271,7 @@ public class CRUDSupplyOrder extends JPanel {
  		btnAddSupplyOrder.addActionListener(e -> {
 			SupplyOrderUI frame;
              try {
-                 frame = new SupplyOrderUI(auth, Mode.CREATE);
+                 frame = new SupplyOrderUI(auth);
                  frame.setVisible(true);
                  if (frame.getSupplyOrder() != null) {
                      tableModel.add(frame.getSupplyOrder());

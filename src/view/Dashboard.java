@@ -41,6 +41,7 @@ public class Dashboard extends JFrame {
 	private JLabel lblCustomer; // customer
 	private JLabel lblEmployee; // employee
 	private JLabel lblSupplier;
+	private JLabel lblSupplyOrder;//supplyOrder
 	private JLabel lblShelf;//Shelf
 	private JButton btnCreateOrder;
 	private JButton btnDepartment; // department
@@ -63,6 +64,7 @@ public class Dashboard extends JFrame {
 	private JButton btnShowAllOrders;
 	private JLabel lblOrders;
 	private JButton btnReportBug;
+	private JButton btnSupplyOrder;
 	private JButton btnShelf;
 	
 	/**
@@ -317,7 +319,7 @@ public class Dashboard extends JFrame {
 		lblShelf.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblShelf = new GridBagConstraints();
 		gbc_lblShelf.insets = new Insets(0, 0, 5, 5);
-		gbc_lblShelf.gridx = 3;
+		gbc_lblShelf.gridx = 2;
 		gbc_lblShelf.gridy = 4;
 		storagePanel.add(lblShelf, gbc_lblShelf);
 		
@@ -325,9 +327,28 @@ public class Dashboard extends JFrame {
 		btnShelf.setFont(new Font("Dialog", Font.PLAIN, 10));
 		GridBagConstraints gbc_btnShelf = new GridBagConstraints();
 		gbc_btnShelf.insets = new Insets(0, 0, 5, 5);
-		gbc_btnShelf.gridx = 3;
+		gbc_btnShelf.gridx = 2;
 		gbc_btnShelf.gridy = 5;
 		storagePanel.add(btnShelf, gbc_btnShelf);
+		
+		lblSupplyOrder = new JLabel();
+		ImageIcon supplyOrderIcon = new ImageIcon("images/SupplyOrder.png");
+		lblSupplyOrder.setIcon(supplyOrderIcon);
+		lblSupplyOrder.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		GridBagConstraints gbc_lblSupplyOrder = new GridBagConstraints();
+		gbc_lblSupplyOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSupplyOrder.gridx = 3;
+		gbc_lblSupplyOrder.gridy = 4;
+		storagePanel.add(lblSupplyOrder, gbc_lblSupplyOrder);
+		
+
+		btnSupplyOrder = new JButton("SupplyOrder");
+		btnSupplyOrder.setFont(new Font("Dialog", Font.PLAIN, 10));
+		GridBagConstraints gbc_btnSupplyOrder = new GridBagConstraints();
+		gbc_btnSupplyOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSupplyOrder.gridx = 3;
+		gbc_btnSupplyOrder.gridy = 5;
+		storagePanel.add(btnSupplyOrder, gbc_btnSupplyOrder);
 	}
 
 	// people
@@ -553,6 +574,17 @@ public class Dashboard extends JFrame {
 				e1.printStackTrace();
 			}
 			
+		});
+		
+		btnSupplyOrder.addActionListener(e ->{
+			ManageSupplyOrder frame;
+			try {
+				frame = new ManageSupplyOrder(auth);
+				frame.setVisible(true);
+				
+			}catch(SQLException|NotFoundException e1){
+				e1.printStackTrace();
+			}
 		});
 	}
 

@@ -67,7 +67,6 @@ public class SupplyOrderController {
 		supplyOrderDBIF.createSupplyOrder(supplyOrder);
 		return supplyOrder;
 	}
-	
 	/**
 	 * Update existing supply order in the database
 	 * @param supplyorder

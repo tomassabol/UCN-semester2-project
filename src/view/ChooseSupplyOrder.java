@@ -33,7 +33,7 @@ public class ChooseSupplyOrder extends JDialog {
 	 * @throws NotFoundException
 	 * @throws SQLException
 	 */
-	public ChooseSupplyOrder(AuthenticationController auth) throws SQLException, NotFoundException {
+	public ChooseSupplyOrder(AuthenticationController auth, SupplyOrder supplyOrder) throws SQLException, NotFoundException {
 		this.auth = auth;
 		this.setTitle("Choose a SupplyOrder...");
 		setModal(true);

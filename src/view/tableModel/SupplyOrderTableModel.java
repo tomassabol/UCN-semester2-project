@@ -22,8 +22,7 @@ import model.SupplyOrder;
         QUANTITY ("Quantity"),
         ORDERDATE("OrderDate"),
         SUPPLIERID("Supplier"),
-        DELIVERED ("Delivered"),
-        ENABLED("Enabled");
+        DELIVERED ("Delivered");
 
  		private String value;
 
@@ -88,10 +87,13 @@ import model.SupplyOrder;
 
      @Override
      public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
+        Column column = this.columns.get(columnIndex);
+        switch (column) {
+        case DELIVERED: return Boolean.class;
             default: return String.class;
         }
      }
+
 
      @Override
      public Object getValueAt(int rowIndex, int columnIndex) {
@@ -102,8 +104,9 @@ import model.SupplyOrder;
             case PRODUCTID: return supplyOrder.getProduct().getName();
             case QUANTITY :return supplyOrder.getQuantity();
             case ORDERDATE:return supplyOrder.getQuantity();
-            case SUPPLIERID: return supplyOrder.getSupplier();
+            case SUPPLIERID: return supplyOrder.getSupplier().getName();
             case DELIVERED: return supplyOrder.getIsDelivered();
+            
             //enabled
             default: return "Error retrieving column name";
      	}
