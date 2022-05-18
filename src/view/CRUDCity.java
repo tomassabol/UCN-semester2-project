@@ -218,7 +218,7 @@ public class CRUDCity extends JPanel {
 				int row = tableMain.getSelectedRow();
 				tableModel.getObj(row);
 				btnView.setEnabled(true);
-				btnEdit.setEnabled(true);
+				btnEdit.setEnabled(false);
 				btnRemove.setEnabled(true);
 			}});
 		
