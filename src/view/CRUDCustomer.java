@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JPanel;
 
 import controller.AuthenticationController;
@@ -98,6 +100,8 @@ public class CRUDCustomer extends JPanel {
 			
 		// ***** button: Add customer  *****
 		btnAddCustomer = new JButton("Add Customer");
+		btnAddCustomer.setForeground(new Color(255, 255, 255));
+		btnAddCustomer.setBackground(new Color(143,108,175));
 		GridBagConstraints gbc_btnAddCustomer = new GridBagConstraints();
 		gbc_btnAddCustomer.insets = new Insets(0, 0, 5, 0);
 		gbc_btnAddCustomer.gridx = 2;

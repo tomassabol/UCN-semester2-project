@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -136,6 +137,8 @@ public class CRUDOrders extends JFrame {
 		
 		// ***** button: Add order *****
 		btnAddOrder = new JButton("Add a new order");
+		btnAddOrder.setForeground(new Color(255,255,255));
+		btnAddOrder.setBackground(new Color(143,108,175));
 		GridBagConstraints gbc_btnAddCity = new GridBagConstraints();
 		gbc_btnAddCity.insets = new Insets(0, 0, 5, 0);
 		gbc_btnAddCity.gridx = 2;

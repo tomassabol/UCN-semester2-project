@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JPanel;
 import controller.AuthenticationController;
 import controller.CityController;
@@ -98,6 +100,8 @@ public class CRUDCity extends JPanel {
 			
 		// ***** button: Add city *****
 		btnAddCity = new JButton("Add a new city");
+		btnAddCity.setForeground(new Color(255,255,255));
+		btnAddCity.setBackground(new Color(143,108,175));
 		GridBagConstraints gbc_btnAddCity = new GridBagConstraints();
 		gbc_btnAddCity.insets = new Insets(0, 0, 5, 0);
 		gbc_btnAddCity.gridx = 2;

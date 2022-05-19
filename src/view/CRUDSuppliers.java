@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -95,6 +96,8 @@ public class CRUDSuppliers extends JPanel{
 
  		// ***** button: Add supplier  *****
  		btnAddSupplier = new JButton("Add supplier");
+		btnAddSupplier.setForeground(new Color(255,255,255));
+		btnAddSupplier.setBackground(new Color(143,108,175));
  		GridBagConstraints gbc_btnAddSupplier = new GridBagConstraints();
  		gbc_btnAddSupplier.insets = new Insets(0, 0, 5, 0);
  		gbc_btnAddSupplier.gridx = 2;

@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -23,8 +24,6 @@ import exceptions.NotFoundException;
 import model.Customer;
 import model.Order;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
 
@@ -66,6 +65,8 @@ public class Dashboard extends JFrame {
 	private Customer customer;
 	private OrderController orderCtrl;
 	private Order order;
+	private Color white;
+	private Color purple;
 	
 	/**
 	 * Create the frame.
@@ -74,6 +75,9 @@ public class Dashboard extends JFrame {
 	public Dashboard(AuthenticationController authentication) throws SQLException {
 		auth = authentication;
 		orderCtrl = new OrderController();
+		
+		white = new Color(255,255,255);
+		purple = new Color(143,108,175);
 
 		//Window
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -115,6 +119,8 @@ public class Dashboard extends JFrame {
 		topPanel.add(btnReportBug, gbc_btnReportBug);
 		
 		btnLogOut = new JButton("Log out");
+		//btnLogOut.setForeground(white);
+		//btnLogOut.setBackground(purple);
 		btnLogOut.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_btnLogOut = new GridBagConstraints();
 		gbc_btnLogOut.gridx = 3;
@@ -151,42 +157,44 @@ public class Dashboard extends JFrame {
 		tabsPane.addTab("Orders", null, orderPanel, null);
 		GridBagLayout gbl_orderPanel = new GridBagLayout();
 		gbl_orderPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_orderPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_orderPanel.rowHeights = new int[]{41, 0, 0, 0, 0, 0, 0};
 		gbl_orderPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_orderPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_orderPanel.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		orderPanel.setLayout(gbl_orderPanel);
+		///////////////////////////////////////////////////////////////////////
+		
+		lblCreateOrder = new JLabel();
+		ImageIcon createOrderIcon = new ImageIcon("images/CreateOrder.png");
 		
 		btnChooseCustomer = new JButton("Choose customer");
 		btnChooseCustomer.setFont(new Font("Open Sans", Font.PLAIN, 10));
+		btnChooseCustomer.setForeground(white);
+		btnChooseCustomer.setBackground(purple);
 		GridBagConstraints gbc_btnChooseCustomer = new GridBagConstraints();
-		gbc_btnChooseCustomer.gridwidth = 5;
-		gbc_btnChooseCustomer.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnChooseCustomer.insets = new Insets(0, 0, 5, 0);
-		gbc_btnChooseCustomer.gridx = 1;
-		gbc_btnChooseCustomer.gridy = 1;
+		gbc_btnChooseCustomer.gridwidth = 3;
+		gbc_btnChooseCustomer.fill = GridBagConstraints.BOTH;
+		gbc_btnChooseCustomer.insets = new Insets(0, 0, 5, 5);
+		gbc_btnChooseCustomer.gridx = 2;
+		gbc_btnChooseCustomer.gridy = 0;
 		orderPanel.add(btnChooseCustomer, gbc_btnChooseCustomer);
 		
 		txtCustomerEmail = new JTextField();
 		txtCustomerEmail.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		//txtCustomerEmail.setText("Customer email");
 		GridBagConstraints gbc_txtCustomerEmail = new GridBagConstraints();
-		gbc_txtCustomerEmail.gridwidth = 5;
+		gbc_txtCustomerEmail.gridwidth = 3;
 		gbc_txtCustomerEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_txtCustomerEmail.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtCustomerEmail.gridx = 1;
-		gbc_txtCustomerEmail.gridy = 2;
+		gbc_txtCustomerEmail.gridx = 2;
+		gbc_txtCustomerEmail.gridy = 1;
 		orderPanel.add(txtCustomerEmail, gbc_txtCustomerEmail);
 		txtCustomerEmail.setColumns(10);
-		///////////////////////////////////////////////////////////////////////
-		
-		lblCreateOrder = new JLabel();
-		ImageIcon createOrderIcon = new ImageIcon("images/CreateOrder.png");
 		lblCreateOrder.setIcon(createOrderIcon);
 		lblCreateOrder.setFont(new Font("Open Sans", Font.PLAIN, 10));
 		GridBagConstraints gbc_lblCreateOrder = new GridBagConstraints();
 		gbc_lblCreateOrder.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCreateOrder.gridx = 1;
-		gbc_lblCreateOrder.gridy = 4;
+		gbc_lblCreateOrder.gridy = 3;
 		orderPanel.add(lblCreateOrder, gbc_lblCreateOrder);
 		
 		lblAllOrders = new JLabel();
@@ -195,7 +203,7 @@ public class Dashboard extends JFrame {
 		GridBagConstraints gbc_lblAllOrders = new GridBagConstraints();
 		gbc_lblAllOrders.insets = new Insets(0, 0, 5, 5);
 		gbc_lblAllOrders.gridx = 5;
-		gbc_lblAllOrders.gridy = 4;
+		gbc_lblAllOrders.gridy = 3;
 		orderPanel.add(lblAllOrders, gbc_lblAllOrders);
 		
 		lblOrders = new JLabel();
@@ -205,7 +213,7 @@ public class Dashboard extends JFrame {
 		GridBagConstraints gbc_lblOrders = new GridBagConstraints();
 		gbc_lblOrders.insets = new Insets(0, 0, 5, 5);
 		gbc_lblOrders.gridx = 3;
-		gbc_lblOrders.gridy = 4;
+		gbc_lblOrders.gridy = 3;
 		orderPanel.add(lblOrders, gbc_lblOrders);
 		
 		btnCreateOrder = new JButton("Create Order");
@@ -213,7 +221,7 @@ public class Dashboard extends JFrame {
 		GridBagConstraints gbc_btnCreateOrder = new GridBagConstraints();
 		gbc_btnCreateOrder.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCreateOrder.gridx = 1;
-		gbc_btnCreateOrder.gridy = 5;
+		gbc_btnCreateOrder.gridy = 4;
 		orderPanel.add(btnCreateOrder, gbc_btnCreateOrder);
 		
 		btnShowCustomerOrders = new JButton("Show Customer Orders");
@@ -221,7 +229,7 @@ public class Dashboard extends JFrame {
 		GridBagConstraints gbc_btnShowCustomerOrders = new GridBagConstraints();
 		gbc_btnShowCustomerOrders.insets = new Insets(0, 0, 5, 5);
 		gbc_btnShowCustomerOrders.gridx = 3;
-		gbc_btnShowCustomerOrders.gridy = 5;
+		gbc_btnShowCustomerOrders.gridy = 4;
 		orderPanel.add(btnShowCustomerOrders, gbc_btnShowCustomerOrders);
 		
 		btnShowAllOrders = new JButton("Show All Orders");
@@ -229,7 +237,7 @@ public class Dashboard extends JFrame {
 		GridBagConstraints gbc_btnShowAllOrders = new GridBagConstraints();
 		gbc_btnShowAllOrders.insets = new Insets(0, 0, 5, 5);
 		gbc_btnShowAllOrders.gridx = 5;
-		gbc_btnShowAllOrders.gridy = 5;
+		gbc_btnShowAllOrders.gridy = 4;
 		orderPanel.add(btnShowAllOrders, gbc_btnShowAllOrders);
 
 	}

@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JDialog;
@@ -70,7 +71,7 @@ public class CityUI extends JDialog {
 		gbl_contentPane.columnWidths = new int[]{208, 208, 0};
 		gbl_contentPane.rowHeights = new int[]{19, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblId = new JLabel("Id");
@@ -128,9 +129,11 @@ public class CityUI extends JDialog {
 		contentPane.add(txtZipcode, gbc_txtZipcode);
 				
 		btnSubmit = new JButton("Submit");
+		btnSubmit.setForeground(new Color(255,255,255));
+		btnSubmit.setBackground(new Color(183,26,134,255));
 		GridBagConstraints gbc_btnOk = new GridBagConstraints();
 		gbc_btnOk.insets = new Insets(0, 0, 0, 5);
-		gbc_btnOk.anchor = GridBagConstraints.EAST;
+		gbc_btnOk.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_btnOk.gridx = 1;
 		gbc_btnOk.gridy = 5;
 		contentPane.add(btnSubmit, gbc_btnOk);

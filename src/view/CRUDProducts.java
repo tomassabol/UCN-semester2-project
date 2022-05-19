@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JPanel;
 
 import controller.AuthenticationController;
@@ -103,6 +105,8 @@ public class CRUDProducts extends JPanel {
 			
 		// ***** button: Add product  *****
 		btnAddItem = new JButton("Add Product");
+		btnAddItem.setForeground(new Color(255,255,255));
+		btnAddItem.setBackground(new Color(143,108,175));
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton.gridx = 2;

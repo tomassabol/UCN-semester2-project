@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JPanel;
 
 import controller.AuthenticationController;
@@ -102,6 +104,8 @@ public class CRUDSupplyOrder extends JPanel {
 
  		// ***** button: Add SupplyOrder  *****
  		btnAddSupplyOrder = new JButton("Add supply order");
+		btnAddSupplyOrder.setForeground(new Color(255,255,255));
+		btnAddSupplyOrder.setBackground(new Color(143,108,175));
  		GridBagConstraints gbc_btnAddSupplyOrder = new GridBagConstraints();
  		gbc_btnAddSupplyOrder.insets = new Insets(0, 0, 5, 0);
  		gbc_btnAddSupplyOrder.gridx = 2;
@@ -168,6 +172,8 @@ public class CRUDSupplyOrder extends JPanel {
 		
 		// ***** Put into stock button *****
 		btnStock = new JButton();
+		btnStock.setForeground(new Color(255,255,255));
+		btnStock.setBackground(new Color(183,26,134,255));
 		GridBagConstraints gbc_btnStock = new GridBagConstraints();
 		gbc_btnStock.anchor = GridBagConstraints.EAST;
 		gbc_btnStock.gridx = 3;
@@ -249,7 +255,7 @@ public class CRUDSupplyOrder extends JPanel {
  				btnView.setEnabled(true);
  				btnEdit.setEnabled(true);
  				btnStock.setEnabled(true);
- 				btnDelete.setEnabled(false);
+ 				btnDelete.setEnabled(true);
  			}
  		});
 
@@ -315,6 +321,16 @@ public class CRUDSupplyOrder extends JPanel {
                 Messages.error(this, "There was an error connecting to the database");
              }
  		});
+
+		btnDelete.addActionListener(e -> {
+			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
+			SupplyOrder supplyOrder = tableModel.getObj(row);
+			try {
+				supplyOrderCtrl.disableSupplyOrder(supplyOrder);
+			} catch (SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			}
+		});
  		
  		btnStock.addActionListener(e -> {
  			//First get selected supplyOrder

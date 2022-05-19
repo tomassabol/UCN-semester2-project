@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -7,7 +8,6 @@ import java.sql.SQLException;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 
@@ -22,7 +22,6 @@ public class ChooseSupplier extends JDialog{
 	private final JPanel contentPane;
 	private CRUDSuppliers CRUDPanel;
 	private JButtonPrimary btnChoose;
-	private JSpinner spinner;
 	
 	private Supplier selectedSupplier = null;
 	
@@ -45,9 +44,9 @@ public class ChooseSupplier extends JDialog{
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0};
-		gbl_contentPane.rowHeights = new int[]{210, 25, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{349, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		CRUDPanel = new CRUDSuppliers(this.auth);
@@ -72,9 +71,9 @@ public class ChooseSupplier extends JDialog{
 		
 		panel = new JPanel();
 		GridBagConstraints gbc_panel1 = new GridBagConstraints();
-		gbc_panel1.fill = GridBagConstraints.BOTH;
+		gbc_panel1.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_panel1.gridx = 0;
-		gbc_panel1.gridy = 2;
+		gbc_panel1.gridy = 1;
 		contentPane.add(panel, gbc_panel1);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -84,6 +83,8 @@ public class ChooseSupplier extends JDialog{
 		panel.setLayout(gbl_panel);
 		
 		btnChoose = new JButtonPrimary("Choose...");
+		btnChoose.setForeground(new Color(255,255,255));
+		btnChoose.setBackground(new Color(183,26,134,255));
 		GridBagConstraints gbc_btnChoose = new GridBagConstraints();
 		gbc_btnChoose.gridx = 18;
 		gbc_btnChoose.gridy = 0;

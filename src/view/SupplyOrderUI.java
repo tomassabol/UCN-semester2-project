@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JDialog;
@@ -18,17 +19,14 @@ import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
 
-import javax.lang.model.element.QualifiedNameable;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import javax.swing.JRadioButton;
 
 import model.Supplier;
 
-import javax.swing.JRadioButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class SupplyOrderUI extends JDialog {
     public enum Mode {
@@ -95,9 +93,9 @@ public class SupplyOrderUI extends JDialog {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{208, 208, 0};
-		gbl_contentPane.rowHeights = new int[]{19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblProduct = new JLabel("Id");
@@ -175,6 +173,8 @@ public class SupplyOrderUI extends JDialog {
 		contentPane.add(textSupplierId, gbc_textSupplierId);
 		
 		btnSearch = new JButton("Search");
+		btnSearch.setForeground(new Color(255,255,255));
+		btnSearch.setBackground(new Color(143,108,175));
 		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
 		gbc_btnSearch.anchor = GridBagConstraints.WEST;
 		gbc_btnSearch.insets = new Insets(0, 0, 5, 0);
@@ -201,6 +201,8 @@ public class SupplyOrderUI extends JDialog {
 		contentPane.add(textProduct, gbc_textProduct);
 		
 		btnSearch2 = new JButton("Search");
+		btnSearch2.setForeground(new Color(255,255,255));
+		btnSearch2.setBackground(new Color(143,108,175));
 		GridBagConstraints gbc_btnSearch2 = new GridBagConstraints();
 		gbc_btnSearch2.anchor = GridBagConstraints.WEST;
 		gbc_btnSearch2.insets = new Insets(0, 0, 5, 0);
@@ -238,9 +240,10 @@ public class SupplyOrderUI extends JDialog {
 		panelDelivered.add(rdbtnDelivered, gbc_rdbtnDelivered);
 		
 		btnSubmit = new JButton("Submit");
+		btnSubmit.setForeground(new Color(255,255,255));
+		btnSubmit.setBackground(new Color(183,26,134,255));
 		GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
-		gbc_btnSubmit.anchor = GridBagConstraints.EAST;
-		gbc_btnSubmit.insets = new Insets(0, 0, 5, 0);
+		gbc_btnSubmit.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_btnSubmit.gridx = 1;
 		gbc_btnSubmit.gridy = 12;
 		contentPane.add(btnSubmit, gbc_btnSubmit);

@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -75,7 +76,7 @@ public class SupplierUI extends JDialog{
 		gbl_contentPane.columnWidths = new int[]{208, 208, 0};
 		gbl_contentPane.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblId = new JLabel("Id");
@@ -166,6 +167,8 @@ public class SupplierUI extends JDialog{
 		contentPane.add(txtZip, gbc_txtZip);
 		
 		btnSelect = new JButton("Select");
+		btnSelect.setForeground(new Color(255,255,255));
+		btnSelect.setBackground(new Color(143,108,175));
 		GridBagConstraints gbc_btnSelect = new GridBagConstraints();
 		gbc_btnSelect.anchor = GridBagConstraints.WEST;
 		gbc_btnSelect.insets = new Insets(0, 0, 5, 0);
@@ -191,8 +194,10 @@ public class SupplierUI extends JDialog{
 		contentPane.add(txtAddress, gbc_txtAddress);
 		
 		btnSubmit = new JButton("Submit");
+		btnSubmit.setForeground(new Color(255,255,255));
+		btnSubmit.setBackground(new Color(183,26,134,255));
 		GridBagConstraints gbc_btnOk = new GridBagConstraints();
-		gbc_btnOk.anchor = GridBagConstraints.EAST;
+		gbc_btnOk.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_btnOk.gridx = 1;
 		gbc_btnOk.gridy = 11;
 		contentPane.add(btnSubmit, gbc_btnOk);

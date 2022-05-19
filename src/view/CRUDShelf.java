@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JPanel;
 
 import controller.AuthenticationController;
@@ -114,6 +116,8 @@ public class CRUDShelf extends JPanel {
 
  		// ***** button: Add department  *****
  		btnAddDShelf = new JButton("Add Shelf");
+		btnAddDShelf.setForeground(new Color(255,255,255));
+		btnAddDShelf.setBackground(new Color(143,108,175));
  		GridBagConstraints gbc_btnAddDShelf = new GridBagConstraints();
  		gbc_btnAddDShelf.insets = new Insets(0, 0, 5, 0);
  		gbc_btnAddDShelf.gridx = 2;

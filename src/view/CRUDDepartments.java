@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JPanel;
 
 import controller.AuthenticationController;
@@ -98,6 +100,8 @@ public class CRUDDepartments extends JPanel {
 
  		// ***** button: Add department  *****
  		btnAddDepartment = new JButton("Add department");
+		btnAddDepartment.setForeground(new Color(255,255,255));
+		btnAddDepartment.setBackground(new Color(143,108,175));
  		GridBagConstraints gbc_btnAddDepartment = new GridBagConstraints();
  		gbc_btnAddDepartment.insets = new Insets(0, 0, 5, 0);
  		gbc_btnAddDepartment.gridx = 2;

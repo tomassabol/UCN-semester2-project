@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -43,8 +42,6 @@ import model.Product;
 import view.tableModel.CreateOrderTableModel;
 import view.tableModel.CreateOrderTableModel.Column;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Font;
 
 public class OrderUI extends JFrame {
@@ -69,7 +66,7 @@ public class OrderUI extends JFrame {
 	private TableRowSorter<TableModel> rowSorter;
 	private CreateOrderTableModel tableModel;
 	private AuthenticationController auth;
-	private Customer customer;
+	Customer customer;
 	private Order order;
 	private OrderController orderCtrl;
 	private ItemController itemCtrl;
@@ -175,6 +172,8 @@ public class OrderUI extends JFrame {
 					
 		// ***** button: Add item  *****
 		btnAddItem = new JButton("Add item");
+		btnAddItem.setForeground(new Color(255,255,255));
+		btnAddItem.setBackground(new Color(143,108,175));
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton.gridx = 4;
@@ -277,6 +276,8 @@ public class OrderUI extends JFrame {
 		
 		// ***** Create order button *****
 		btnCreateOrder = new JButton();
+		btnCreateOrder.setForeground(new Color(255,255,255));
+		btnCreateOrder.setBackground(new Color(183,26,134,255));
 		switch(mode) {
 		case CREATE: btnCreateOrder.setText("Create order"); break;
 		case VIEW: btnCreateOrder.setText("View Details");

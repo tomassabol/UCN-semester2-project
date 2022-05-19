@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JDialog;
@@ -232,6 +233,8 @@ public class ProductUI extends JDialog {
 		
 		
 		btnSubmit = new JButton("Submit");
+		btnSubmit.setForeground(new Color(255,255,255));
+		btnSubmit.setBackground(new Color(183,26,134,255));
 		GridBagConstraints gbc_btnOk = new GridBagConstraints();
 		gbc_btnOk.anchor = GridBagConstraints.EAST;
 		gbc_btnOk.gridx = 1;

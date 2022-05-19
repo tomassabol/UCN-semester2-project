@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JPanel;
 
 import controller.AuthenticationController;
@@ -101,6 +103,8 @@ public class CRUDEmployees extends JPanel {
 
  		// ***** button: Add employee  *****
  		btnAddEmployee = new JButton("Add employee");
+		btnAddEmployee.setForeground(new Color(255,255,255));
+		btnAddEmployee.setBackground(new Color(143,108,175));
  		GridBagConstraints gbc_btnAddEmployee = new GridBagConstraints();
  		gbc_btnAddEmployee.insets = new Insets(0, 0, 5, 0);
  		gbc_btnAddEmployee.gridx = 2;
