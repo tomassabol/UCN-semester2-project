@@ -262,7 +262,7 @@ public class CRUDSupplyOrder extends JPanel {
                      try {
 						supplyOrderCtrl.disableSupplyOrder(supplyOrder);
                      } catch (SQLException e1) {
-						e1.printStackTrace();
+                    	 Messages.error(this, "There was an error connecting to the database");
                      } 
                  }
 
@@ -280,7 +280,7 @@ public class CRUDSupplyOrder extends JPanel {
                  frame = new SupplyOrderUI(auth, supplyOrder, SupplyOrderUI.Mode.VIEW);
                  frame.setVisible(true);
              } catch (SQLException e1) {
-                 e1.printStackTrace();
+            	 Messages.error(this, "There was an error connecting to the database");
              }
  		});
 
@@ -293,7 +293,7 @@ public class CRUDSupplyOrder extends JPanel {
                  frame = new SupplyOrderUI(auth, supplyOrder, SupplyOrderUI.Mode.EDIT);
                  frame.setVisible(true);
              } catch (SQLException e1) {
-                 e1.printStackTrace();
+            	 Messages.error(this, "There was an error connecting to the database");
              }
  			tableModel.fireTableRowsUpdated(row, row);
  			// Refresh selection (e.g. in case sell price is now set to nothing)
@@ -312,7 +312,7 @@ public class CRUDSupplyOrder extends JPanel {
 					 setTableModel(tableModel);
                  }
              } catch (SQLException e1) {
-                 e1.printStackTrace();
+                Messages.error(this, "There was an error connecting to the database");
              }
  		});
  		
@@ -334,6 +334,7 @@ public class CRUDSupplyOrder extends JPanel {
  				if(frame.getSelectedShelf() != null) {
  					try {
 						supplyOrderCtrl.addToStock(supplyOrder, frame.getSelectedShelf());
+						Messages.info(this, "The supply order was successfully stocked!");
 					} catch (SQLException e1) {
 						Messages.error(this, "There was an error connecting to the database");
 					}

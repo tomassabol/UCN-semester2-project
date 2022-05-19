@@ -54,18 +54,18 @@ public class Dashboard extends JFrame {
 	private JButton btnLogOut;
 	private JButton btnChooseCustomer;
 	private JTextField txtCustomerEmail;
-
-	// Fields for classes created by us
-	private AuthenticationController auth;
-	private Customer customer;
-	private OrderController orderCtrl;
-	private Order order;
 	private JLabel lblAllOrders;
 	private JButton btnShowAllOrders;
 	private JLabel lblOrders;
 	private JButton btnReportBug;
 	private JButton btnSupplyOrder;
 	private JButton btnShelf;
+
+	// Fields for classes created by us
+	private AuthenticationController auth;
+	private Customer customer;
+	private OrderController orderCtrl;
+	private Order order;
 	
 	/**
 	 * Create the frame.
@@ -84,6 +84,7 @@ public class Dashboard extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
+		setTitle("BigBike");
 		// **Top panel (greeting & log out)
 		JPanel topPanel = new JPanel();
 		contentPane.add(topPanel, BorderLayout.NORTH);
@@ -434,15 +435,13 @@ public class Dashboard extends JFrame {
 	public void addEventHandlers() {
 		
 		//Log out button
-		btnLogOut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(Messages.confirm(contentPane, "Are you sure you want to log out?", "Log out")) {
-					auth.logout();
-					Login frame = new Login();
-					frame.setVisible(true);
-			    	// free up memory by destroying the current dashboard
-			    	Dashboard.this.dispose();
-				}
+		btnLogOut.addActionListener(e -> {
+			if(Messages.confirm(contentPane, "Are you sure you want to log out?", "Log out")) {
+				auth.logout();
+				Login frame = new Login();
+				frame.setVisible(true);
+				// free up memory by destroying the current dashboard
+				Dashboard.this.dispose();
 			}
 		});
 
@@ -458,11 +457,9 @@ public class Dashboard extends JFrame {
 					txtCustomerEmail.setText(customer.getId() + " " + customer.getName());					
 				}
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				Messages.error(this, "There was an error connecting to the database");
 			} catch (NotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				Messages.error(this, "The window could not be opened, please try again, or report the issue");
 			}
 		});
 		
@@ -477,7 +474,7 @@ public class Dashboard extends JFrame {
 				} catch (SQLException e1) {
 					Messages.error(contentPane, "There was an error connecting to the database");
 				} catch (NotFoundException e1) {
-					Messages.error(contentPane, "The order was not created for some reason");
+					Messages.error(contentPane, "The order was not created");
 				}
 				OrderUI frame = new OrderUI(auth, customer, order, OrderUI.Mode.CREATE);
 				frame.setVisible(true);
@@ -504,8 +501,10 @@ public class Dashboard extends JFrame {
 			try {
 				frame = new ManageDepartments(auth);
 				frame.setVisible(true);
-			} catch (SQLException | NotFoundException e1) {
-				e1.printStackTrace();
+			} catch (SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			} catch (NotFoundException e1) {
+				Messages.error(this, "The window could not be opened, please try again, or report the issue");
 			}
 		});
 
@@ -514,8 +513,10 @@ public class Dashboard extends JFrame {
 			try {
 				frame = new ManageProducts(auth);
 				frame.setVisible(true);
-			} catch (SQLException | NotFoundException e1) {
-				e1.printStackTrace();
+			} catch (SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			} catch (NotFoundException e1) {
+				Messages.error(this, "The window could not be opened, please try again, or report the issue");
 			}
 		});
 
@@ -524,8 +525,10 @@ public class Dashboard extends JFrame {
 			try {
 				frame = new ManageCities(auth);
 				frame.setVisible(true);
-			} catch (SQLException | NotFoundException e1) {
-				e1.printStackTrace();
+			} catch (SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			} catch (NotFoundException e1) {
+				Messages.error(this, "The window could not be opened, please try again, or report the issue");
 			}
 		
 		});
@@ -535,8 +538,10 @@ public class Dashboard extends JFrame {
 			try {
 				frame = new ManageCustomer(auth);
 				frame.setVisible(true);
-			} catch (SQLException | NotFoundException e1) {
-				e1.printStackTrace();
+			} catch (SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			} catch (NotFoundException e1) {
+				Messages.error(this, "The window could not be opened, please try again, or report the issue");
 			}
 		});
 
@@ -545,8 +550,10 @@ public class Dashboard extends JFrame {
 			try {
 				frame = new ManageEmployees(auth);
 				frame.setVisible(true);
-			} catch (SQLException | NotFoundException e1) {
-				e1.printStackTrace();
+			} catch (SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			} catch (NotFoundException e1) {
+				Messages.error(this, "The window could not be opened, please try again, or report the issue");
 			}
 		});
 		
@@ -555,8 +562,10 @@ public class Dashboard extends JFrame {
 			try {
 				frame = new ManageSupplier(auth);
 				frame.setVisible(true);
-			} catch(SQLException | NotFoundException e1) {
-				e1.printStackTrace();
+			} catch(SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			} catch	(NotFoundException e1) {
+				Messages.error(this, "The window could not be opened, please try again, or report the issue");
 			}
 		});
 
@@ -571,9 +580,10 @@ public class Dashboard extends JFrame {
 			try {
 				frame = new ManageShelf(auth);
 				frame.setVisible(true);
-			} catch (SQLException |NotFoundException e1) {
-				
-				e1.printStackTrace();
+			} catch (SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			}catch (NotFoundException e1) {
+				Messages.error(this, "The window could not be opened, please try again, or report the issue");
 			}
 			
 		});
@@ -584,8 +594,10 @@ public class Dashboard extends JFrame {
 				frame = new ManageSupplyOrder(auth);
 				frame.setVisible(true);
 				
-			}catch(SQLException|NotFoundException e1){
-				e1.printStackTrace();
+			}catch(SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			} catch (NotFoundException e1){
+				Messages.error(this, "The window could not be opened, please try again, or report the issue");
 			}
 		});
 	}
