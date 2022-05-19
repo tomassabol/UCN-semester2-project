@@ -406,7 +406,7 @@ public class ProductUI extends JDialog {
                     try {
                         productCtrl.updateProduct(product, name, description, productType, price, discount, active);
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    	Messages.error(this, "There was an error connecting to the database");
                     }
 
 				} else if (mode == Mode.CREATE) {
@@ -415,7 +415,7 @@ public class ProductUI extends JDialog {
                         Product product = productCtrl.createProduct(name, description, productType, price, discount, active);
 						this.product = product;
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    	Messages.error(this, "There was an error connecting to the database");
                     };
 				}
 

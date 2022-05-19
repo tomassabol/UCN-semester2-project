@@ -328,7 +328,7 @@ public class CRUDSupplyOrder extends JPanel {
 				} catch (SQLException e1) {
 					Messages.error(this, "There was an error connecting to the database");
 				} catch (NotFoundException e1) {
-					Messages.error(this, "Some error occured");
+					Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 				}
  				frame.setVisible(true);
  				if(frame.getSelectedShelf() != null) {

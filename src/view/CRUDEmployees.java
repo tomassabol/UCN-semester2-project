@@ -236,7 +236,7 @@ public class CRUDEmployees extends JPanel {
 					tableModel.remove(row);
 					setTableModel(tableModel);
 				} catch (SQLException e1) {
-					Messages.error(this, "Server error occured");
+					Messages.error(this, "There was an error connecting to the database");
 				}
 			}
 
@@ -251,10 +251,9 @@ public class CRUDEmployees extends JPanel {
                  frame = new EmployeeUI(auth, employee, EmployeeUI.Mode.VIEW);
                  frame.setVisible(true);
              } catch (SQLException e1) {
-                 e1.printStackTrace();
+            	 Messages.error(this, "There was an error connecting to the database");
              } catch (NotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+            	 Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
  		});
 
@@ -267,10 +266,9 @@ public class CRUDEmployees extends JPanel {
                  frame = new EmployeeUI(auth, employee, EmployeeUI.Mode.EDIT);
                  frame.setVisible(true);
              } catch (SQLException e1) {
-                 e1.printStackTrace();
+            	 Messages.error(this, "There was an error connecting to the database");
              } catch (NotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+            	 Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
  			tableModel.fireTableRowsUpdated(row, row);
  			// Refresh selection (e.g. in case sell price is now set to nothing)
@@ -289,10 +287,9 @@ public class CRUDEmployees extends JPanel {
 					 setTableModel(tableModel);
                  }
              } catch (SQLException e1) {
-                 e1.printStackTrace();
+            	 Messages.error(this, "There was an error connecting to the database");
              } catch (NotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+            	 Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
  		});
 
