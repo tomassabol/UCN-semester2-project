@@ -2,13 +2,16 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import javax.mail.MessagingException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,6 +31,7 @@ import controller.AuthenticationController;
 import controller.OrderController;
 import exceptions.NotFoundException;
 import model.Customer;
+import model.Mail;
 import model.Order;
 import view.JLink.COLORS;
 import view.tableModel.OrdersTableModel;
@@ -54,6 +58,7 @@ public class CRUDOrders extends JFrame {
 	private OrderController orderCtrl;
 	private Customer customer;
 	private Mode mode;
+	private JButton btnSendInvoice;
 
 
 
@@ -160,15 +165,15 @@ public class CRUDOrders extends JFrame {
 		getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 		GridBagLayout gbl_bottomPanel = new GridBagLayout();
 		gbl_bottomPanel.columnWidths = new int[]{271, 0, 0, 0, 0};
-		gbl_bottomPanel.rowHeights = new int[]{21, 0};
+		gbl_bottomPanel.rowHeights = new int[]{21, 0, 0};
 		gbl_bottomPanel.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_bottomPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_bottomPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		bottomPanel.setLayout(gbl_bottomPanel);
 		
 		// ***** View button *****
 		btnView = new JLink("View", COLORS.GREEN);
 		GridBagConstraints gbc_btnView = new GridBagConstraints();
-		gbc_btnView.insets = new Insets(0, 0, 0, 5);
+		gbc_btnView.insets = new Insets(0, 0, 5, 5);
 		gbc_btnView.gridx = 1;
 		gbc_btnView.gridy = 0;
 		bottomPanel.add(btnView, gbc_btnView);
@@ -176,6 +181,7 @@ public class CRUDOrders extends JFrame {
 		// ***** Remove button *****
 		btnRemove = new JLink("Disable", COLORS.RED);
 		GridBagConstraints gbc_btnRemove = new GridBagConstraints();
+		gbc_btnRemove.insets = new Insets(0, 0, 5, 0);
 		gbc_btnRemove.gridx = 3;
 		gbc_btnRemove.gridy = 0;
 		bottomPanel.add(btnRemove, gbc_btnRemove);
@@ -183,6 +189,15 @@ public class CRUDOrders extends JFrame {
 		// By default: all selection buttons disabled
 		btnView.setEnabled(false);
 		btnRemove.setEnabled(false);
+		
+		btnSendInvoice = new JButton("Send Invoice");
+		btnSendInvoice.setFont(new Font("Open Sans", Font.PLAIN, 12));
+		btnSendInvoice.setForeground(new Color(255,255,255));
+		btnSendInvoice.setBackground(new Color(183,26,134,255));
+		GridBagConstraints gbc_btnSendInvoice = new GridBagConstraints();
+		gbc_btnSendInvoice.gridx = 3;
+		gbc_btnSendInvoice.gridy = 1;
+		bottomPanel.add(btnSendInvoice, gbc_btnSendInvoice);
 		
 		// Add filtering
 		rowSorter = new TableRowSorter<TableModel>(tableModel);
@@ -295,6 +310,19 @@ public class CRUDOrders extends JFrame {
 					frame.setVisible(true);
 					break;
 				}
+			}
+		});
+
+		btnSendInvoice.addActionListener(e -> {
+			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
+			Order order = tableModel.getObj(row);
+            try {
+				new Mail().sendInvoice(order);
+				Messages.info(this, "The invoice has been sent to the customer");
+			} catch (UnknownHostException | MessagingException e1) {
+				Messages.error(this, "Error occured. Please try again later");
+			} catch (SQLException | NotFoundException e1) {
+				Messages.error(this, "Server error occured. Please try again later");
 			}
 		});
 		
