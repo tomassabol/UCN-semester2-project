@@ -33,6 +33,7 @@ import controller.AuthenticationController;
 import controller.ItemController;
 import controller.OrderController;
 import controller.OrderLineController;
+import controller.ShelfController;
 import exceptions.NotEnoughInStockException;
 import exceptions.NotFoundException;
 import model.Customer;
@@ -71,6 +72,7 @@ public class OrderUI extends JFrame {
 	private OrderController orderCtrl;
 	private ItemController itemCtrl;
 	private OrderLineController orderLineCtrl;
+	private ShelfController shelfCtrl;
 	private int availableQuantity;
 	private Mode mode;
 	
@@ -86,19 +88,11 @@ public class OrderUI extends JFrame {
 		
 		try {
 			itemCtrl = new ItemController();
-		} catch (SQLException e2) {
-			Messages.error(this, "There was an error connecting to the database");
-		}
-		
-		try {
 			orderCtrl = new OrderController();
-		} catch (SQLException e1) {
-			Messages.error(this, "There was an error connecting to the database");
-		}
-		
-		try {
 			orderLineCtrl = new OrderLineController();
-		} catch (SQLException e1) {
+			orderLineCtrl = new OrderLineController();
+			shelfCtrl = new ShelfController();
+		} catch (SQLException e2) {
 			Messages.error(this, "There was an error connecting to the database");
 		}
 		
@@ -399,7 +393,20 @@ public class OrderUI extends JFrame {
 			if(quantity < 0) {
 				Messages.error(frame, "You cannot give a negative number as quantity");
 				return;
-			}
+			} else if (product.isActive() == false) {
+				Messages.error(this, "You cannot select disabled product");
+				return;
+			} else {
+			try {
+				if (quantity > shelfCtrl.productQuantityPerDepartment(auth.getLoggedInUser().getDepartment(), product)) {
+					Messages.error(frame, "There is not enouth items in stock");
+					return;
+				}
+			} catch (SQLException e) {
+				Messages.error(frame, "There was an error connecting to the database");
+			} catch (NotFoundException e) {
+				Messages.error(frame, String.format("There is not enough items in stock from %s", product.getName()));
+			}}
 			// add to order
 			try {
 				try {
