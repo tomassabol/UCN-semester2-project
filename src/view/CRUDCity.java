@@ -231,7 +231,7 @@ public class CRUDCity extends JPanel {
                 frame = new CityUI(auth, city, CityUI.Mode.VIEW);
                 frame.setVisible(true);
             } catch (SQLException e1) {
-                e1.printStackTrace();
+            	Messages.error(this, "There was an error connecting to the database");
             }
 		});
 		
@@ -244,7 +244,7 @@ public class CRUDCity extends JPanel {
                 frame = new CityUI(auth, city, CityUI.Mode.EDIT);
                 frame.setVisible(true);
             } catch (SQLException e1) {
-                e1.printStackTrace();
+            	Messages.error(this, "There was an error connecting to the database");
             }
 			tableModel.fireTableRowsUpdated(row, row);
 			tableMain.clearSelection();
@@ -261,7 +261,7 @@ public class CRUDCity extends JPanel {
 					tableModel.remove(row);
 					setTableModel(tableModel);
 				} catch (SQLException e1) {
-					Messages.error(this, "Server error occured");
+					Messages.error(this, "There was an error connecting to the database");
 				}
 			}
 
@@ -278,7 +278,7 @@ public class CRUDCity extends JPanel {
 					setTableModel(tableModel);
                 }
             } catch (SQLException e1) {
-                e1.printStackTrace();
+            	Messages.error(this, "There was an error connecting to the database");
             }
 		});
 		

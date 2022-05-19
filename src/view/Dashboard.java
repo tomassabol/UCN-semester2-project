@@ -459,7 +459,7 @@ public class Dashboard extends JFrame {
 			} catch (SQLException e1) {
 				Messages.error(this, "There was an error connecting to the database");
 			} catch (NotFoundException e1) {
-				Messages.error(this, "The window could not be opened, please try again, or report the issue");
+				Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
 		});
 		
@@ -474,7 +474,7 @@ public class Dashboard extends JFrame {
 				} catch (SQLException e1) {
 					Messages.error(contentPane, "There was an error connecting to the database");
 				} catch (NotFoundException e1) {
-					Messages.error(contentPane, "The order was not created");
+					Messages.error(contentPane, "The was an error creating the order. Please try again or report the issue!");
 				}
 				OrderUI frame = new OrderUI(auth, customer, order, OrderUI.Mode.CREATE);
 				frame.setVisible(true);
@@ -504,7 +504,7 @@ public class Dashboard extends JFrame {
 			} catch (SQLException e1) {
 				Messages.error(this, "There was an error connecting to the database");
 			} catch (NotFoundException e1) {
-				Messages.error(this, "The window could not be opened, please try again, or report the issue");
+				Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
 		});
 
@@ -516,7 +516,7 @@ public class Dashboard extends JFrame {
 			} catch (SQLException e1) {
 				Messages.error(this, "There was an error connecting to the database");
 			} catch (NotFoundException e1) {
-				Messages.error(this, "The window could not be opened, please try again, or report the issue");
+				Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
 		});
 
@@ -528,7 +528,7 @@ public class Dashboard extends JFrame {
 			} catch (SQLException e1) {
 				Messages.error(this, "There was an error connecting to the database");
 			} catch (NotFoundException e1) {
-				Messages.error(this, "The window could not be opened, please try again, or report the issue");
+				Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
 		
 		});
@@ -541,7 +541,7 @@ public class Dashboard extends JFrame {
 			} catch (SQLException e1) {
 				Messages.error(this, "There was an error connecting to the database");
 			} catch (NotFoundException e1) {
-				Messages.error(this, "The window could not be opened, please try again, or report the issue");
+				Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
 		});
 
@@ -553,7 +553,7 @@ public class Dashboard extends JFrame {
 			} catch (SQLException e1) {
 				Messages.error(this, "There was an error connecting to the database");
 			} catch (NotFoundException e1) {
-				Messages.error(this, "The window could not be opened, please try again, or report the issue");
+				Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
 		});
 		
@@ -565,7 +565,7 @@ public class Dashboard extends JFrame {
 			} catch(SQLException e1) {
 				Messages.error(this, "There was an error connecting to the database");
 			} catch	(NotFoundException e1) {
-				Messages.error(this, "The window could not be opened, please try again, or report the issue");
+				Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
 		});
 
@@ -583,7 +583,7 @@ public class Dashboard extends JFrame {
 			} catch (SQLException e1) {
 				Messages.error(this, "There was an error connecting to the database");
 			}catch (NotFoundException e1) {
-				Messages.error(this, "The window could not be opened, please try again, or report the issue");
+				Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
 			
 		});
@@ -597,7 +597,7 @@ public class Dashboard extends JFrame {
 			}catch(SQLException e1) {
 				Messages.error(this, "There was an error connecting to the database");
 			} catch (NotFoundException e1){
-				Messages.error(this, "The window could not be opened, please try again, or report the issue");
+				Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
 		});
 	}

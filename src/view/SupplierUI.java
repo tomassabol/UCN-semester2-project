@@ -341,7 +341,7 @@ public class SupplierUI extends JDialog{
                     try {
                         supplierCtrl.updateSupplier(supplier, name, email, phone, zipCode, address);
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    	Messages.error(this, "There was an error connecting to the database");
                     }
 
 				} else if (mode == Mode.CREATE) {
@@ -350,7 +350,7 @@ public class SupplierUI extends JDialog{
                         Supplier supplier = supplierCtrl.createSupplier(name, email, phone, zipCode, address);
 						this.supplier = supplier;
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    	Messages.error(this, "There was an error connecting to the database");
                     };
 				}
 
@@ -370,8 +370,10 @@ public class SupplierUI extends JDialog{
 					this.zipCode = frame.getSelectedCity();
 					txtZip.setText(zipCode.getZipCode());
 				}
-			} catch (SQLException | NotFoundException e1) {
-				e1.printStackTrace();
+			} catch (SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			} catch (NotFoundException e1) {
+				Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
 		});
 

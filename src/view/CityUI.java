@@ -251,7 +251,7 @@ public class CityUI extends JDialog {
                     try {
                         cityCtrl.updateCity(city, zipcode, name);
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    	Messages.error(this, "There was an error connecting to the database");
                     }
 
 				} else if (mode == Mode.CREATE) {
@@ -260,7 +260,7 @@ public class CityUI extends JDialog {
                         City city = cityCtrl.createCity(zipcode, name);
 						this.city = city;
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    	Messages.error(this, "There was an error connecting to the database");
                     };
 				}
 

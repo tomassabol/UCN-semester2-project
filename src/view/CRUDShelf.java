@@ -248,7 +248,7 @@ public class CRUDShelf extends JPanel {
 					tableModel.remove(row);
 					setTableModel(tableModel);
 				} catch (SQLException e1) {
-					Messages.error(this, "Server error occured");
+					Messages.error(this, "There was an error connecting to the database");
 				}
 			}
 
@@ -263,7 +263,7 @@ public class CRUDShelf extends JPanel {
                  frame = new ShelfUI(auth, shelf, ShelfUI.Mode.VIEW);
                  frame.setVisible(true);
              } catch (SQLException e1) {
-                 e1.printStackTrace();
+            	 Messages.error(this, "There was an error connecting to the database");
              }
  		});
 
@@ -276,7 +276,7 @@ public class CRUDShelf extends JPanel {
                  frame = new ShelfUI(auth, shelf, ShelfUI.Mode.EDIT);
                  frame.setVisible(true);
              } catch (SQLException e1) {
-                 e1.printStackTrace();
+            	 Messages.error(this, "There was an error connecting to the database");
              }
  			tableModel.fireTableRowsUpdated(row, row);
  			// Refresh selection (e.g. in case sell price is now set to nothing)
@@ -295,7 +295,7 @@ public class CRUDShelf extends JPanel {
 					 setTableModel(tableModel);
                  }
              } catch (SQLException e1) {
-                 e1.printStackTrace();
+            	 Messages.error(this, "There was an error connecting to the database");
              }
  		});
 

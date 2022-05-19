@@ -66,7 +66,7 @@ public class CRUDOrders extends JFrame {
 		try {
 			orderCtrl = new OrderController();
 		} catch (SQLException e1) {
-			Messages.error(this, "There was an error with the database");
+			Messages.error(this, "There was an error connecting to the database");
 		}
 		switch(mode) {
 			case CUSTOMER: {
@@ -75,7 +75,7 @@ public class CRUDOrders extends JFrame {
 				} catch (SQLException e) {
 					Messages.error(this, "There was an error connecting to the database");
 				} catch (NotFoundException e) {
-					Messages.error(this, "There was an error finding the choosen customer in the database");
+					Messages.error(this, "There was an error generating the table. Please try again or report the issue!");
 				}
 				break;
 			}
@@ -85,7 +85,7 @@ public class CRUDOrders extends JFrame {
 				} catch (SQLException e) {
 					Messages.error(this, "There was an error connecting to the database");
 				} catch (NotFoundException e) {
-					Messages.error(this, "There was an error finding the customers");
+					Messages.error(this, "There was an error generating the table. Please try again or report the issue!");
 				}
 				break;
 			}
@@ -244,7 +244,7 @@ public class CRUDOrders extends JFrame {
 					tableModel.remove(row);
 					setTableModel(tableModel);
 				} catch (SQLException e1) {
-					Messages.error(this, "Server error occured");
+					Messages.error(this, "There was an error connecting to the database");
 				}
 			}
 
@@ -258,9 +258,9 @@ public class CRUDOrders extends JFrame {
 					try {
 						order = orderCtrl.createOrder(auth.getLoggedInUser(), customer);
 					} catch (SQLException e1) {
-						Messages.error(contentPane, "There was an error connecting to the database");
+						Messages.error(this, "There was an error connecting to the database");
 					} catch (NotFoundException e1) {
-						Messages.error(contentPane, "The order was not created for some reason");
+						Messages.error(this, "There was an error creating the order. Please try again or report the issue!");
 					}
 					OrderUI frame = new OrderUI(auth, customer, order, OrderUI.Mode.CREATE);
 					frame.setVisible(true);
@@ -275,20 +275,18 @@ public class CRUDOrders extends JFrame {
 							customer = frame.getSelectedCustomer();
 						}
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						Messages.error(this, "There was an error connecting to the database");
 					} catch (NotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 					}
 					
 					Order order = null;
 					try {
 						order = orderCtrl.createOrder(auth.getLoggedInUser(), customer);
 					} catch (SQLException e1) {
-						Messages.error(contentPane, "There was an error connecting to the database");
+						Messages.error(this, "There was an error connecting to the database");
 					} catch (NotFoundException e1) {
-						Messages.error(contentPane, "The order was not created for some reason");
+						Messages.error(this, "There was an error creating the order. Please try again or report the issue!");
 					}
 					OrderUI frame = new OrderUI(auth, customer, order, OrderUI.Mode.CREATE);
 					frame.setVisible(true);

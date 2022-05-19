@@ -245,14 +245,18 @@ public class CRUDProducts extends JPanel {
                 if (product.isActive() == false) {
                     try {
                         productCtrl.enableProduct(product);
-                    } catch (SQLException | NotFoundException e1) {
-                        e1.printStackTrace();
+                    } catch (SQLException e1) {
+                    	Messages.error(this, "There was an error connecting to the database");
+                    } catch (NotFoundException e1) {
+                        Messages.error(this, "There was an error enabling the product. Please try again or report the issue!");
                     }
                 } else {
                     try {
                         productCtrl.disableProduct(product);
-                    } catch (SQLException | NotFoundException e1) {
-                        e1.printStackTrace();
+                    } catch (SQLException e1) {
+                    	Messages.error(this, "There was an error connecting to the database");
+                    } catch (NotFoundException e1) {
+                        Messages.error(this, "There was an error disabling the product. Please try again or report the issue!");
                     } 
                 }
 
@@ -270,7 +274,7 @@ public class CRUDProducts extends JPanel {
                 frame = new ProductUI(auth, product, ProductUI.Mode.VIEW);
                 frame.setVisible(true);
             } catch (SQLException e1) {
-                e1.printStackTrace();
+            	Messages.error(this, "There was an error connecting to the database");
             }
 		});
 		
@@ -283,7 +287,7 @@ public class CRUDProducts extends JPanel {
                 frame = new ProductUI(auth, product, ProductUI.Mode.EDIT);
                 frame.setVisible(true);
             } catch (SQLException e1) {
-                e1.printStackTrace();
+            	Messages.error(this, "There was an error connecting to the database");
             }
 			tableModel.fireTableRowsUpdated(row, row);
 			// Refresh selection (e.g. in case sell price is now set to nothing)
@@ -302,7 +306,7 @@ public class CRUDProducts extends JPanel {
 					setTableModel(tableModel);
                 }
             } catch (SQLException e1) {
-                e1.printStackTrace();
+            	Messages.error(this, "There was an error connecting to the database");
             }
 		});
 		

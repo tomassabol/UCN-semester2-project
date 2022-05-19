@@ -45,9 +45,9 @@ public class ViewOrderDetails extends JFrame {
 		try {
 			tableModel = new OrderDetailTableModel(auth, Arrays.asList(Column.ID, Column.PRODUCT, Column.DEPARTMENT, Column.LOCATION), order);
 		} catch (SQLException e) {
-			Messages.error(this, "Error connecting to database");
+			Messages.error(this, "There was an error connecting to the database");
 		} catch (NotFoundException e) {
-			Messages.error(this, "Why u gae");
+			Messages.error(this, "There was an error loading the table. Please try again or report the issue!");//Messages.error(this, "Why u gae");
 		}
 		
 		

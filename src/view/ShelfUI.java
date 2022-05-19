@@ -298,7 +298,7 @@ public class ShelfUI extends JDialog {
                     try {
 						shelfCtrl.updateShelf(shelf, name, shelf.getProductQuantity());
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    	Messages.error(this, "There was an error connecting to the database");
                     }
 
 				} else if (mode == Mode.CREATE) {
@@ -307,7 +307,7 @@ public class ShelfUI extends JDialog {
                         Shelf shelf = shelfCtrl.createShelf(name, auth.getLoggedInUser().getDepartment());
 						this.shelf = shelf;
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    	Messages.error(this, "There was an error connecting to the database");
                     };
 				}
 

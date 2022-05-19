@@ -90,19 +90,19 @@ public class OrderUI extends JFrame {
 		try {
 			itemCtrl = new ItemController();
 		} catch (SQLException e2) {
-			Messages.error(contentPane, "There was an error connecting to the database");
+			Messages.error(this, "There was an error connecting to the database");
 		}
 		
 		try {
 			orderCtrl = new OrderController();
 		} catch (SQLException e1) {
-			Messages.error(contentPane, "There was an error connecting to the database");
+			Messages.error(this, "There was an error connecting to the database");
 		}
 		
 		try {
 			orderLineCtrl = new OrderLineController();
 		} catch (SQLException e1) {
-			Messages.error(contentPane, "There was an error connecting to the database");
+			Messages.error(this, "There was an error connecting to the database");
 		}
 		
 		try {
@@ -113,9 +113,9 @@ public class OrderUI extends JFrame {
 				    )
 		        );
 		} catch (SQLException e1) {
-			Messages.error(contentPane, "There was an error connecting to the database");
+			Messages.error(this, "There was an error connecting to the database");
 		} catch (NotFoundException e1) {
-			Messages.error(contentPane, "There was an error creating the order");
+			Messages.error(this, "There was an error creating the table. Please try again or report the issue!");
 		}
 		
 		// ***** WINDOW *****
@@ -346,16 +346,14 @@ public class OrderUI extends JFrame {
 				} catch (SQLException e) {
 					Messages.error(this, "There was an error connecting to the database");
 				} catch (NotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Messages.error(this, "There was an error setting the price. Please try again or report the issue!");
 				}
 				try {
 					lblTotalValue.setText(String.format("%.2f EUR", orderCtrl.getOrderPriceAfterDiscount(order, true)));
 				} catch (SQLException e) {
 					Messages.error(this, "There was an error connecting to the database");
 				} catch (NotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Messages.error(this, "There was an error setting the price. Please try again or report the issue!");
 				}
 				break;
 			}
@@ -365,16 +363,14 @@ public class OrderUI extends JFrame {
 				} catch (SQLException e) {
 					Messages.error(this, "There was an error connecting to the database");
 				} catch (NotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Messages.error(this, "There was an error setting the price. Please try again or report the issue!");
 				}
 				try {
 					lblTotalValue.setText(String.format("%.2f EUR", orderCtrl.getOrderPriceAfterDiscount(order, false)));
 				} catch (SQLException e) {
 					Messages.error(this, "There was an error connecting to the database");
 				} catch (NotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Messages.error(this, "There was an error setting the price. Please try again or report the issue!");
 				}
 				break;
 			}
@@ -391,7 +387,7 @@ public class OrderUI extends JFrame {
 		} catch (SQLException e) {
 			Messages.error(frame, "There was an error connecting to the database");
 		} catch (NotFoundException e) {
-			Messages.error(frame, "Ok");
+			Messages.error(this, "The window could not be opened. Please try again or report the issue!");//Messages.error(frame, "Ok");
 		}
 		frame.setVisible(true);
 		refreshPrice();
@@ -464,10 +460,8 @@ public class OrderUI extends JFrame {
 		});
 		
 		// Action for add item button
-		btnAddItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnAddItem.addActionListener(e -> {
 				addProduct();
-			}
 		});
 		
 		// Action for createOrder button
@@ -475,16 +469,16 @@ public class OrderUI extends JFrame {
 			
 			switch(mode) {
 				case CREATE: {
-					if(Messages.confirm(contentPane, "Do you want to finalize the order?")) {
+					if(Messages.confirm(this, "Do you want to finalize the order?")) {
 						try {
 							orderCtrl.finishOrder(order, auth.getLoggedInUser().getDepartment());
 							this.dispose();
 						} catch (SQLException e1) {
-							Messages.error(contentPane, "There was an error connecting to the database");
+							Messages.error(this, "There was an error connecting to the database");
 						} catch (NotFoundException e1) {
-							Messages.error(contentPane, "There was an error finding the created order");
+							Messages.error(this, "There was an error finding the created order");
 						} catch (NotEnoughInStockException e1) {
-							Messages.error(contentPane, "There is not enough items in stock");
+							Messages.error(this, "There is not enough items in stock");
 						}
 					}					
 					break;
@@ -501,69 +495,63 @@ public class OrderUI extends JFrame {
 		 * TODO: Try to simplify it later (it should work as it is, but it looks way too complicated)
 		 * Action for editQuantity button
 		 */
-		btnEditQuantity.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				//Get the selected row
-				int row = tableMain.getSelectedRow();
-				
-				//Get the orderLine from the selected row
-				OrderLine orderLine = tableModel.getOrderLine(row); 
-				
-				//Get the product from the orderLine
-				Product product = orderLine.getProduct();
-				
-				//Get the available quantity from the product
-				try {
-					availableQuantity = itemCtrl.findAllPerProduct(product).size();
-				} catch (SQLException e1) {
-					Messages.error(contentPane, "There was an error connecting to the database");
-				} catch (NotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				//Get the original quantity of the orderLine
-				int quantity = orderLine.getQuantity();
-				
-				//Create the spinner which makes the edit quantity look better
-				SpinnerNumberModel spinnerModel = new SpinnerNumberModel(quantity, 1, availableQuantity, 1);
-				JSpinner spinner = new JSpinner(spinnerModel);
-				
-				//Create the window where you can edit the quantity
-				int option = JOptionPane.showInternalConfirmDialog(contentPane, spinner, "Edit quantity", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-				if(option == JOptionPane.OK_OPTION) {
-					//Get the new quantity for the product from the spinner
-					int newQuantity = 0;
-					try {
-						newQuantity = Integer.parseInt(String.valueOf(spinner.getValue()));
-					} catch (NumberFormatException e1){
-						Messages.error(contentPane, "The given value is not a number");
-					}
-					
-					//Set the new quantity for the product
-					orderLine.setQuantity(newQuantity);
-					try {
-						orderLineCtrl.updateOrderLine(orderLine);
-					} catch (SQLException e1) {
-						Messages.error(contentPane, "There was an error connecting to the database");
-					}
-				}
-				refreshPrice();
+		btnEditQuantity.addActionListener(e -> {	
+			//Get the selected row
+			int row = tableMain.getSelectedRow();
+			
+			//Get the orderLine from the selected row
+			OrderLine orderLine = tableModel.getOrderLine(row); 
+			
+			//Get the product from the orderLine
+			Product product = orderLine.getProduct();
+			
+			//Get the available quantity from the product
+			try {
+				availableQuantity = itemCtrl.findAllPerProduct(product).size();
+			} catch (SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			} catch (NotFoundException e1) {
+				Messages.error(this, "There was an error getting the available quantity from the product. Please try again or report the issue!");
 			}
+				
+			//Get the original quantity of the orderLine
+			int quantity = orderLine.getQuantity();
+				
+			//Create the spinner which makes the edit quantity look better
+			SpinnerNumberModel spinnerModel = new SpinnerNumberModel(quantity, 1, availableQuantity, 1);
+			JSpinner spinner = new JSpinner(spinnerModel);
+				
+			//Create the window where you can edit the quantity
+			int option = JOptionPane.showInternalConfirmDialog(this, spinner, "Edit quantity", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+			if(option == JOptionPane.OK_OPTION) {
+				//Get the new quantity for the product from the spinner
+				int newQuantity = 0;
+				try {
+					newQuantity = Integer.parseInt(String.valueOf(spinner.getValue()));
+				} catch (NumberFormatException e1){
+					Messages.error(this, "The given value is not a number");
+				}
+				
+				//Set the new quantity for the product
+				orderLine.setQuantity(newQuantity);
+				try {
+					orderLineCtrl.updateOrderLine(orderLine);
+				} catch (SQLException e1) {
+					Messages.error(this, "There was an error connecting to the database");
+				}
+			}
+			refreshPrice();
 		});
 		
 		//Action for remove button
-		btnRemove.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int row = tableMain.getSelectedRow();
-				try {
-					tableModel.remove(row);
-				} catch (SQLException e1) {
-					Messages.error(contentPane, "There was an error connecting to the database");
-				}
-				refreshPrice();
+		btnRemove.addActionListener(e -> {
+			int row = tableMain.getSelectedRow();
+			try {
+				tableModel.remove(row);
+			} catch (SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
 			}
+			refreshPrice();
 		});
 		
 		//Action for clear button
@@ -574,8 +562,7 @@ public class OrderUI extends JFrame {
 				} catch (SQLException e1) {
 					Messages.error(this, "There was an error connecting to the database");
 				} catch (NotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Messages.error(this, "There was an error clearing the table. Please try again or report the issue!");
 				}	
 				refreshPrice();
 			}

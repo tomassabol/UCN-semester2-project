@@ -346,8 +346,10 @@ public class SupplyOrderUI extends JDialog {
 					this.supplier = frame.getSelectedSupplier();
 					textSupplierId.setText(supplier.getName());
 				}
-			} catch (SQLException | NotFoundException e1) {
-				e1.printStackTrace();
+			} catch (SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			} catch (NotFoundException e1) {
+				Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
 		});
 		btnSearch2.addActionListener(e -> {
@@ -359,8 +361,10 @@ public class SupplyOrderUI extends JDialog {
 					this.product = frame.getSelectedProduct();
 					textProduct.setText(product.getName());
 				}
-			} catch (SQLException | NotFoundException e1) {
-				e1.printStackTrace();
+			} catch (SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			} catch (NotFoundException e1) {
+				Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
 		});
 		btnSubmit.addActionListener(e -> {
@@ -399,7 +403,7 @@ public class SupplyOrderUI extends JDialog {
                     try {
 						supplyOrderCtrl.updateSupplyOrder(supplyOrder,  product, quantity, LocalDate.now(), supplier); 
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    	Messages.error(this, "There was an error connecting to the database");
                     }
 
 				} else if (mode == Mode.CREATE) {
@@ -408,7 +412,7 @@ public class SupplyOrderUI extends JDialog {
 						SupplyOrder supplyOrder = supplyOrderCtrl.createSupplyOrder(product, quantity, LocalDate.now(), supplier);
 						this.supplyOrder = supplyOrder;
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    	Messages.error(this, "There was an error connecting to the database");
                     };
 				}
 

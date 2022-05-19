@@ -390,7 +390,7 @@ public class CustomerUI extends JDialog {
                     try {
                         customerCtrl.updateCustomer(customer, name, email, phone, zipCode, address, customerType);
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    	Messages.error(this, "The window could not be opened. Please try again or report the issue!");
                     }
 
 				} else if (mode == Mode.CREATE) {
@@ -399,7 +399,7 @@ public class CustomerUI extends JDialog {
                         Customer customer = customerCtrl.createCustomer(name, email, phone, zipCode, address, customerType);
 						this.customer = customer;
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    	Messages.error(this, "The window could not be opened. Please try again or report the issue!");
                     };
 				}
 
@@ -419,8 +419,10 @@ public class CustomerUI extends JDialog {
 					this.zipCode = frame.getSelectedCity();
 					txtZip.setText(zipCode.getZipCode());
 				}
-			} catch (SQLException | NotFoundException e1) {
-				e1.printStackTrace();
+			} catch (SQLException e1) {
+				Messages.error(this, "There was an error connecting to the database");
+			} catch (NotFoundException e1) {
+				Messages.error(this, "The window could not be opened. Please try again or report the issue!");
 			}
 		});
 
