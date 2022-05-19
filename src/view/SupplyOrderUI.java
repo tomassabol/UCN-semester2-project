@@ -297,20 +297,22 @@ public class SupplyOrderUI extends JDialog {
 	// Makes the text fields uneditable
 	private void disableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JButton) {
 				      c.setEnabled(false);
 				   }
 			}
+		rdbtnDelivered.setEnabled(false);
 	}
 	
 	
 	// Makes the text fields editable except ID field
 	private void enableFields() {
 		for (Component c : this.getContentPane().getComponents()) {
-			   if (c instanceof JTextField || c instanceof JTextArea) {
+			   if (c instanceof JTextField || c instanceof JTextArea || c instanceof JButton) {
 			      c.setEnabled(true);
 			   }
 			}
+		rdbtnDelivered.setEnabled(true);
 		txtId.setEnabled(false);
 	}
 	
@@ -403,7 +405,7 @@ public class SupplyOrderUI extends JDialog {
 				} else if (mode == Mode.CREATE) {
 					// if mode == Create, create a new department
 					try {
-                        SupplyOrder supplyOrder = supplyOrderCtrl.createSupplyOrder(product, quantity, LocalDate.now(), supplier);
+						SupplyOrder supplyOrder = supplyOrderCtrl.createSupplyOrder(product, quantity, LocalDate.now(), supplier);
 						this.supplyOrder = supplyOrder;
                     } catch (SQLException e1) {
                         e1.printStackTrace();

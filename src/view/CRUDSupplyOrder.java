@@ -33,22 +33,25 @@ import view.tableModel.SupplyOrderTableModel;
 import view.tableModel.SupplyOrderTableModel.Column;
 
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class CRUDSupplyOrder extends JPanel {
 
-	private JButton btnAddSupplyOrder;
-	private SupplyOrderController supplyOrderCtrl;
- 	private TableRowSorter<TableModel> rowSorter;
+	private static final long serialVersionUID = -8329527605114016878L;
 
- 	private static final long serialVersionUID = -8329527605114016878L;
+	private JButton btnAddSupplyOrder;
  	private JTable tableMain;
- 	private SupplyOrderTableModel tableModel;
  	private JLink btnView;
  	private JLink btnEdit;
  	private JLink btnDelete;
- 	private AuthenticationController auth;
  	private JTextField txtSearch;
+	private JButton btnStock;
 
+	private TableRowSorter<TableModel> rowSorter;
+	private SupplyOrderTableModel tableModel;
+	private AuthenticationController auth;
+	private SupplyOrderController supplyOrderCtrl;
  	/**
  	 * Create the dialog.
  	 * @throws SQLException
@@ -118,12 +121,17 @@ public class CRUDSupplyOrder extends JPanel {
  		// ***** Bottom panel *****
  		JPanel bottomPanel = new JPanel();
  		this.add(bottomPanel, BorderLayout.SOUTH);
- 		GridBagLayout gbl_bottomPanel = new GridBagLayout();
- 		gbl_bottomPanel.columnWidths = new int[]{271, 0, 0, 0, 0};
- 		gbl_bottomPanel.rowHeights = new int[]{21, 0};
- 		gbl_bottomPanel.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
- 		gbl_bottomPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
- 		bottomPanel.setLayout(gbl_bottomPanel);
+ 		bottomPanel.setLayout(new BorderLayout(0, 0));
+ 		
+ 		// ***** Panel for table options at the bottom *****
+ 		JPanel tableBottomOptionsPanel = new JPanel();
+ 		bottomPanel.add(tableBottomOptionsPanel, BorderLayout.NORTH);
+ 		GridBagLayout gbl_tableBottomOptionsPanel = new GridBagLayout();
+ 		gbl_tableBottomOptionsPanel.columnWidths = new int[]{0, 0, 0, 0, 0};
+ 		gbl_tableBottomOptionsPanel.rowHeights = new int[]{0, 0};
+ 		gbl_tableBottomOptionsPanel.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+ 		gbl_tableBottomOptionsPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+ 		tableBottomOptionsPanel.setLayout(gbl_tableBottomOptionsPanel);
 
  		// ***** View button *****
  		btnView = new JLink("View", COLORS.GREEN);
@@ -131,7 +139,7 @@ public class CRUDSupplyOrder extends JPanel {
  		gbc_btnView.insets = new Insets(0, 0, 0, 5);
  		gbc_btnView.gridx = 1;
  		gbc_btnView.gridy = 0;
- 		bottomPanel.add(btnView, gbc_btnView);
+ 		tableBottomOptionsPanel.add(btnView, gbc_btnView);
 
  		// ***** Edit button *****
  		btnEdit = new JLink("Edit", COLORS.INDIGO);
@@ -139,19 +147,43 @@ public class CRUDSupplyOrder extends JPanel {
  		gbc_btnEdit.insets = new Insets(0, 0, 0, 5);
  		gbc_btnEdit.gridx = 2;
  		gbc_btnEdit.gridy = 0;
- 		bottomPanel.add(btnEdit, gbc_btnEdit);
+ 		tableBottomOptionsPanel.add(btnEdit, gbc_btnEdit);
 
  		// ***** Delete button *****
  		btnDelete = new JLink("Delete", COLORS.RED);
  		GridBagConstraints gbc_btnDelete = new GridBagConstraints();
  		gbc_btnDelete.gridx = 3;
  		gbc_btnDelete.gridy = 0;
- 		bottomPanel.add(btnDelete, gbc_btnDelete);
+ 		tableBottomOptionsPanel.add(btnDelete, gbc_btnDelete);
 
+ 		// ***** Panel for put into stock button *****
+ 		JPanel stock = new JPanel();
+		bottomPanel.add(stock, BorderLayout.SOUTH);
+		GridBagLayout gbl_stock = new GridBagLayout();
+		gbl_stock.columnWidths = new int[]{0, 17, 0, 0, 0};
+		gbl_stock.rowHeights = new int[]{0, 0, 0};
+		gbl_stock.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_stock.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		stock.setLayout(gbl_stock);
+		
+		// ***** Put into stock button *****
+		btnStock = new JButton();
+		GridBagConstraints gbc_btnStock = new GridBagConstraints();
+		gbc_btnStock.anchor = GridBagConstraints.EAST;
+		gbc_btnStock.gridx = 3;
+		gbc_btnStock.gridy = 1;
+		stock.add(btnStock, gbc_btnStock);
+		btnStock.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnStock.setText("Put into stock");
+		
  		// By default: all selection buttons disabled
  		btnView.setEnabled(false);
  		btnEdit.setEnabled(false);
  		btnDelete.setEnabled(false);
+ 		btnStock.setEnabled(false);
 
  		// Add filtering
  		rowSorter = new TableRowSorter<TableModel>(tableModel);
@@ -209,12 +241,14 @@ public class CRUDSupplyOrder extends JPanel {
  				// Not selected
  				btnView.setEnabled(false);
  				btnEdit.setEnabled(false);
+ 				btnStock.setEnabled(false);
  			} else {
  				// Selected
  				//int row = tableMain.getSelectedRow();
  				//  = tableModel.getObj(row);
  				btnView.setEnabled(true);
  				btnEdit.setEnabled(true);
+ 				btnStock.setEnabled(true);
  				btnDelete.setEnabled(false);
  			}
  		});
@@ -280,6 +314,33 @@ public class CRUDSupplyOrder extends JPanel {
              } catch (SQLException e1) {
                  e1.printStackTrace();
              }
+ 		});
+ 		
+ 		btnStock.addActionListener(e -> {
+ 			//First get selected supplyOrder
+ 			int row = tableMain.convertRowIndexToModel(tableMain.getSelectedRow());
+ 			SupplyOrder supplyOrder = tableModel.getObj(row);
+ 			//Then check if delivered
+ 			if(supplyOrder.getIsDelivered() == false) {
+ 				ChooseShelf frame = null;
+ 				try {
+					frame = new ChooseShelf(auth, supplyOrder);
+				} catch (SQLException e1) {
+					Messages.error(this, "There was an error connecting to the database");
+				} catch (NotFoundException e1) {
+					Messages.error(this, "Some error occured");
+				}
+ 				frame.setVisible(true);
+ 				if(frame.getSelectedShelf() != null) {
+ 					try {
+						supplyOrderCtrl.addToStock(supplyOrder, frame.getSelectedShelf());
+					} catch (SQLException e1) {
+						Messages.error(this, "There was an error connecting to the database");
+					}
+ 				}
+ 			}else {
+ 				Messages.error(this, "This supply order is already delivered");
+ 			}
  		});
 
  		// Search implementation

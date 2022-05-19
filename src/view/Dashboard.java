@@ -454,7 +454,9 @@ public class Dashboard extends JFrame {
 				if (frame.isCustomerSelected() == true) {
 					customer = frame.getSelectedCustomer();
 				}
-				txtCustomerEmail.setText(customer.getId() + " " + customer.getName());
+				if(customer != null) {
+					txtCustomerEmail.setText(customer.getId() + " " + customer.getName());					
+				}
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
