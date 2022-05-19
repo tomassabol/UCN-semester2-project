@@ -289,9 +289,9 @@ public class Dashboard extends JFrame {
 		storagePanel.setBorder(new EmptyBorder(10, 0, 0, 0));
 		tabsPane.addTab("Storage", null, storagePanel, null);
 		GridBagLayout gbl_storagePanel = new GridBagLayout();
-		gbl_storagePanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_storagePanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_storagePanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_storagePanel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_storagePanel.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_storagePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		storagePanel.setLayout(gbl_storagePanel);
 		

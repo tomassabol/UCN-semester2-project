@@ -137,6 +137,8 @@ public class SupplyOrderDB implements SupplyOrderDBIF {
 		Product product = productCtrl.findById(rs.getInt("ProductId"));
 		Supplier supplier = supplierDBIF.findById(rs.getInt("SupplierId"));
 		SupplyOrder supplyOrder = new SupplyOrder(product, rs.getInt("Quantity"), rs.getDate("OrderDate").toLocalDate(),supplier);
+		boolean delivered = rs.getBoolean("Delivered");
+		supplyOrder.setIsDelivered(delivered);
 		supplyOrder.setId(rs.getInt("Id"));
 		return supplyOrder;
 	}
