@@ -282,7 +282,7 @@ public class ShelfUI extends JDialog {
 			if (mode == Mode.EDIT) {
 				message = "Are you sure you want to update the changes to Shelf?";
 			} else if (mode == Mode.CREATE) {
-				message = "Create Department?";
+				message = "Create Shelf?";
 			}
 			if (Messages.confirm(ShelfUI.this, message)) {
 				
