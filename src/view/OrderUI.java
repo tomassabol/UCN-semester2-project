@@ -524,13 +524,13 @@ public class OrderUI extends JFrame {
 				
 			//Get the original quantity of the orderLine
 			int quantity = orderLine.getQuantity();
-				
+			
 			//Create the spinner which makes the edit quantity look better
 			SpinnerNumberModel spinnerModel = new SpinnerNumberModel(quantity, 1, availableQuantity, 1);
 			JSpinner spinner = new JSpinner(spinnerModel);
 				
 			//Create the window where you can edit the quantity
-			int option = JOptionPane.showInternalConfirmDialog(this, spinner, "Edit quantity", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+			int option = JOptionPane.showInternalConfirmDialog(contentPane, spinner, "Edit quantity", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if(option == JOptionPane.OK_OPTION) {
 				//Get the new quantity for the product from the spinner
 				int newQuantity = 0;
