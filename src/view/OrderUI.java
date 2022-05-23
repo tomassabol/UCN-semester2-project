@@ -478,17 +478,22 @@ public class OrderUI extends JFrame {
 			switch(mode) {
 				case CREATE: {
 					if(Messages.confirm(this, "Do you want to finalize the order?")) {
-						try {
-							orderCtrl.finishOrder(order, auth.getLoggedInUser().getDepartment());
-							this.dispose();
-						} catch (SQLException e1) {
-							Messages.error(this, "There was an error connecting to the database");
-						} catch (NotFoundException e1) {
-							Messages.error(this, "There was an error finding the created order");
-						} catch (NotEnoughInStockException e1) {
-							Messages.error(this, "There is not enough items in stock");
-						}
-					}					
+							try {
+								if(!order.getOrderLines().isEmpty()) {
+									orderCtrl.finishOrder(order, auth.getLoggedInUser().getDepartment());
+									this.dispose();
+								}else {
+									Messages.error(contentPane, "You can not create an empty order");
+									return;
+								}
+							} catch (SQLException e1) {
+								Messages.error(this, "There was an error connecting to the database");
+							} catch (NotFoundException e1) {
+								Messages.error(this, "There was an error finding the created order");
+							} catch (NotEnoughInStockException e1) {
+								Messages.error(this, "There is not enough items in stock");
+							}							
+					}
 					break;
 				}
 				case VIEW: {
