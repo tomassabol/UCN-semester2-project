@@ -165,7 +165,17 @@ public class ChooseProduct extends JDialog {
 				ProductTableModel tableModel = CRUDPanel.getTableModel();
 				Product product = tableModel.getObj(table.getSelectedRow());
 				selectedProduct = product;
-				selectedQuantity = (int) spinner.getValue();
+				String value = spinner.getValue().toString();
+				try {
+					selectedQuantity = Integer.parseInt(value);	
+				} catch (NumberFormatException e1) {
+					Messages.error(contentPane, "The given value was not a number");
+				}
+				/*try {
+					selectedQuantity = (int) spinner.getValue();					
+				} catch (NumberFormatException e1) {
+					Messages.error(contentPane, "The given value was not a number");
+				}*/
 				this.dispose();
 			}
 		});

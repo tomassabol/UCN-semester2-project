@@ -135,15 +135,15 @@ public class CreateOrderTableModel extends AbstractTableModel{
      * @throws SQLException 
      */
     public void remove(int row) throws SQLException {
+    	OrderLine removableLine = null;
     	for(OrderLine orderLine : orderLines) {
     		if(orderLine.getId() == row && orderLine != null) {
-    			// update this model's itemLine copies
-            	orderLines.remove(orderLine);
-            	order.removeOrderLine(orderLine);
-            	// Update the rendered table
-            	this.fireTableRowsDeleted(row, row);
+    			removableLine = orderLine;
     		}
     	}
+    	orderLines.remove(removableLine);
+    	order.removeOrderLine(removableLine);
+    	this.fireTableRowsDeleted(row, row);    	
     }
     
     /**
