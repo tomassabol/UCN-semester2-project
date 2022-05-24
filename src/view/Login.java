@@ -140,6 +140,14 @@ public class Login extends JFrame {
 				try {
 					AuthenticationController auth = new AuthenticationController();
 					if (auth.logIn(email, password)) {
+						Thread thread1 = new Thread(() -> {
+							try {
+								auth.backUp();
+							} catch (SQLException e1) {
+								Messages.error(null, "Unable to backup database. Please contact developers");
+							}
+						});
+						thread1.start();
 						Dashboard frame = new Dashboard(auth);
 						frame.setVisible(true);
 						// free up memory by destroying the current login form

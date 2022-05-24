@@ -2,6 +2,8 @@ package controller;
 
 import java.sql.SQLException;
 
+import database.BackupDB;
+import database.interfaces.BackupDBIF;
 import exceptions.NotFoundException;
 import model.Authentication;
 import model.Employee;
@@ -10,6 +12,7 @@ public class AuthenticationController {
     
     private Authentication authentication;
     private EmployeeController employeeCtrl;
+    private BackupDBIF backupDBIF;
 
     /**
      * Constructor for the AuthenticationController class
@@ -18,6 +21,7 @@ public class AuthenticationController {
     public AuthenticationController() throws SQLException {
         authentication = new Authentication();
         employeeCtrl = new EmployeeController();
+        backupDBIF = new BackupDB();
     }
 
     /**
@@ -52,5 +56,13 @@ public class AuthenticationController {
      */
     public void logout() {
         authentication.logout();
+    }
+
+    /**
+     * database backup
+     * @throws SQLException
+     */
+    public void backUp() throws SQLException {
+        backupDBIF.backUp();
     }
 }
