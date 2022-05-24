@@ -2,6 +2,8 @@ package controller;
 
 import java.sql.SQLException;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import database.BackupDB;
 import database.interfaces.BackupDBIF;
 import exceptions.NotFoundException;
@@ -34,10 +36,12 @@ public class AuthenticationController {
      */
     public boolean logIn(String email, String password) throws SQLException, NotFoundException {
         boolean login = false;
-        Employee employee = employeeCtrl.findByEmail(email, password);
+        Employee employee = employeeCtrl.findByEmail(email);
         if (employee != null) {
-            authentication.login(employee);
-            login = true;
+            if (comparePassword(password, employee.getPassword())) {
+                authentication.login(employee);
+                login = true;
+            }
         }
 
         return login;
@@ -64,5 +68,9 @@ public class AuthenticationController {
      */
     public void backUp() throws SQLException {
         backupDBIF.backUp();
+    }
+
+    public boolean comparePassword(String password, String hashed) {
+        return BCrypt.checkpw(password, hashed);
     }
 }

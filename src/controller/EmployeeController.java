@@ -3,6 +3,8 @@ package controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import database.EmployeeDB;
 import database.interfaces.EmployeeDBIF;
 import exceptions.NotFoundException;
@@ -55,8 +57,8 @@ public class EmployeeController {
      * @throws SQLException
      * @throws NotFoundException
      */
-    public Employee findByEmail(String email, String password) throws SQLException, NotFoundException {
-        Employee employee = employeeDBIF.findByEmail(email, password);
+    public Employee findByEmail(String email) throws SQLException, NotFoundException {
+        Employee employee = employeeDBIF.findByEmail(email);
         return employee;
     }
 
@@ -74,7 +76,7 @@ public class EmployeeController {
      * @throws SQLException
      */
     public Employee createEmployee(String name, String email, String phone, City zipCode, String address, EmployeeType employeeType, String password, String CPR, Department department) throws SQLException {
-        Employee employee = new Employee(name, email, phone, zipCode, address, employeeType, password, CPR, department);
+        Employee employee = new Employee(name, email, phone, zipCode, address, employeeType, encryptPassword(password), CPR, department);
         employeeDBIF.createEmployee(employee);
         return employee;
     }
@@ -99,7 +101,7 @@ public class EmployeeController {
         employee.setZipCode(zipCode);
         employee.setAddress(address);
         employee.setEmployeeType(employeeType);
-        employee.setPassword(password);
+        employee.setPassword(encryptPassword(password));
         employee.setDepartment(department);
         employeeDBIF.updateEmployee(employee);
     }
@@ -111,6 +113,10 @@ public class EmployeeController {
      */
     public void deleteEmployee(Employee employee) throws SQLException {
         employeeDBIF.deleteEmployee(employee);
+    }
+
+    public String encryptPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
 }

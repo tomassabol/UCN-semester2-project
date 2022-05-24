@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.AuthenticationController;
 import controller.CityController;
 import controller.DepartmentController;
 import controller.EmployeeTypeController;
@@ -19,7 +20,7 @@ public class EmployeeDB implements EmployeeDBIF {
     // PreparedStatements for the EmployeeDB class
     private static final String FIND_ALL = "select * from Employees where Enabled = 1";
     private static final String FIND_BY_ID = "select * from Employees where Id = ?";
-    private static final String FIND_BY_EMAIL = "select * from Employees where Email = ? and Password = ?";
+    private static final String FIND_BY_EMAIL = "select * from Employees where Email = ?";
     private static final String CREATE_EMPLOYEE = "insert into Employees values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_EMPLOYEE = "update Employees set Name = ?, Email = ?, Phone = ?, ZIP = ?, Address = ?, EmployeeTypeId = ?, Password = ?, CPR = ?, DepartmentId = ? where Id = ?";
     private static final String DELETE_EMPLOYEE = "update Employees set Enabled = 0 where Id = ?";
@@ -87,11 +88,10 @@ public class EmployeeDB implements EmployeeDBIF {
      * @throws NotFoundException if provided credentials are incorrect
      */
     @Override
-    public Employee findByEmail(String email, String password) throws SQLException, NotFoundException {
+    public Employee findByEmail(String email) throws SQLException, NotFoundException {
         Employee employee = null;
         ResultSet rs;
         findByEmail.setString(1, email);
-        findByEmail.setString(2, password);
         rs = findByEmail.executeQuery();
         while(rs.next()) {
             employee = buildObject(rs);

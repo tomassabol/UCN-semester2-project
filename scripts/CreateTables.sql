@@ -130,7 +130,7 @@ create table Employees(
     Address varchar(100),
     EmployeeTypeId int,
     foreign key (EmployeeTypeId) references EmployeeTypes(Id),
-    Password varchar(20),
+    Password char(60),
     CPR varchar(10) unique,
     DepartmentId int,
     foreign key (DepartmentId) references Departments(Id),

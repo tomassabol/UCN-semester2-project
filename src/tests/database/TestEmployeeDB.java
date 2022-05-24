@@ -43,7 +43,7 @@ public class TestEmployeeDB {
     }
 
     public void findByEmailIncorrect() throws SQLException, NotFoundException {
-        employee = employeeDBIF.findByEmail("employee1@email.com", "password2");
+        employee = employeeDBIF.findByEmail("employee1@email.com");
     }
 
     @Test
@@ -78,9 +78,8 @@ public class TestEmployeeDB {
     public void testFindByEmail() throws SQLException, NotFoundException {
         // Arrange
         String email = "employee1@email.com";
-        String password = "password1";
         // Act
-        employee = employeeDBIF.findByEmail(email, password);
+        employee = employeeDBIF.findByEmail(email);
         // Assert
         assertNotNull(email);
     }
