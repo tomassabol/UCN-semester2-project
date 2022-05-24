@@ -21,7 +21,6 @@ import model.Employee;
  		ZIP("ZIP"),
  		ADDRESS("Address"),
  		EMPLOYEE_TYPE("Employee type"),
- 		PASSWORD("Password"),
  		CPR("CPR"),
  		DEPARTMENT("Department");
 
@@ -105,7 +104,6 @@ import model.Employee;
             case ZIP: return employee.getZipCode().getZipCode();
             case ADDRESS: return employee.getAddress();
             case EMPLOYEE_TYPE: return employee.getEmployeeType();
-            case PASSWORD: return employee.getPassword();
             case CPR: return employee.getCPR();
             case DEPARTMENT: return employee.getDepartment().getName();
             default: return "Error retrieving column name";

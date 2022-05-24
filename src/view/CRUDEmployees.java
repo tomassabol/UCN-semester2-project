@@ -68,7 +68,6 @@ public class CRUDEmployees extends JPanel {
  			    EmployeeTableModel.Column.ZIP,
  			    EmployeeTableModel.Column.ADDRESS,
  			    EmployeeTableModel.Column.EMPLOYEE_TYPE,
- 			    EmployeeTableModel.Column.PASSWORD,
  			    EmployeeTableModel.Column.CPR,
  			    EmployeeTableModel.Column.DEPARTMENT
  			    )
