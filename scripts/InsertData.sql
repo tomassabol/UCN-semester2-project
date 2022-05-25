@@ -55,9 +55,10 @@ INSERT INTO EmployeeTypes VALUES('ADMIN')
 INSERT INTO EmployeeTypes VALUES('CEO')
 INSERT INTO EmployeeTypes VALUES('EMPLOYEE')
 
-SET ANSI_WARNINGS OFF;
-insert into Employees values('admin1', 'admin1', 1234, 'CZ-60200', 'test', 3, '2a$10$zxS4VobpitSJl4EQ/2d9cOltSnP5k3wsiw5HwoCnCtqNy/d5JQJB2', 909090090, 1, 1)
-SET ANSI_WARNINGS on;
+INSERT INTO Employees VALUES('Employee1','employee1@email.com','111111','DK-9000','Street 1111',1, '$2a$12$7OqbaBnW26W/IkqDN1RiVucu8gG64O7kgOyWHcA8qa9zAnIuqCDUK', 0101010101, 1, 1)
+INSERT INTO Employees VALUES('Employee2','employee2@email.com','222222','SK-4212','Street 2222',2,'$2a$12$7OqbaBnW26W/IkqDN1RiVucu8gG64O7kgOyWHcA8qa9zAnIuqCDUK', 0202020202, 2, 1)
+INSERT INTO Employees VALUES('Employee3','employee3@email.com','333333','CZ-60200','Street 3333',3,'$2a$12$7OqbaBnW26W/IkqDN1RiVucu8gG64O7kgOyWHcA8qa9zAnIuqCDUK', 0303030303, 3, 0)
+insert into Employees values('admin', 'admin', 1234, 'CZ-60200', 'test', 3, '$2a$12$7OqbaBnW26W/IkqDN1RiVucu8gG64O7kgOyWHcA8qa9zAnIuqCDUK', 909090090, 1, 1)
 
 INSERT INTO Orders VALUES(1,1, '2022-05-01', 1)
 INSERT INTO Orders VALUES(2,2, '2022-05-01', 1)
