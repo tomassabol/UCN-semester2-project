@@ -115,6 +115,11 @@ public class EmployeeController {
         employeeDBIF.deleteEmployee(employee);
     }
 
+    /**
+     * encrypt password using bcrypt lib
+     * @param password - input password
+     * @return hashed password
+     */
     public String encryptPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }

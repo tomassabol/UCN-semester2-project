@@ -70,6 +70,12 @@ public class AuthenticationController {
         backupDBIF.backUp();
     }
 
+    /**
+     * compare input password with hashed password from db
+     * @param password - input password
+     * @param hashed - password from db
+     * @return true if it's a match
+     */
     public boolean comparePassword(String password, String hashed) {
         return BCrypt.checkpw(password, hashed);
     }

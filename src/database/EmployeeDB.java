@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.AuthenticationController;
 import controller.CityController;
 import controller.DepartmentController;
 import controller.EmployeeTypeController;
