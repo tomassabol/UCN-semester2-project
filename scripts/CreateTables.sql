@@ -20,10 +20,11 @@ drop table if exists City;
 
 create table City(
     Id int identity(1,1) unique not null,
-    ZIP varchar(10) primary key,
+    ZIP varchar(10),
     Name varchar(100),
-    Enabled bit
-);
+    Enabled bit,
+    PRIMARY KEY ([ZIP], [Name])
+) on [PRIMARY];
 
 create table Suppliers(
     Id int identity(1,1) primary key,
@@ -31,7 +32,7 @@ create table Suppliers(
     Email varchar(100),
     Phone varchar(20),
     ZIP varchar(10),
-    foreign key (ZIP) references City(ZIP),
+    foreign key (ZIP) references City([ZIP]),
     Address varchar(100),
     Enabled bit
 );

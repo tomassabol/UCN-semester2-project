@@ -31,7 +31,7 @@ public class Mail {
 
 	public static Message setUp() throws AddressException, MessagingException {
 		final String username = "info.bigbike@gmail.com";
-    	final String password = "CSCCSDS211";
+    	final String password = "gjdhbdnldmpgzmuo";
 
     	Properties props = new Properties();
     	props.put("mail.smtp.auth", "true");

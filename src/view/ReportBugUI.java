@@ -133,14 +133,15 @@ public class ReportBugUI extends JDialog {
 
 			try {
 				Mail.sendMail(title, description);
+				Messages.info(null, "Problem has been reported");
 			} catch (MessagingException e1) {
+				e1.printStackTrace();
 				Messages.error(this, "Error occured when trying to send an email. Try again later");
 			} catch (UnknownHostException e1) {
+				e1.printStackTrace();
 				Messages.error(this, "Error with collecting system information");
 			}
 
-
-            Messages.info(null, "Problem has been reported");
 			// Dispose of the window
 			this.dispose();
 		});
